@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -37,13 +36,15 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "dailyReward", // Startowy ekran aplikacji
+            startDestination = "home",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") { HomeScreen(navController) }
             composable("login") { LoginScreen(navController) }
             composable("register") { RegisterScreen() }
             composable("dailyReward") { DailyRewardScreen(navController) }
+            composable("map") { MapScreen(navController) }
+
         }
     }
 }

@@ -19,20 +19,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
+import androidx.compose.material3.Scaffold
+
 @Composable
 fun DailyRewardScreen(navController: NavController, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color(0xFF403E3E))
-            .padding(16.dp)
-    ) {
-        HeaderSection()
-        BannerText()
-        RewardsGrid()
-        CustomBottomNavigationBar(navController, "daily_rewards")
+    Scaffold(
+        bottomBar = { CustomBottomNavigationBar(navController, selectedTab = "daily_rewards") }
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Color(0xFF403E3E))
+                .padding(paddingValues)
+        ) {
+            HeaderSection()
+            BannerText()
+            RewardsGrid()
+        }
     }
-
 }
 
 @Composable
@@ -43,17 +47,14 @@ fun HeaderSection(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Avatar Image on the left
         Image(
-            painter = painterResource(id = R.drawable.cow), // Replace with actual avatar image resource
+            painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób obrazu
             contentDescription = "Avatar",
             modifier = modifier.size(80.dp)
         )
-
-        // Star icon and score on the right
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                painter = painterResource(id = R.drawable.cow), // Replace with actual star icon resource
+                painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób ikony
                 contentDescription = "Star Icon",
                 tint = Color.LightGray,
                 modifier = modifier.size(60.dp)
@@ -65,8 +66,7 @@ fun HeaderSection(modifier: Modifier = Modifier) {
 
 @Composable
 fun BannerText(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.padding(vertical = 12.dp))
-    {
+    Box(modifier = modifier.padding(vertical = 12.dp)) {
         Box(
             modifier = modifier
                 .fillMaxWidth()
@@ -75,8 +75,7 @@ fun BannerText(modifier: Modifier = Modifier) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Your daily rewards!\n" +
-                        "Visit us tomorrow to get more stars!",
+                text = "Your daily rewards!\nVisit us tomorrow to get more stars!",
                 textAlign = TextAlign.Center,
                 color = Color.White,
                 fontSize = 16.sp
@@ -92,7 +91,6 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        // Displaying a 5x4 grid for 20 days
         val days = (1..16).toList()
         for (i in days.chunked(4)) {
             Row(
@@ -110,8 +108,7 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
 
 @Composable
 fun RewardItem(day: Int, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.padding(8.dp))
-    {
+    Box(modifier = modifier.padding(8.dp)) {
         Column(
             modifier = modifier
                 .background(Color(0xFF8559A5), RoundedCornerShape(8.dp))
@@ -125,7 +122,7 @@ fun RewardItem(day: Int, modifier: Modifier = Modifier) {
                 fontSize = 12.sp,
             )
             Image(
-                painter = painterResource(id = R.drawable.chest), // Replace with actual chest image resource
+                painter = painterResource(id = R.drawable.chest), // Zamień na rzeczywisty zasób obrazu
                 contentDescription = "Chest",
                 modifier = modifier.size(40.dp)
             )
@@ -133,70 +130,6 @@ fun RewardItem(day: Int, modifier: Modifier = Modifier) {
     }
 }
 
-
-
-
-@Composable
-fun CustomBottomNavigationBar(navController: NavController, selectedTab: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFEDE7F6))
-            .height(56.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Daily Rewards Tab
-        CustomNavItem(
-            label = "Daily rewards",
-            imageResId = R.drawable.cow, // Replace with your actual image resource
-            isSelected = selectedTab == "daily_rewards",
-            onClick = { navController.navigate("daily_rewards") }
-        )
-
-        // Map Tab
-        CustomNavItem(
-            label = "Map",
-            imageResId = R.drawable.cow, // Replace with your actual image resource
-            isSelected = selectedTab == "map",
-            onClick = { navController.navigate("map") }
-        )
-
-        // Profile Tab
-        CustomNavItem(
-            label = "Profile",
-            imageResId = R.drawable.cow, // Replace with your actual image resource
-            isSelected = selectedTab == "profile",
-            onClick = { navController.navigate("profile") }
-        )
-    }
-}
-
-@Composable
-fun CustomNavItem(
-    label: String,
-    imageResId: Int,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable(onClick = onClick),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = imageResId),
-            contentDescription = label,
-            modifier = Modifier.size(20.dp) // Adjust size as needed
-        )
-        Text(
-            text = label,
-            fontSize = 10.sp, // Smaller text size for alignment
-            color = if (isSelected) Color.Black else Color.Gray
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
