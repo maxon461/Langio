@@ -37,12 +37,13 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "home", // Startowy ekran aplikacji
+            startDestination = "dailyReward", // Startowy ekran aplikacji
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable("home") { HomeScreen(navController) } // Definicja ekranu głównego
-            composable("login") { LoginScreen() }             // Definicja ekranu logowania
-            composable("register") { RegisterScreen() }             // Definicja ekranu logowania
+            composable("home") { HomeScreen(navController) }
+            composable("login") { LoginScreen(navController) }
+            composable("register") { RegisterScreen() }
+            composable("dailyReward") { DailyRewardScreen(navController) }
         }
     }
 }

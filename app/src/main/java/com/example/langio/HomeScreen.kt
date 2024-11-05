@@ -40,7 +40,7 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
         )
 
         Image(
-            painter = painterResource(id = R.drawable.cow_image), // Dodaj obrazek krowy do drawable
+            painter = painterResource(id = R.drawable.cow), // Dodaj obrazek krowy do drawable
             contentDescription = "Cow Icon",
             modifier = Modifier
                 .padding(vertical = 38.dp)
