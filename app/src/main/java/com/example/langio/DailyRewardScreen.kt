@@ -2,10 +2,8 @@ package com.example.langio
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +22,8 @@ import androidx.compose.material3.Scaffold
 @Composable
 fun DailyRewardScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
-        bottomBar = { CustomBottomNavigationBar(navController, selectedTab = "daily_rewards") }
+        bottomBar = { CustomBottomNavigationBar(navController, selectedTab = "dailyReward") },
+        topBar = { HeaderBar(modifier, showPfp = true, showLevel = false) }
     ) { paddingValues ->
         Column(
             modifier = modifier
@@ -32,37 +31,13 @@ fun DailyRewardScreen(navController: NavController, modifier: Modifier = Modifie
                 .background(Color(0xFF403E3E))
                 .padding(paddingValues)
         ) {
-            HeaderSection()
-            BannerText()
-            RewardsGrid()
+            BannerText(modifier)
+            RewardsGrid(modifier)
         }
     }
 }
 
-@Composable
-fun HeaderSection(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób obrazu
-            contentDescription = "Avatar",
-            modifier = modifier.size(80.dp)
-        )
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób ikony
-                contentDescription = "Star Icon",
-                tint = Color.LightGray,
-                modifier = modifier.size(60.dp)
-            )
-            Text(text = "21", fontSize = 40.sp, color = Color.LightGray)
-        }
-    }
-}
+
 
 @Composable
 fun BannerText(modifier: Modifier = Modifier) {

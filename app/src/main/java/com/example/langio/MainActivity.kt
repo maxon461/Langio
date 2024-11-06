@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.langio.ui.theme.LANGIOTheme
+import test
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,7 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = "levelMenu",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") { HomeScreen(navController) }
@@ -44,7 +45,12 @@ fun MainScreen() {
             composable("register") { RegisterScreen() }
             composable("dailyReward") { DailyRewardScreen(navController) }
             composable("map") { MapScreen(navController) }
+            composable("profile") { ProfileScreen(navController) }
+            composable("levelMenu") { LevelMenuScreen(navController) }
 
+
+
+            composable("test") { test() }
         }
     }
 }
