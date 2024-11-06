@@ -2,15 +2,21 @@ package com.example.langio
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +37,7 @@ fun CustomBottomNavigationBar(navController: NavController, selectedTab: String,
             .fillMaxWidth()
             .background(Color(0xFFEDE7F6))
             .height(56.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
+        horizontalArrangement = Arrangement.SpaceEvenly, // Używamy SpaceEvenly, żeby rozłożyć przyciski równomiernie
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Daily Rewards Tab
@@ -39,7 +45,15 @@ fun CustomBottomNavigationBar(navController: NavController, selectedTab: String,
             label = "Daily rewards",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "dailyReward",
-            onClick = { navController.navigate("dailyReward") }
+            onClick = { navController.navigate("dailyReward") },
+            modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
+        )
+
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp)
+                .background(Color.Gray)
         )
 
         // Map Tab
@@ -47,7 +61,15 @@ fun CustomBottomNavigationBar(navController: NavController, selectedTab: String,
             label = "Map",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "map",
-            onClick = { navController.navigate("map") }
+            onClick = { navController.navigate("map") },
+            modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
+        )
+
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp)
+                .background(Color.Gray)
         )
 
         // Profile Tab
@@ -55,7 +77,8 @@ fun CustomBottomNavigationBar(navController: NavController, selectedTab: String,
             label = "Profile",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "profile",
-            onClick = { navController.navigate("profile") }
+            onClick = { navController.navigate("profile") },
+            modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
         )
     }
 }
@@ -70,22 +93,26 @@ fun CustomNavItem(
 ) {
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .fillMaxHeight() // Upewniamy się, że przycisk wypełnia całą dostępną wysokość
+            .background(if (isSelected) Color(0xFFD8BFBF) else Color(0xFFEDE7F6))
             .clickable(onClick = onClick),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center // Wyrównujemy zawartość w pionie
     ) {
         Image(
             painter = painterResource(id = imageResId),
             contentDescription = label,
-            modifier = modifier.size(20.dp) // Adjust size as needed
+            modifier = modifier.size(20.dp)
         )
         Text(
             text = label,
-            fontSize = 10.sp, // Smaller text size for alignment
+            fontSize = 10.sp,
             color = if (isSelected) Color.Black else Color.Gray
         )
     }
 }
+
+
 
 
 
