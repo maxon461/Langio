@@ -1,11 +1,15 @@
 package com.example.langio
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -84,12 +89,11 @@ fun VerticalButtonsWithRandomXPositions() {
                 Button(
                     onClick = { /* Action on button click */ },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xff2c2c2c)),
-
                     modifier = Modifier
                         .size(buttonSize.dp)
                         .offset(x = xOffset) // Random horizontal offset for each button
                 ) {
-                    Text("★", color = Color(0xFF8E44AD), fontSize = 24.sp)
+
                 }
             }
         }
