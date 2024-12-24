@@ -14,9 +14,19 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.*
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.toOffset
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,6 +34,8 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import androidx.compose.ui.layout.positionInWindow
+
 
 data class LevelInfo(
     val id: Int,
@@ -96,50 +108,74 @@ fun LevelProgressionMap(
     onLevelClick: (LevelInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            levels.windowed(2).forEachIndexed { index, (current, next) ->
-                val horizontalSpacing = size.width * 0.3f
-                val startX = size.width * 0.4f + (if (index % 2 == 0) 0f else horizontalSpacing)
-                val endX = size.width * 0.4f + (if ((index + 1) % 2 == 0) 0f else horizontalSpacing)
-                val verticalSpacing = 120f
-                val startY = (index * verticalSpacing) + 150f
-                val endY = ((index + 1) * verticalSpacing) + 150f
+    val levelPositions = remember { mutableStateListOf<Offset>() }
 
-                val path = Path().apply {
-                    moveTo(startX, startY)
-                    cubicTo(
-                        startX, startY + verticalSpacing * 0.3f,
-                        endX, endY - verticalSpacing * 0.3f,
-                        endX, endY
+    Box(modifier = modifier) {
+        if (levelPositions.size >= 2) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                levelPositions.windowed(2).forEachIndexed { index, (start, end) ->
+                    val controlPointOffset = 150f
+                    val heightIncrement = 30f * index  // Increases height for each subsequent line
+
+                    val controlPoint1 = Offset(
+                        (start.x + end.x) / 2,
+                        start.y - controlPointOffset - heightIncrement
+                    )
+                    val controlPoint2 = Offset(
+                        (start.x + end.x) / 2,
+                        end.y - controlPointOffset - heightIncrement
+                    )
+
+                    val path = Path().apply {
+                        moveTo(start.x + 50, start.y - 150 - heightIncrement)  // Start point gets higher
+                        cubicTo(
+                            controlPoint1.x, controlPoint1.y,
+                            controlPoint2.x, controlPoint2.y - 50,
+                            end.x, end.y - 200 - heightIncrement    // End point gets higher too
+                        )
+                    }
+
+                    drawPath(
+                        path = path,
+                        color = if (levels[index + 1].isUnlocked) Color(0xFF9333EA) else Color.Gray,
+                        style = Stroke(width = 4f)
                     )
                 }
-
-                drawPath(
-                    path = path,
-                    color = if (next.isUnlocked) Color(0xFF9333EA) else Color.Gray,
-                    style = Stroke(width = 4f)
-                )
             }
         }
 
         levels.forEachIndexed { index, level ->
-            val reversedIndex = levels.size - 1 - index  // Reverse the index
+            val reversedIndex = levels.size - 1 - index
             val baseY = 50
             val spacing = 110
 
-            LevelNode(
-                level = level,
+            val nodeX = if (reversedIndex % 2 == 0) 120 else 240
+            val nodeY = reversedIndex * spacing + baseY
+
+            Box(
                 modifier = Modifier
-                    .offset(
-                        x = if (reversedIndex % 2 == 0) 120.dp else 240.dp,
-                        y = ((reversedIndex * spacing + baseY).dp)
-                    ),
-                onClick = { onLevelClick(level) }
-            )
+                    .offset(x = nodeX.dp, y = nodeY.dp)
+                    .onGloballyPositioned { coordinates ->
+                        val position = coordinates.positionInWindow()
+                        val nodeSize = 32f
+                        val centerPosition = Offset(
+                            position.x + nodeSize,
+                            position.y + nodeSize
+                        )
+
+                        if (index >= levelPositions.size) {
+                            levelPositions.add(centerPosition)
+                        } else {
+                            levelPositions[index] = centerPosition
+                        }
+                    }
+            ) {
+                LevelNode(level = level, onClick = { onLevelClick(level) })
+            }
         }
     }
 }
+
 
 @Composable
 fun LevelNode(
@@ -262,7 +298,7 @@ class GameMapViewModel : ViewModel() {
             subtitle = "Advanced",
             levels = listOf(
                 LevelInfo(6, "Level 1", true),
-                LevelInfo(7, "Level 2", false),
+                LevelInfo(7, "Level 2", true),
                 LevelInfo(8, "Level 3", false),
                 LevelInfo(9, "Level 4", false),
                 LevelInfo(10, "Reward", false, isReward = true)
