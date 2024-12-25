@@ -18,8 +18,8 @@ import com.example.langio.screens.FlashcardScreen
 import com.example.langio.screens.HomeScreen
 import com.example.langio.screens.LevelMenuScreen
 import com.example.langio.screens.LoginScreen
-import com.example.langio.screens.MapScreen
 import com.example.langio.screens.ProfileScreen
+import com.example.langio.screens.MapScreen
 import com.example.langio.screens.RegisterScreen
 import com.example.langio.ui.theme.LANGIOTheme
 
