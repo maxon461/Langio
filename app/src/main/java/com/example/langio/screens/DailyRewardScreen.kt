@@ -1,4 +1,4 @@
-package com.example.langio
+package com.example.langio.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +18,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.material3.Scaffold
+import com.example.langio.useful.CustomBottomNavigationBar
+import com.example.langio.useful.HeaderBar
+import com.example.langio.R
 
 @Composable
 fun DailyRewardScreen(navController: NavController, modifier: Modifier = Modifier) {

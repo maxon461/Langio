@@ -1,4 +1,4 @@
-package com.example.langio
+package com.example.langio.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
