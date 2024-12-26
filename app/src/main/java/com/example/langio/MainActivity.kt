@@ -19,9 +19,10 @@ import com.example.langio.screens.FlashcardScreen
 import com.example.langio.screens.HomeScreen
 import com.example.langio.screens.LevelMenuScreen
 import com.example.langio.screens.LoginScreen
-//import com.example.langio.screens.M
 import com.example.langio.screens.ProfileScreen
+import com.example.langio.screens.MapScreen
 import com.example.langio.screens.RegisterScreen
+import com.example.langio.screens.WordListScreen
 import com.example.langio.ui.theme.LANGIOTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,10 +54,13 @@ fun MainScreen() {
             composable("register") { RegisterScreen() }
             composable("dailyReward") { DailyRewardScreen(navController) }
             composable("map") { MapScreen(navController) }
-            composable("profile") { ProfileScreen(navController) }
+            composable("profile") { 
+              (navController) }
             composable("levelMenu") { LevelMenuScreen(navController) }
             composable("flashcard") { FlashcardScreen(navController) }
             composable("examChoice") { ExamChoice(navController) }
+            composable("connectWords") { ConnectWordsScreen(navController) }
+            composable("wordList") { WordListScreen(navController) }
 
 
 
