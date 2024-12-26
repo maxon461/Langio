@@ -1,5 +1,7 @@
 package com.example.langio.screens
 
+import android.content.Context
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,8 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,12 +33,15 @@ import com.example.langio.useful.Flippable
 import com.example.langio.useful.HeaderBar
 import com.example.langio.R
 import com.example.langio.useful.rememberFlipController
+import androidx.compose.ui.platform.LocalContext
+
+
 
 
 @Composable
 fun FlashcardScreen (navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = { HeaderBar(modifier, showPfp = false, showLevel = true) }
+        topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = false) }
     ) { paddingValues ->
         Column(
             modifier = modifier
@@ -56,6 +58,9 @@ fun FlashcardScreen (navController: NavController, modifier: Modifier = Modifier
 @Composable
 fun FlashCard()
 {
+    val context = LocalContext.current
+    val mp: MediaPlayer = MediaPlayer.create(context, R.raw.loud)
+
     val animateColor = Color.LightGray
     val frontWord = "jengibre"
     val frontSentence = "Tu jengibre está en mi bolso."
@@ -76,12 +81,12 @@ fun FlashCard()
                     Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.cow), // Replace with your drawable
+                        painter = painterResource(R.drawable.cow),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(240.dp)
-                            .padding(8.dp)
+                            .padding(25.dp)
+                            .height(200.dp)
                             .align(Alignment.CenterHorizontally)
                     )
                     Row (
@@ -110,9 +115,15 @@ fun FlashCard()
                         {
                             IconButton(
                                 modifier = Modifier.fillMaxWidth(.5f),
-                                onClick = { /* Sound */ }) {
+                                onClick = {
+                                    if (mp.isPlaying) {
+                                        mp.pause()
+                                        mp.seekTo(0)
+                                    }
+                                    mp.start()
+                                }) {
                                 Icon(
-                                    painter = painterResource(R.drawable.chest), // Replace with your drawable
+                                    painter = painterResource(R.drawable.play_speaker),
                                     contentDescription = "Sound",
                                     tint = Color.Black
                                 )
@@ -121,8 +132,8 @@ fun FlashCard()
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = { /* Video */ }) {
                                 Icon(
-                                    painter = painterResource(R.drawable.cow), // Replace with your drawable
-                                    contentDescription = "Sound",
+                                    painter = painterResource(R.drawable.play_video),
+                                    contentDescription = "Cideo",
                                     tint = Color.Black
                                 )
                                 }
@@ -151,12 +162,13 @@ fun FlashCard()
                     Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.cow), // Replace with your drawable
+                        painter = painterResource(R.drawable.cow),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(240.dp)
-                            .padding(8.dp)
+                            .padding(25.dp)
+                            .height(200.dp)
+//                            .fillMaxWidth(.9f)
                             .align(Alignment.CenterHorizontally)
                     )
                     Row(
@@ -186,9 +198,15 @@ fun FlashCard()
                         {
                             IconButton(
                                 modifier = Modifier.fillMaxWidth(.5f),
-                                onClick = { /* Sound */ }) {
+                                onClick = {
+                                    if (mp.isPlaying) {
+                                        mp.pause()
+                                        mp.seekTo(0)
+                                    }
+                                    mp.start()
+                                }) {
                                 Icon(
-                                    painter = painterResource(R.drawable.chest), // Replace with your drawable
+                                    painter = painterResource(R.drawable.play_speaker),
                                     contentDescription = "Sound",
                                     tint = Color.Black
                                 )
@@ -197,8 +215,8 @@ fun FlashCard()
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = { /* Video */ }) {
                                 Icon(
-                                    painter = painterResource(R.drawable.cow), // Replace with your drawable
-                                    contentDescription = "Sound",
+                                    painter = painterResource(R.drawable.play_video),
+                                    contentDescription = "Video",
                                     tint = Color.Black
                                 )
                             }
@@ -217,7 +235,6 @@ fun FlashCard()
         flipController = rememberFlipController()
     )
 }
-
 
 @Composable
 fun NextButton ()

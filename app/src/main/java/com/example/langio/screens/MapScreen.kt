@@ -35,6 +35,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import androidx.compose.ui.layout.positionInWindow
+import com.example.langio.useful.CustomBottomNavigationBar
+import com.example.langio.useful.HeaderBar
 
 
 data class LevelInfo(
@@ -71,7 +73,8 @@ fun MapScreen(
             HeaderBar(
                 modifier = modifier,
                 showPfp = true,
-                showLevel = false
+                showLevel = false,
+                showExam = false
             )
         }
     ) { paddingValues ->

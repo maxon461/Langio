@@ -27,7 +27,7 @@ import com.example.langio.R
 @Composable
 fun LevelMenuScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = { HeaderBar(modifier, showPfp = false, showLevel = true) }
+        topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = false) }
     ) { paddingValues ->
         Column(
             modifier = modifier

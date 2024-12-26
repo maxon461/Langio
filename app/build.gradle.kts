@@ -61,6 +61,16 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.storage)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.ffmpeg.kit.full)
+//    implementation(libs.google.cloud.texttospeech)
+    implementation(libs.exoplayer)
+    implementation(libs.ui)
+    implementation(libs.material3)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.androidx.activity.compose.v160) 
+
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.graphics.shapes.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,4 +78,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 }

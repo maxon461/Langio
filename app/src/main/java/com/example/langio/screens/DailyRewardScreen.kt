@@ -26,7 +26,7 @@ import com.example.langio.R
 fun DailyRewardScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         bottomBar = { CustomBottomNavigationBar(navController, selectedTab = "dailyReward") },
-        topBar = { HeaderBar(modifier, showPfp = true, showLevel = false) }
+        topBar = { HeaderBar(modifier, showPfp = true, showLevel = false, showExam = false) }
     ) { paddingValues ->
         Column(
             modifier = modifier

@@ -14,11 +14,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.langio.screens.DailyRewardScreen
+import com.example.langio.screens.ExamChoice
 import com.example.langio.screens.FlashcardScreen
 import com.example.langio.screens.HomeScreen
 import com.example.langio.screens.LevelMenuScreen
 import com.example.langio.screens.LoginScreen
-import com.example.langio.screens.MapScreen
+//import com.example.langio.screens.M
 import com.example.langio.screens.ProfileScreen
 import com.example.langio.screens.RegisterScreen
 import com.example.langio.ui.theme.LANGIOTheme
@@ -44,7 +45,7 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "flashcard",
+            startDestination = "examChoice",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") { HomeScreen(navController) }
@@ -55,6 +56,7 @@ fun MainScreen() {
             composable("profile") { ProfileScreen(navController) }
             composable("levelMenu") { LevelMenuScreen(navController) }
             composable("flashcard") { FlashcardScreen(navController) }
+            composable("examChoice") { ExamChoice(navController) }
 
 
 
