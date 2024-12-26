@@ -32,7 +32,7 @@ import com.example.langio.R
 fun ProfileScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         bottomBar = { CustomBottomNavigationBar(navController, selectedTab = "profile") },
-        topBar = { HeaderBar(modifier, showPfp = false, showLevel = false) }
+        topBar = { HeaderBar(modifier, showPfp = false, showLevel = false, showExam = false) }
     ) { paddingValues ->
         Column(
             modifier = modifier
