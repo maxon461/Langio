@@ -21,6 +21,7 @@ import com.example.langio.screens.LoginScreen
 import com.example.langio.screens.ProfileScreen
 import com.example.langio.screens.MapScreen
 import com.example.langio.screens.RegisterScreen
+import com.example.langio.screens.WordListScreen
 import com.example.langio.ui.theme.LANGIOTheme
 
 class MainActivity : ComponentActivity() {
@@ -44,7 +45,7 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "connectWords",
+            startDestination = "wordList",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") { HomeScreen(navController) }
@@ -56,6 +57,7 @@ fun MainScreen() {
             composable("levelMenu") { LevelMenuScreen(navController) }
             composable("flashcard") { FlashcardScreen(navController) }
             composable("connectWords") { ConnectWordsScreen(navController) }
+            composable("wordList") { WordListScreen(navController) }
 
 
 
