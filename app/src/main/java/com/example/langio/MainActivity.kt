@@ -44,7 +44,7 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "flashcard",
+            startDestination = "connectWords",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") { HomeScreen(navController) }
@@ -55,6 +55,7 @@ fun MainScreen() {
             composable("profile") { ProfileScreen(navController) }
             composable("levelMenu") { LevelMenuScreen(navController) }
             composable("flashcard") { FlashcardScreen(navController) }
+            composable("connectWords") { ConnectWordsScreen(navController) }
 
 
 
