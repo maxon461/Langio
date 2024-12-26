@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,9 +22,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -113,11 +122,108 @@ fun CustomNavItem(
 }
 
 
+//@Composable
+//fun OneSidedHorizontalRoundedRectangle(leftRounded: Boolean, color: Color)
+//{
+//    Box(
+//        modifier = Modifier
+//            .drawWithCache {
+//                val path = Path().apply {
+//                    if (leftRounded)
+//                    {
+//                        moveTo(size.width, 0f)
+//                        lineTo(size.height / 2, 0f)
+//                        arcTo(
+//                            rect = androidx.compose.ui.geometry.Rect(
+//                                left = 0f,
+//                                top = 0f,
+//                                right = size.height,
+//                                bottom = size.height
+//                            ),
+//                            startAngleDegrees = 270f,
+//                            sweepAngleDegrees = -180f,
+//                            forceMoveTo = false
+//                        )
+//                        lineTo(size.width, size.height)
+//                        close()
+//                    }
+//                    else
+//                    {
+//                        moveTo(0f, 0f)
+//                        lineTo(size.width - size.height / 2, 0f)
+//                        arcTo(
+//                            rect = androidx.compose.ui.geometry.Rect(
+//                                left = size.width - size.height,
+//                                top = 0f,
+//                                right = size.width,
+//                                bottom = size.height
+//                            ),
+//                            startAngleDegrees = -90f,
+//                            sweepAngleDegrees = 180f,
+//                            forceMoveTo = false
+//                        )
+//                        lineTo(0f, size.height)
+//                        close()
+//                    }
+//
+//                }
+//
+//                onDrawWithContent {
+//                    drawPath(path, color = color)
+//                }
+//            }
+//    )
+//}
 
+class OneSidedHorizontalRoundedRectangle(isLeftRounded: Boolean) : Shape {
+    var leftRounded = isLeftRounded
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        val path = Path().apply {
+            if (leftRounded) {
+                moveTo(size.width, 0f)
+                lineTo(size.height / 2, 0f)
+                arcTo(
+                    rect = androidx.compose.ui.geometry.Rect(
+                        left = 0f,
+                        top = 0f,
+                        right = size.height,
+                        bottom = size.height
+                    ),
+                    startAngleDegrees = 270f,
+                    sweepAngleDegrees = -180f,
+                    forceMoveTo = false
+                )
+                lineTo(size.width, size.height)
+                close()
+            } else {
+                moveTo(0f, 0f)
+                lineTo(size.width - size.height / 2, 0f)
+                arcTo(
+                    rect = androidx.compose.ui.geometry.Rect(
+                        left = size.width - size.height,
+                        top = 0f,
+                        right = size.width,
+                        bottom = size.height
+                    ),
+                    startAngleDegrees = -90f,
+                    sweepAngleDegrees = 180f,
+                    forceMoveTo = false
+                )
+                lineTo(0f, size.height)
+                close()
+            }
+        }
+        return Outline.Generic(path)
+    }
+}
 
 
 @Composable
-fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolean) {
+fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolean, showExam: Boolean) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -127,7 +233,7 @@ fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolea
     ) {
         if (showPfp) {
             Image(
-                painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób obrazu
+                painter = painterResource(id = R.drawable.cow),
                 contentDescription = "Avatar",
                 modifier = modifier.size(80.dp)
             )
@@ -138,6 +244,15 @@ fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolea
                 fontSize = 40.sp,
                 color = Color(0xFFFFE342),
                 fontWeight = FontWeight.Bold
+            )
+        }
+        if(showExam) {
+            Text(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                text = "EXAM",
+                fontSize = 40.sp,
+                color = Color(0xFFDE3232),
+                fontWeight = FontWeight.ExtraBold
             )
         }
 

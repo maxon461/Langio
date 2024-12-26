@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import androidx.compose.ui.layout.positionInWindow
 import com.example.langio.useful.*
 
+
 data class LevelInfo(
     val id: Int,
     val name: String,
@@ -64,7 +65,8 @@ fun MapScreen(
             HeaderBar(
                 modifier = modifier,
                 showPfp = true,
-                showLevel = false
+                showLevel = false,
+                showExam = false
             )
         }
     ) { paddingValues ->
