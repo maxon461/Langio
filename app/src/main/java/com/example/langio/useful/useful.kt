@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -266,6 +268,53 @@ fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolea
                 modifier = modifier.size(60.dp)
             )
             Text(text = "21", fontSize = 40.sp, color = Color.LightGray)
+        }
+    }
+}
+
+@Composable
+fun ExamHeader(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .height(80.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "lvl 1",
+                fontSize = 40.sp,
+                color = Color(0xFFFFE342),
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "EXAM",
+                fontSize = 40.sp,
+                color = Color.Red,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = "Star Icon",
+                tint = Color.LightGray,
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "21",
+                fontSize = 40.sp,
+                color = Color.LightGray
+            )
         }
     }
 }
