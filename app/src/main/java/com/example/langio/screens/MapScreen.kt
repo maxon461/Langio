@@ -1,5 +1,6 @@
 package com.example.langio.screens
 
+import androidx.annotation.Nullable
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import androidx.compose.ui.layout.positionInWindow
 import com.example.langio.useful.*
+import org.junit.Test.None
 
 
 data class LevelInfo(
@@ -45,6 +47,7 @@ data class ChapterInfo(
     val levels: List<LevelInfo>
 )
 
+
 @Composable
 fun MapScreen(
     navController: NavController,
@@ -53,6 +56,7 @@ fun MapScreen(
     gameMapViewModel: GameMapViewModel = viewModel()
 ) {
     val currentChapter by gameMapViewModel.currentChapter.collectAsState()
+    gameMapViewModel.navController = navController
 
     Scaffold(
         bottomBar = {
@@ -274,6 +278,11 @@ fun ChapterNavigation(
 }
 
 class GameMapViewModel : ViewModel() {
+//  ADDED IN ORDER TO NAVIGATE
+    lateinit var navController: NavController
+//  --------
+
+
     private val chapters = listOf(
         ChapterInfo(
             id = 1,
@@ -321,5 +330,6 @@ class GameMapViewModel : ViewModel() {
     fun onLevelSelected(level: LevelInfo) {
         // Handle level selection
         // You can implement navigation to the level screen here
+        navController.navigate("levelMenu")
     }
 }
