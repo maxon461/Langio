@@ -18,58 +18,53 @@ import androidx.navigation.NavController
 import com.example.langio.useful.HeaderBar
 
 @Composable
-fun WordListScreen(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF2C2C2C))
-    ) {
-        HeaderBar(
-            modifier = Modifier.fillMaxWidth(),
-            showPfp = false,
-            showLevel = true
-        )
+fun WordListScreen(navController: NavController, modifier: Modifier = Modifier) {
 
-        Surface(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .padding(16.dp),
-            color = Color(0xFFF8F8FF),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(wordPairs) { pair ->
-                    WordPairItem(pair)
-                    Divider(
-                        color = Color(0xFFE0E0E0),
-                        thickness = 1.dp
-                    )
-                }
-            }
-        }
-
-        Button(
-            onClick = {
-                navController.navigate("map") // Update with your actual route
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .height(56.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF673AB7)
-            ),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(
-                text = "Finish",
-                color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+    Scaffold(
+        topBar = {
+            HeaderBar(
+                modifier = modifier,
+                showPfp = false,
+                showLevel = true,
+                showExam = false,
             )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+//                .background(Color(0xFF2C2C2C))
+//                .background(Color(0xFF403E3E))
+
+        ) {
+            WordList()
+            FinishButton(navController)
+        }
+    }
+}
+
+@Composable
+fun WordList()
+{
+    Surface(
+        modifier = Modifier
+//            .weight(1f)
+            .fillMaxWidth()
+            .padding(16.dp),
+        color = Color(0xFFF8F8FF),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(wordPairs) { pair ->
+                WordPairItem(pair)
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color(0xFFE0E0E0)
+                )
+            }
         }
     }
 }
@@ -103,6 +98,31 @@ private fun WordPairItem(pair: WordPair) {
             text = "${pair.spanish} - ${pair.english}",
             fontSize = 18.sp,
             color = Color.Black
+        )
+    }
+}
+
+@Composable
+fun FinishButton(navController: NavController)
+{
+    Button(
+        onClick = {
+            navController.navigate("map") // Update with your actual route
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .height(56.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF673AB7)
+        ),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text(
+            text = "Finish",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }

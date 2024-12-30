@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -50,7 +51,7 @@ fun FlashcardScreen (navController: NavController, modifier: Modifier = Modifier
                 .padding(paddingValues)
         ) {
             FlashCard()
-            NextButton()
+            NextButton(navController)
         }
     }
 }
@@ -237,7 +238,7 @@ fun FlashCard()
 }
 
 @Composable
-fun NextButton ()
+fun NextButton (navController: NavController)
 {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -246,7 +247,10 @@ fun NextButton ()
     )
     {
         Button(
-            onClick = { /* */},
+            onClick = {
+//                navController.navigate("")
+                TODO()
+            },
             modifier = Modifier
                 .fillMaxWidth(.85f)
                 .height(100.dp)
@@ -254,6 +258,7 @@ fun NextButton ()
             Text(
                 modifier = Modifier
                     .padding(20.dp),
+                fontSize = 45.sp,
                 text = "NEXT"
             )
         }

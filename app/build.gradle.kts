@@ -71,6 +71,8 @@ dependencies {
 
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.graphics.shapes.android)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.play.services.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

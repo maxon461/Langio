@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,6 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
@@ -122,58 +130,65 @@ fun CustomNavItem(
 }
 
 
-//@Composable
-//fun OneSidedHorizontalRoundedRectangle(leftRounded: Boolean, color: Color)
-//{
-//    Box(
-//        modifier = Modifier
-//            .drawWithCache {
-//                val path = Path().apply {
-//                    if (leftRounded)
-//                    {
-//                        moveTo(size.width, 0f)
-//                        lineTo(size.height / 2, 0f)
-//                        arcTo(
-//                            rect = androidx.compose.ui.geometry.Rect(
-//                                left = 0f,
-//                                top = 0f,
-//                                right = size.height,
-//                                bottom = size.height
-//                            ),
-//                            startAngleDegrees = 270f,
-//                            sweepAngleDegrees = -180f,
-//                            forceMoveTo = false
-//                        )
-//                        lineTo(size.width, size.height)
-//                        close()
-//                    }
-//                    else
-//                    {
-//                        moveTo(0f, 0f)
-//                        lineTo(size.width - size.height / 2, 0f)
-//                        arcTo(
-//                            rect = androidx.compose.ui.geometry.Rect(
-//                                left = size.width - size.height,
-//                                top = 0f,
-//                                right = size.width,
-//                                bottom = size.height
-//                            ),
-//                            startAngleDegrees = -90f,
-//                            sweepAngleDegrees = 180f,
-//                            forceMoveTo = false
-//                        )
-//                        lineTo(0f, size.height)
-//                        close()
-//                    }
-//
-//                }
-//
-//                onDrawWithContent {
-//                    drawPath(path, color = color)
-//                }
-//            }
-//    )
-//}
+@Composable
+fun ExamCard (enWord: String, painter: Painter)
+{
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+//            .fillMaxHeight(0.8f)
+            .height(400.dp),
+        contentAlignment = Alignment.Center
+    )
+    {
+        Card(
+            modifier = Modifier
+                .fillMaxSize(.9f),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.LightGray)
+        )
+        {
+            Column(
+                Modifier.fillMaxSize()
+            ) {
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(25.dp)
+                        .height(200.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+                Row (
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp)
+                )
+                {
+                    Box (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                    )
+                    {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            fontSize = 40.sp,
+                            color = Color.Black,
+                            text = enWord)
+                    }
+
+                }
+
+            }
+        }
+    }
+
+}
+
 
 class OneSidedHorizontalRoundedRectangle(isLeftRounded: Boolean) : Shape {
     var leftRounded = isLeftRounded
@@ -314,6 +329,40 @@ fun ExamHeader(modifier: Modifier = Modifier) {
                 text = "21",
                 fontSize = 40.sp,
                 color = Color.LightGray
+            )
+        }
+    }
+}
+
+
+@Composable
+fun Hint()
+{
+    Box(
+        modifier = Modifier.padding(20.dp).fillMaxWidth().fillMaxHeight(),
+        contentAlignment = Alignment.CenterEnd
+
+    )
+    {
+        Button(
+            modifier = Modifier.fillMaxHeight().padding(horizontal = 10.dp),
+            shape = RoundedCornerShape(5.dp),
+            onClick = {
+//                TODO
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
+
+            ) {
+            Icon(
+                painter = painterResource(R.drawable.lightbulb),
+                contentDescription = "Hint",
+                tint = Color.Black
+            )
+            Text(
+                text = "Hint",
+                color = Color(0xFFF5F5F5),
+                fontSize = 25.sp
+
             )
         }
     }

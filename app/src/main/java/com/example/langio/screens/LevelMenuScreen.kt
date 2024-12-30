@@ -1,6 +1,7 @@
 package com.example.langio.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,6 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -35,27 +41,31 @@ fun LevelMenuScreen(navController: NavController, modifier: Modifier = Modifier)
                 .background(Color(0xFF403E3E))
                 .padding(paddingValues)
         ) {
-            LevelMenuGrid(modifier)
+            LevelMenuGrid(modifier, navController)
         }
     }
 }
 
 @Composable
-fun LevelMenuGrid(modifier: Modifier = Modifier) {
+fun LevelMenuGrid(modifier: Modifier = Modifier, navController: NavController) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(vertical = 12.dp)
     ) {
-        Spacer(modifier = Modifier.height(20.dp)) // Odstęp między pierwszym i drugim elementem
+        Spacer(modifier = Modifier.height(20.dp))
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
                 .padding(20.dp)
+                .clickable {
+                    navController.navigate("wordList")
+                }
                 .background(Color(0xFF8559A5),
-            RoundedCornerShape(15.dp))
+                    RoundedCornerShape(15.dp)),
+            contentAlignment = Alignment.Center
         ) {
             Column(
                 modifier = modifier
@@ -63,9 +73,16 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
-                Text("List of all the words", color = Color(0xFFFFE342), fontSize = 24.sp)
+                Text(
+                    text = "List of all the words",
+                    color = Color(0xFFFFE342),
+                    fontSize = 44.sp,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(lineHeight = 48.sp),
+                    fontWeight = FontWeight.Bold
+                )
                 Icon(
-                    painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób ikony
+                    painter = painterResource(id = R.drawable.list), // Zamień na rzeczywisty zasób ikony
                     contentDescription = "List Icon",
                     tint = Color.LightGray,
                     modifier = modifier.size(60.dp)
@@ -81,8 +98,12 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .height(200.dp)
                 .padding(20.dp)
+                .clickable {
+                    navController.navigate("flashcard")
+                }
                 .background(Color(0xFF8559A5),
-            RoundedCornerShape(15.dp))
+            RoundedCornerShape(15.dp)),
+            contentAlignment = Alignment.Center
         ) {
             Column(
                 modifier = modifier
@@ -90,13 +111,21 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
-                Text("Show flashcards", color = Color(0xFFFFE342), fontSize = 24.sp)
+                Text(
+                    text = "Show flashcards",
+                    color = Color(0xFFFFE342),
+                    fontSize = 44.sp,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(lineHeight = 48.sp),
+                    fontWeight = FontWeight.Bold
+                )
                 Icon(
-                    painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób ikony
+                    painter = painterResource(id = R.drawable.flashcard), // Zamień na rzeczywisty zasób ikony
                     contentDescription = "Flashcard Icon",
                     tint = Color.LightGray,
                     modifier = modifier.size(60.dp)
-                )            }
+                )
+            }
         }
 
         // Dynamiczny odstęp, który wypełnia całą przestrzeń między górną a dolną częścią
@@ -108,8 +137,12 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .height(200.dp)
                 .padding(20.dp)
+                .clickable {
+                    navController.navigate("examChoice")
+                }
                 .background(Color(0xFF42033D),
-            RoundedCornerShape(15.dp))
+            RoundedCornerShape(15.dp)),
+            contentAlignment = Alignment.Center
         ) {
             Column(
                 modifier = modifier
@@ -117,9 +150,16 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
-                Text("FINAL EXAM", color = Color(0xFFFFE342), fontSize = 24.sp)
+                Text(
+                    text = "FINAL EXAM",
+                    color = Color(0xFFFFE342),
+                    fontSize = 44.sp,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(lineHeight = 48.sp),
+                    fontWeight = FontWeight.Bold
+                )
                 Icon(
-                    painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób ikony
+                    painter = painterResource(id = R.drawable.exam), // Zamień na rzeczywisty zasób ikony
                         contentDescription = "Exam Icon",
                     tint = Color.LightGray,
                     modifier = modifier.size(60.dp)
@@ -129,3 +169,4 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
 
     }
 }
+
