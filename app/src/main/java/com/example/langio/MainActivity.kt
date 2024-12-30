@@ -48,6 +48,7 @@ fun MainScreen() {
         NavHost(
             navController = navController,
             startDestination = "home",
+
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") { HomeScreen(navController) }
@@ -55,7 +56,8 @@ fun MainScreen() {
             composable("register") { RegisterScreen() }
             composable("dailyReward") { DailyRewardScreen(navController) }
             composable("map") { MapScreen(navController) }
-            composable("profile") { ProfileScreen(navController) }
+            composable("profile") { 
+              (navController) }
             composable("levelMenu") { LevelMenuScreen(navController) }
             composable("flashcard") { FlashcardScreen(navController) }
             composable("examChoice") { ExamChoice(navController) }
