@@ -37,7 +37,7 @@ import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
 
 @Composable
-fun ExamTranslate (navController: NavController, modifier: Modifier = Modifier) {
+fun ExamTranslate (modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = true) }
     ) { paddingValues ->

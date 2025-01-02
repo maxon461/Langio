@@ -29,9 +29,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.langio.useful.HeaderBar
 import com.example.langio.R
+import com.example.langio.controllers.GameController
 
 @Composable
-fun LevelMenuScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun LevelMenuScreen(modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = false) }
     ) { paddingValues ->
@@ -41,13 +42,13 @@ fun LevelMenuScreen(navController: NavController, modifier: Modifier = Modifier)
                 .background(Color(0xFF403E3E))
                 .padding(paddingValues)
         ) {
-            LevelMenuGrid(modifier, navController)
+            LevelMenuGrid(modifier)
         }
     }
 }
 
 @Composable
-fun LevelMenuGrid(modifier: Modifier = Modifier, navController: NavController) {
+fun LevelMenuGrid(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -61,7 +62,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier, navController: NavController) {
                 .height(200.dp)
                 .padding(20.dp)
                 .clickable {
-                    navController.navigate("wordList")
+                    GameController.instance.changeScreen(GameController.Screen.WORD_LIST)
                 }
                 .background(Color(0xFF8559A5),
                     RoundedCornerShape(15.dp)),
@@ -99,7 +100,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier, navController: NavController) {
                 .height(200.dp)
                 .padding(20.dp)
                 .clickable {
-                    navController.navigate("flashcard")
+                    GameController.instance.changeScreen(GameController.Screen.FLASHCARD)
                 }
                 .background(Color(0xFF8559A5),
             RoundedCornerShape(15.dp)),
@@ -138,7 +139,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier, navController: NavController) {
                 .height(200.dp)
                 .padding(20.dp)
                 .clickable {
-                    navController.navigate("examChoice")
+                    GameController.instance.changeScreen(GameController.Screen.EXAM_CHOICE)
                 }
                 .background(Color(0xFF42033D),
             RoundedCornerShape(15.dp)),

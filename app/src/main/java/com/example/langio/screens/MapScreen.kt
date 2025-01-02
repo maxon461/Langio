@@ -50,18 +50,18 @@ data class ChapterInfo(
 
 @Composable
 fun MapScreen(
-    navController: NavController,
+//    navController: NavController,
     selectedTab: String = "map",
     modifier: Modifier = Modifier,
     gameMapViewModel: GameMapViewModel = viewModel()
 ) {
     val currentChapter by gameMapViewModel.currentChapter.collectAsState()
-    gameMapViewModel.navController = navController
+//    gameMapViewModel.navController = navController
 
     Scaffold(
         bottomBar = {
             CustomBottomNavigationBar(
-                navController = navController,
+//                navController = navController,
                 selectedTab = selectedTab
             )
         },

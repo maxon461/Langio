@@ -15,10 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.langio.controllers.GameController
 import com.example.langio.useful.HeaderBar
 
 @Composable
-fun WordListScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun WordListScreen(modifier: Modifier = Modifier) {
 
     Scaffold(
         topBar = {
@@ -39,7 +40,7 @@ fun WordListScreen(navController: NavController, modifier: Modifier = Modifier) 
 
         ) {
             WordList()
-            FinishButton(navController)
+            FinishButton()
         }
     }
 }
@@ -103,11 +104,11 @@ private fun WordPairItem(pair: WordPair) {
 }
 
 @Composable
-fun FinishButton(navController: NavController)
+fun FinishButton()
 {
     Button(
         onClick = {
-            navController.navigate("map") // Update with your actual route
+            GameController.instance.changeScreen(GameController.Screen.MAP) // Update with your actual route
         },
         modifier = Modifier
             .fillMaxWidth()

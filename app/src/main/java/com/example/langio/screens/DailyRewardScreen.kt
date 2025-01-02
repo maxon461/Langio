@@ -23,9 +23,9 @@ import com.example.langio.useful.HeaderBar
 import com.example.langio.R
 
 @Composable
-fun DailyRewardScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun DailyRewardScreen(modifier: Modifier = Modifier) {
     Scaffold(
-        bottomBar = { CustomBottomNavigationBar(navController, selectedTab = "dailyReward") },
+        bottomBar = { CustomBottomNavigationBar(selectedTab = "dailyReward") },
         topBar = { HeaderBar(modifier, showPfp = true, showLevel = false, showExam = false) }
     ) { paddingValues ->
         Column(
@@ -108,9 +108,3 @@ fun RewardItem(day: Int, modifier: Modifier = Modifier) {
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun DailyRewardScreenPreview() {
-    DailyRewardScreen(navController = rememberNavController())
-}

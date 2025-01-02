@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.langio.R
+import com.example.langio.controllers.GameController
 import com.example.langio.useful.ExamCard
 import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
@@ -41,7 +42,7 @@ import com.example.langio.useful.OneSidedHorizontalRoundedRectangle
 
 
 @Composable
-fun ExamChoice (navController: NavController, modifier: Modifier = Modifier) {
+fun ExamChoice (modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = true) }
     ) { paddingValues ->
@@ -52,7 +53,7 @@ fun ExamChoice (navController: NavController, modifier: Modifier = Modifier) {
                 .padding(paddingValues)
         ) {
             ExamCard("ginger", painterResource(R.drawable.cow))
-            Answers(navController)
+            Answers()
             Hint()
         }
     }
@@ -60,7 +61,7 @@ fun ExamChoice (navController: NavController, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun Answers(navController: NavController)
+fun Answers()
 {
     Box(
         modifier = Modifier.fillMaxWidth().fillMaxHeight(.7f),
@@ -80,7 +81,7 @@ fun Answers(navController: NavController)
                         .height(80.dp),
                     shape = OneSidedHorizontalRoundedRectangle(true),
                     onClick = {
-                        navController.navigate("examTranslate")
+                        GameController.instance.changeScreen(GameController.Screen.EXAM_TRANSLATE)
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE8DEF8)),
                 ) {

@@ -45,10 +45,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.langio.R
+import com.example.langio.controllers.GameController
 
 
 @Composable
-fun CustomBottomNavigationBar(navController: NavController, selectedTab: String, modifier: Modifier = Modifier) {
+fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -62,7 +63,7 @@ fun CustomBottomNavigationBar(navController: NavController, selectedTab: String,
             label = "Daily rewards",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "dailyReward",
-            onClick = { navController.navigate("dailyReward") },
+            onClick = { GameController.instance.changeScreen(GameController.Screen.REWARDS)},
             modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
         )
 
@@ -78,8 +79,8 @@ fun CustomBottomNavigationBar(navController: NavController, selectedTab: String,
             label = "Map",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "map",
-            onClick = { navController.navigate("map") },
-            modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
+            onClick = { GameController.instance.changeScreen(GameController.Screen.MAP) },
+            modifier = Modifier.weight(1f)
         )
 
         HorizontalDivider(
@@ -94,7 +95,7 @@ fun CustomBottomNavigationBar(navController: NavController, selectedTab: String,
             label = "Profile",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "profile",
-            onClick = { navController.navigate("profile") },
+            onClick = { GameController.instance.changeScreen(GameController.Screen.PROFILE) },
             modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
         )
     }

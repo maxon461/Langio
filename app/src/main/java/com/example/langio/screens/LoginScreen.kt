@@ -9,23 +9,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.langio.controllers.GameController
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Button(onClick = { navController.navigate("dailyReward") }) {
+        Button(onClick = { GameController.instance.changeScreen(GameController.Screen.REWARDS) }) {
             Text(text = "Go to Daily Reward")
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    val navController = rememberNavController()
-    LoginScreen(navController)
-}

@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.langio.controllers.GameController
+import com.example.langio.screens.ConnectWordsScreen
 import com.example.langio.screens.DailyRewardScreen
 import com.example.langio.screens.ExamChoice
 import com.example.langio.screens.ExamTranslate
@@ -40,33 +42,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.secondary
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "home",
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable("home") { HomeScreen(navController) }
-            composable("login") { LoginScreen(navController) }
-            composable("register") { RegisterScreen() }
-            composable("dailyReward") { DailyRewardScreen(navController) }
-            composable("map") { MapScreen(navController) }
-            composable("profile") { ProfileScreen(navController) }
-            composable("levelMenu") { LevelMenuScreen(navController) }
-            composable("flashcard") { FlashcardScreen(navController) }
-            composable("examChoice") { ExamChoice(navController) }
-            composable("connectWords") { ConnectWordsScreen(navController) }
-            composable("wordList") { WordListScreen(navController) }
-            composable("examTranslate") { ExamTranslate(navController) }
-
-
-
-
-//            composable("test") { test(navController) }
-        }
+        GameController.instance.SetupNavigation(
+            modifier = Modifier,
+            innerPadding = Modifier.padding(innerPadding)
+        )
     }
 }

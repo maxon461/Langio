@@ -29,9 +29,9 @@ import com.example.langio.useful.HeaderBar
 import com.example.langio.R
 
 @Composable
-fun ProfileScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun ProfileScreen(modifier: Modifier = Modifier) {
     Scaffold(
-        bottomBar = { CustomBottomNavigationBar(navController, selectedTab = "profile") },
+        bottomBar = { CustomBottomNavigationBar(/*navController, */selectedTab = "profile") },
         topBar = { HeaderBar(modifier, showPfp = false, showLevel = false, showExam = false) }
     ) { paddingValues ->
         Column(

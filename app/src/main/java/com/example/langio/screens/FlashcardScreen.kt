@@ -40,7 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 
 
 @Composable
-fun FlashcardScreen (navController: NavController, modifier: Modifier = Modifier) {
+fun FlashcardScreen (modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = false) }
     ) { paddingValues ->
@@ -51,7 +51,7 @@ fun FlashcardScreen (navController: NavController, modifier: Modifier = Modifier
                 .padding(paddingValues)
         ) {
             FlashCard()
-            NextButton(navController)
+            NextButton()
         }
     }
 }
@@ -238,7 +238,7 @@ fun FlashCard()
 }
 
 @Composable
-fun NextButton (navController: NavController)
+fun NextButton ()
 {
     Column (
         modifier = Modifier.fillMaxWidth(),

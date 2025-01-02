@@ -19,11 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.langio.R
+import com.example.langio.controllers.GameController
 import com.example.langio.ui.theme.JacquesFrancoisShadow
 import com.example.langio.ui.theme.LANGIOTheme
 
 @Composable
-fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -50,7 +51,7 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
         )
 
         Button(
-            onClick = { navController.navigate("login") },
+            onClick = { GameController.instance.changeScreen(GameController.Screen.LOGIN) },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
@@ -64,7 +65,7 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
         }
 
         Button(
-            onClick = { navController.navigate("register") },
+            onClick = { GameController.instance.changeScreen(GameController.Screen.REGISTER) },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE858AE)),
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
@@ -79,11 +80,3 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    LANGIOTheme {
-        // Przekazujemy "rememberNavController()" jako zastępczy NavController
-        HomeScreen(navController = rememberNavController())
-    }
-}

@@ -1,4 +1,4 @@
-package com.example.langio
+package com.example.langio.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -17,7 +16,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
@@ -26,7 +24,7 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.Canvas
 import com.example.langio.useful.ExamHeader
 
-data class WordPair(
+data class WordPairConnect(
     val spanish: String,
     val english: String,
     var isMatched: Boolean = false
@@ -39,17 +37,16 @@ data class WordPosition(
 
 class ConnectWordsViewModel : ViewModel() {
     val wordPairs = listOf(
-        WordPair("hablar", "speak"),
-        WordPair("descansar", "talk"),
-        WordPair("moriartar", "move"),
-        WordPair("micansar", "act"),
-        WordPair("llamarsar", "sleep")
+        WordPairConnect("hablar", "speak"),
+        WordPairConnect("descansar", "talk"),
+        WordPairConnect("moriartar", "move"),
+        WordPairConnect("micansar", "act"),
+        WordPairConnect("llamarsar", "sleep")
     )
 }
 
 @Composable
 fun ConnectWordsScreen(
-    navController: NavController,
     viewModel: ConnectWordsViewModel = viewModel()
 ) {
     var selectedSpanishWord by remember { mutableStateOf<String?>(null) }
