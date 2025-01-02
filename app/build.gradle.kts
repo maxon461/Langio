@@ -81,7 +81,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
-//    implementation "androidx.credentials:credentials:<latest version>"
-
 }
