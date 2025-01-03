@@ -108,7 +108,7 @@ fun FinishButton()
 {
     Button(
         onClick = {
-            GameController.instance.changeScreen(GameController.Screen.MAP) // Update with your actual route
+            GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU) // Update with your actual route
         },
         modifier = Modifier
             .fillMaxWidth()

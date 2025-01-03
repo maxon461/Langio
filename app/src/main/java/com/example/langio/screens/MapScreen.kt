@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import androidx.compose.ui.layout.positionInWindow
+import com.example.langio.controllers.GameController
 import com.example.langio.useful.*
 import org.junit.Test.None
 
@@ -115,7 +116,7 @@ fun LevelProgressionMap(
             Canvas(modifier = Modifier.fillMaxSize()) {
                 levelPositions.windowed(2).forEachIndexed { index, (start, end) ->
                     val controlPointOffset = 150f
-                    val heightIncrement = 30f * index  // Increases height for each subsequent line
+                    val heightIncrement = 30f * index
 
                     val controlPoint1 = Offset(
                         (start.x + end.x) / 2,
@@ -127,11 +128,11 @@ fun LevelProgressionMap(
                     )
 
                     val path = Path().apply {
-                        moveTo(start.x + 50, start.y - 150 - heightIncrement)  // Start point gets higher
+                        moveTo(start.x + 50, start.y - 150 - heightIncrement)
                         cubicTo(
                             controlPoint1.x, controlPoint1.y,
                             controlPoint2.x, controlPoint2.y - 50,
-                            end.x, end.y - 200 - heightIncrement    // End point gets higher too
+                            end.x, end.y - 200 - heightIncrement
                         )
                     }
 
@@ -170,25 +171,36 @@ fun LevelProgressionMap(
                         }
                     }
             ) {
-                LevelNode(level = level, onClick = { onLevelClick(level) })
+                LevelNode(
+                    level = level,
+                    onClick = { onLevelClick(level) } // Correctly pass the lambda
+                )
             }
         }
     }
 }
 
 
+
 @Composable
 fun LevelNode(
     level: LevelInfo,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit, // Updated parameter name to onClick
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconButton(
-            onClick = onClick,
+            onClick = {
+                println("Level clicked: ${level.id}, navigating to LevelMenu")
+                try {
+                    onClick() // Use onClick here
+                } catch (e: Exception) {
+                    println("Error during navigation: ${e.message}")
+                }
+            },
             enabled = level.isUnlocked,
             modifier = Modifier
                 .size(64.dp)
@@ -220,6 +232,12 @@ fun LevelNode(
         )
     }
 }
+
+
+
+
+
+
 
 @Composable
 fun ChapterNavigation(
@@ -279,7 +297,7 @@ fun ChapterNavigation(
 }
 
 class GameMapViewModel : ViewModel() {
-//  ADDED IN ORDER TO NAVIGATE
+    //  ADDED IN ORDER TO NAVIGATE
     lateinit var navController: NavController
 //  --------
 
@@ -329,8 +347,14 @@ class GameMapViewModel : ViewModel() {
     }
 
     fun onLevelSelected(level: LevelInfo) {
-        // Handle level selection
-        // You can implement navigation to the level screen here
-        navController.navigate("levelMenu")
+        try {
+            GameController.instance.changeScreen(
+                GameController.Screen.LEVEL_MENU,
+                params = mapOf("levelId" to level.id.toString())
+            )
+        } catch (e: Exception) {
+            println("Navigation failed: ${e.message}")
+        }
     }
 }
+

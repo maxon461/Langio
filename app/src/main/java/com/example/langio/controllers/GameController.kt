@@ -2,25 +2,12 @@ package com.example.langio.controllers
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-
-import com.example.langio.screens.ConnectWordsScreen
-import com.example.langio.screens.DailyRewardScreen
-import com.example.langio.screens.ExamChoice
-import com.example.langio.screens.ExamTranslate
-import com.example.langio.screens.FlashcardScreen
-import com.example.langio.screens.HomeScreen
-import com.example.langio.screens.LevelMenuScreen
-import com.example.langio.screens.LoginScreen
-import com.example.langio.screens.ProfileScreen
-import com.example.langio.screens.MapScreen
-import com.example.langio.screens.RegisterScreen
-import com.example.langio.screens.WordListScreen
+import com.example.langio.screens.*
 
 class GameController {
 
@@ -32,21 +19,20 @@ class GameController {
     private var currentLevel: Int = 1
     private var currentScreen: Screen = Screen.HOME
 
-    enum class Screen {
-        HOME,
-        LOGIN,
-        REGISTER,
-        REWARDS,
-        MAP,
-        PROFILE,
-        WORD_LIST,
-        FLASHCARD,
-        EXAM_CHOICE,
-        EXAM_TRANSLATE,
-        CONNECT_WORDS,
-        LEVEL_MENU
+    enum class Screen(val route: String) {
+        HOME("home"),
+        LOGIN("login"),
+        REGISTER("register"),
+        REWARDS("dailyReward"),
+        MAP("map"),
+        PROFILE("profile"),
+        WORD_LIST("wordList"),
+        FLASHCARD("flashcard"),
+        EXAM_CHOICE("examChoice"),
+        EXAM_TRANSLATE("examTranslate"),
+        CONNECT_WORDS("connectWords"),
+        LEVEL_MENU("levelMenu/{levelId}") // Dynamic route for level menu
     }
-
 
     @Composable
     fun SetupNavigation(modifier: Modifier = Modifier, innerPadding: Modifier = Modifier) {
@@ -55,60 +41,51 @@ class GameController {
 
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = Screen.HOME.route,
             modifier = modifier.then(innerPadding)
         ) {
             addRoutes(this)
         }
     }
 
-
-
     private fun addRoutes(navGraphBuilder: NavGraphBuilder) {
         navGraphBuilder.apply {
-            composable("home") { HomeScreen() }
-            composable("login") { LoginScreen() }
-            composable("register") { RegisterScreen() }
-            composable("dailyReward") { DailyRewardScreen() }
-            composable("map") { MapScreen() }
-            composable("profile") { ProfileScreen() }
-            composable("levelMenu") { LevelMenuScreen() }
-            composable("flashcard") { FlashcardScreen() }
-            composable("examChoice") { ExamChoice() }
-            composable("connectWords") { ConnectWordsScreen() }
-            composable("wordList") { WordListScreen() }
-            composable("examTranslate") { ExamTranslate() }
-        }
-    }
-
-    fun changeScreen(nextScreen: Screen) {
-        when (nextScreen) {
-            Screen.HOME -> navController.navigate("home")
-            Screen.LOGIN -> navController.navigate("login")
-            Screen.REGISTER -> navController.navigate("register")
-            Screen.REWARDS -> navController.navigate("dailyReward")
-            Screen.MAP -> navController.navigate("map")
-            Screen.PROFILE -> navController.navigate("profile")
-            Screen.WORD_LIST -> {
-
-                navController.navigate("wordList")
+            composable(Screen.HOME.route) { HomeScreen() }
+            composable(Screen.LOGIN.route) { LoginScreen() }
+            composable(Screen.REGISTER.route) { RegisterScreen() }
+            composable(Screen.REWARDS.route) { DailyRewardScreen() }
+            composable(Screen.MAP.route) { MapScreen() }
+            composable(Screen.PROFILE.route) { ProfileScreen() }
+            composable(Screen.WORD_LIST.route) { WordListScreen() }
+            composable(Screen.FLASHCARD.route) { FlashcardScreen() }
+            composable(Screen.EXAM_CHOICE.route) { ExamChoice() }
+            composable(Screen.EXAM_TRANSLATE.route) { ExamTranslate() }
+            composable(Screen.CONNECT_WORDS.route) { ConnectWordsScreen() }
+            composable(Screen.LEVEL_MENU.route) { backStackEntry ->
+                val levelId = backStackEntry.arguments?.getString("levelId")?.toIntOrNull()
+                LevelMenuScreen(levelId = levelId)
             }
-            Screen.FLASHCARD -> navController.navigate("flashcard")
-            Screen.EXAM_CHOICE -> navController.navigate("examChoice")
-            Screen.EXAM_TRANSLATE -> navController.navigate("examTranslate")
-            Screen.CONNECT_WORDS -> navController.navigate("connectWords")
-            Screen.LEVEL_MENU -> navController.navigate("levelMenu")
         }
     }
 
+    fun changeScreen(nextScreen: Screen, params: Map<String, String> = emptyMap()) {
+        try {
+            val route = buildRoute(nextScreen, params)
+            navController.navigate(route)
+        } catch (e: Exception) {
+            println("Navigation failed: ${e.message}")
+        }
+    }
 
+    private fun buildRoute(screen: Screen, params: Map<String, String>): String {
+        var route = screen.route
+        params.forEach { (key, value) ->
+            route = route.replace("{$key}", value)
+        }
+        return route
+    }
 
     companion object {
         val instance: GameController by lazy { GameController() }
     }
-
 }
-
-
-
-//TODO() ZASTANOW SIE NAD UZYCIEM OBJECT ZAMIAST CLASS
