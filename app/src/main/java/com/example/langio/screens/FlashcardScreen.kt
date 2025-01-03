@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,12 +36,12 @@ import com.example.langio.useful.HeaderBar
 import com.example.langio.R
 import com.example.langio.useful.rememberFlipController
 import androidx.compose.ui.platform.LocalContext
-
-
+import com.example.langio.controllers.GameController
+import com.example.langio.useful.BackToLevelMenuButton
 
 
 @Composable
-fun FlashcardScreen (modifier: Modifier = Modifier) {
+fun FlashcardScreen(modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = false) }
     ) { paddingValues ->
@@ -50,11 +51,32 @@ fun FlashcardScreen (modifier: Modifier = Modifier) {
                 .background(Color(0xFF403E3E))
                 .padding(paddingValues)
         ) {
-            FlashCard()
-            NextButton()
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.7f)
+            ) {
+                FlashCard()
+            }
+
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.3f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                NextButton() // Retain the "Next" button
+                Spacer(modifier = Modifier.height(20.dp)) // Add spacing between buttons
+                BackToLevelMenuButton() // Add the "Back to Level Menu" button
+            }
         }
     }
 }
+
+
 
 @Composable
 fun FlashCard()
@@ -238,21 +260,22 @@ fun FlashCard()
 }
 
 @Composable
-fun NextButton ()
-{
-    Column (
+fun NextButton() {
+    Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
+    ) {
         Button(
             onClick = {
-//                navController.navigate("")
-                TODO()
+                try {
+                    GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)
+                } catch (e: Exception) {
+                    println("Navigation to Level Menu failed: ${e.message}")
+                }
             },
             modifier = Modifier
-                .fillMaxWidth(.85f)
+                .fillMaxWidth(0.85f)
                 .height(100.dp)
         ) {
             Text(

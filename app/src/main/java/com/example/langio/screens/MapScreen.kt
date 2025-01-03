@@ -320,10 +320,10 @@ class GameMapViewModel : ViewModel() {
             name = "Chapter 2",
             subtitle = "Advanced",
             levels = listOf(
-                LevelInfo(6, "Level 1", true),
-                LevelInfo(7, "Level 2", true),
-                LevelInfo(8, "Level 3", false),
-                LevelInfo(9, "Level 4", false),
+                LevelInfo(6, "Level 6", true),
+                LevelInfo(7, "Level 7", true),
+                LevelInfo(8, "Level 8", false),
+                LevelInfo(9, "Level 9", false),
                 LevelInfo(10, "Reward", false, isReward = true)
             )
         )
@@ -347,14 +347,20 @@ class GameMapViewModel : ViewModel() {
     }
 
     fun onLevelSelected(level: LevelInfo) {
+        if (level.id % 5 == 0) {
+            println("Level ${level.id} is disabled. TODO: Add specific handling for reward levels.")
+            return
+        }
+
         try {
-            GameController.instance.changeScreen(
-                GameController.Screen.LEVEL_MENU,
-                params = mapOf("levelId" to level.id.toString())
-            )
+            GameController.instance.setCurrentLevel(level.id)
+            GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)
         } catch (e: Exception) {
             println("Navigation failed: ${e.message}")
         }
     }
+
+
+
 }
 

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.langio.R
+import com.example.langio.useful.BackToLevelMenuButton
 import com.example.langio.useful.ExamCard
 import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
@@ -50,6 +51,8 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
 //            ExamCard("???", painterResource(R.drawable.cow))
             ExamCard("ginger", painterResource(R.drawable.cow))
             InputBox(modifier)
+            Spacer(modifier = Modifier.height(20.dp)) // Add some spacing
+            BackToLevelMenuButton() // Add the button here
             Hint()
         }
     }

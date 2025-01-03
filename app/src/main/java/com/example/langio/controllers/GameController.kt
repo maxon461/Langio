@@ -8,16 +8,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.langio.screens.*
-
 class GameController {
 
-    // NavController is now a member of the GameController class
+    // NavController for managing navigation
     private lateinit var navController: NavHostController
 
-    // Private variables
-    private var numberOfHints: Int = 0
-    private var currentLevel: Int = 1
-    private var currentScreen: Screen = Screen.HOME
+    // Global variable for the current level ID
+    var currentLevelId: Int? = null
+        private set // Read-only from outside
 
     enum class Screen(val route: String) {
         HOME("home"),
@@ -31,12 +29,12 @@ class GameController {
         EXAM_CHOICE("examChoice"),
         EXAM_TRANSLATE("examTranslate"),
         CONNECT_WORDS("connectWords"),
-        LEVEL_MENU("levelMenu/{levelId}") // Dynamic route for level menu
+        LEVEL_MENU("levelMenu") // Static route since global variable is used
     }
 
     @Composable
     fun SetupNavigation(modifier: Modifier = Modifier, innerPadding: Modifier = Modifier) {
-        // Initialize the NavController
+        // Initialize NavController
         this.navController = rememberNavController()
 
         NavHost(
@@ -61,28 +59,23 @@ class GameController {
             composable(Screen.EXAM_CHOICE.route) { ExamChoice() }
             composable(Screen.EXAM_TRANSLATE.route) { ExamTranslate() }
             composable(Screen.CONNECT_WORDS.route) { ConnectWordsScreen() }
-            composable(Screen.LEVEL_MENU.route) { backStackEntry ->
-                val levelId = backStackEntry.arguments?.getString("levelId")?.toIntOrNull()
-                LevelMenuScreen(levelId = levelId)
+            composable(Screen.LEVEL_MENU.route) {
+                LevelMenuScreen()
             }
         }
     }
 
-    fun changeScreen(nextScreen: Screen, params: Map<String, String> = emptyMap()) {
+    fun changeScreen(nextScreen: Screen) {
         try {
-            val route = buildRoute(nextScreen, params)
+            val route = nextScreen.route
             navController.navigate(route)
         } catch (e: Exception) {
             println("Navigation failed: ${e.message}")
         }
     }
 
-    private fun buildRoute(screen: Screen, params: Map<String, String>): String {
-        var route = screen.route
-        params.forEach { (key, value) ->
-            route = route.replace("{$key}", value)
-        }
-        return route
+    fun setCurrentLevel(levelId: Int) {
+        currentLevelId = levelId
     }
 
     companion object {
