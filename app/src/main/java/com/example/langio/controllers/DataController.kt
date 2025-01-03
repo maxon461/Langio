@@ -1,48 +1,57 @@
 package com.example.langio.controllers
 
-import com.example.langio.models.WordData
+import android.content.Context
+import com.example.langio.models.Level
+import com.example.langio.models.WordInstance
+import java.io.InputStreamReader
 
 object DataController {
 
-    fun readWordsFromFile(fileName: String): List<WordData> {
-        val wordsList = mutableListOf<WordData>()
+    private val levelsMap = mutableMapOf<Int, Level>()
 
-        val inputStream = DataController::class.java.classLoader?.getResourceAsStream(fileName)
-        if (inputStream != null) {
-            inputStream.bufferedReader().forEachLine { line ->
-                val parts = line.split(";")
-
-                if (parts.size == 13) {
-                    val chapterNumber = parts[0].trim().toIntOrNull() ?: 0
-                    val level = parts[1].trim().toIntOrNull() ?: 0
-                    val englishWord = parts[2].trim()
-                    val spanishWord = parts[3].trim()
-                    val incorrectSpanishWords = parts.drop(4).take(6).map { it.trim() }
-                    val audioPath = parts[10].trim().takeIf { it.isNotEmpty() }
-                    val videoPath = parts[11].trim().takeIf { it.isNotEmpty() }
-                    val imagePath = parts[12].trim().takeIf { it.isNotEmpty() }
-
-                    wordsList.add(
-                        WordData(
-                            chapterNumber,
-                            level,
-                            englishWord,
-                            spanishWord,
-                            incorrectSpanishWords,
-                            audioPath,
-                            videoPath,
-                            imagePath
-                        )
-                    )
-                }
-            }
-        } else {
-            throw IllegalArgumentException("File: '$fileName' not found")
+    fun readWordsFromFile(context: Context, fileName: String): Map<Int, Level> {
+        if (levelsMap.isNotEmpty()) {
+            return levelsMap
         }
 
-        return wordsList
+        try {
+            val resourceId = context.resources.getIdentifier(fileName, "raw", context.packageName)
+            if (resourceId == 0) {
+                throw IllegalArgumentException("File '$fileName' not found in raw resources.")
+            }
+
+            val inputStream = context.resources.openRawResource(resourceId)
+            val reader = InputStreamReader(inputStream)
+
+            reader.buffered().forEachLine { line ->
+                val parts = line.split(",").map { it.trim() }
+                if (parts.size == 8) {
+                    val chapter = parts[0].toInt()
+                    val level = parts[1].toInt()
+                    val englishWord = parts[2]
+                    val spanishWord = parts[3]
+                    val incorrectSpanishWords = parts[4].trim('[', ']').split(";").map { it.trim() }
+                    val audioPath = parts[5]
+                    val videoPath = parts[6]
+                    val imagePath = parts[7]
+
+                    val wordInstance = WordInstance(englishWord, spanishWord, incorrectSpanishWords, audioPath, videoPath, imagePath)
+
+                    val levelData = levelsMap.getOrPut(level) {
+                        Level(level, chapter, mutableListOf())
+                    }
+
+                    levelData.words.add(wordInstance)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return levelsMap
+    }
+
+    fun getWordsForLevel(level: Int): List<WordInstance>? {
+        return levelsMap[level]?.words
     }
 }
-
-//TODO() READ FILES WITH USER'S STATS AND DATA (number of hints, pfp, username, joined date, learned_words, actual_level, minutes_spent_in_app, actual_level)
-//TODO() IDK IF WE SHOULD REMEMBER USER SCORE ON EACH LEVEL (IT'D BE KILLER)
