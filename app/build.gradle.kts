@@ -73,6 +73,8 @@ dependencies {
     implementation(libs.androidx.graphics.shapes.android)
     implementation(libs.androidx.appcompat)
     implementation(libs.play.services.auth)
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
