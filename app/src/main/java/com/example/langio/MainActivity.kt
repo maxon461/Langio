@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.langio.controllers.DataController
 import com.example.langio.controllers.GameController
 import com.example.langio.screens.ConnectWordsScreen
 import com.example.langio.screens.DailyRewardScreen
@@ -33,6 +34,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val fileName = "words"
+            DataController.readWordsFromFile(this@MainActivity, fileName)
+
             LANGIOTheme {
                 MainScreen()
             }

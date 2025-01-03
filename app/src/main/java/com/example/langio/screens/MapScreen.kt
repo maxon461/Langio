@@ -354,6 +354,7 @@ class GameMapViewModel : ViewModel() {
 
         try {
             GameController.instance.setCurrentLevel(level.id)
+            GameController.instance.prepareDataForCurrentLevel()
             GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)
         } catch (e: Exception) {
             println("Navigation failed: ${e.message}")

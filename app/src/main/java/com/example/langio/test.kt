@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.example.langio.controllers.DataController
 import com.example.langio.models.WordInstance
 
-class MainActivity : ComponentActivity() {
+class MainActivity2 : ComponentActivity() {
     @SuppressLint("UnrememberedMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
             val words = mutableStateOf<List<WordInstance>>(emptyList())
             val fileName = "words"
             Column {
-                DataController.readWordsFromFile(this@MainActivity, fileName)
+                DataController.readWordsFromFile(this@MainActivity2, fileName)
 
                 val level1Words = DataController.getWordsForLevel(2) ?: emptyList()
                 words.value = level1Words

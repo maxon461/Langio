@@ -1,5 +1,6 @@
 package com.example.langio.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,10 +21,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.langio.controllers.GameController
+import com.example.langio.models.WordInstance
 import com.example.langio.useful.HeaderBar
 
 @Composable
-fun WordListScreen(modifier: Modifier = Modifier) {
+fun WordListScreen(modifier: Modifier = Modifier, gameController: GameController = GameController.instance) {
+    val wordList by remember(gameController) { mutableStateOf(gameController.currentScreenWordsToBeUsed ?: emptyList()) }
+
+    LaunchedEffect(gameController) {
+        gameController.prepareDataForCurrentLevel()
+    }
+
 
     Scaffold(
         topBar = {
@@ -39,14 +51,14 @@ fun WordListScreen(modifier: Modifier = Modifier) {
 //                .background(Color(0xFF403E3E))
 
         ) {
-            WordList()
+            WordList(wordList = wordList)
             FinishButton()
         }
     }
 }
 
 @Composable
-fun WordList()
+fun WordList(wordList: List<WordInstance>)
 {
     Surface(
         modifier = Modifier
@@ -59,8 +71,8 @@ fun WordList()
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(wordPairs) { pair ->
-                WordPairItem(pair)
+            items(wordList) { wordInstance ->
+                WordPairItem(WordPair(wordInstance.englishWord, wordInstance.spanishWord))
                 HorizontalDivider(
                     thickness = 1.dp,
                     color = Color(0xFFE0E0E0)
@@ -135,11 +147,3 @@ data class WordPair(
     val firstLetter: String get() = spanish.first().uppercase()
 }
 
-private val wordPairs = listOf(
-    WordPair("descansar", "sleep"),
-    WordPair("hablar", "speak"),
-    WordPair("la mama", "mum"),
-    WordPair("visitar", "visit"),
-    WordPair("viajar", "ride"),
-    WordPair("la zitron", "lemon")
-)

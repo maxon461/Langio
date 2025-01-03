@@ -1,5 +1,6 @@
 package com.example.langio.controllers
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
@@ -7,6 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.langio.models.Level
+import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
 class GameController {
 
@@ -16,6 +19,9 @@ class GameController {
     // Global variable for the current level ID
     var currentLevelId: Int? = null
         private set // Read-only from outside
+
+    var currentLevelWords: List<WordInstance>? = null
+    var currentScreenWordsToBeUsed: List<WordInstance>? = null
 
     enum class Screen(val route: String) {
         HOME("home"),
@@ -77,6 +83,18 @@ class GameController {
     fun setCurrentLevel(levelId: Int) {
         currentLevelId = levelId
     }
+
+    fun prepareDataForCurrentLevel()
+    {
+        currentLevelWords = currentLevelId?.let { DataController.getWordsForLevel(it) }
+        currentScreenWordsToBeUsed = currentLevelWords?.toMutableList()
+    }
+
+    fun resetWordsToBeUsed()
+    {
+        currentScreenWordsToBeUsed = currentLevelWords?.toMutableList()
+    }
+
 
     companion object {
         val instance: GameController by lazy { GameController() }

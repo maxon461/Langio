@@ -60,6 +60,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                 .height(150.dp)
                 .padding(20.dp)
                 .clickable {
+                    GameController.instance.resetWordsToBeUsed()
                     GameController.instance.changeScreen(GameController.Screen.WORD_LIST)
                 }
                 .background(
@@ -100,6 +101,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                 .height(150.dp)
                 .padding(20.dp)
                 .clickable {
+                    GameController.instance.resetWordsToBeUsed()
                     GameController.instance.changeScreen(GameController.Screen.FLASHCARD)
                 }
                 .background(
@@ -140,6 +142,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                 .height(150.dp)
                 .padding(20.dp)
                 .clickable {
+                    GameController.instance.resetWordsToBeUsed()
                     GameController.instance.changeScreen(GameController.Screen.EXAM_CHOICE)
                 }
                 .background(
