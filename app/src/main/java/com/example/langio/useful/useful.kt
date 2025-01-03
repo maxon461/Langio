@@ -130,6 +130,35 @@ fun CustomNavItem(
     }
 }
 
+@Composable
+fun BackToLevelMenuButton() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = {
+                try {
+                    // Navigate to the level menu using GameController
+                    GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)
+                } catch (e: Exception) {
+                    println("Navigation to Level Menu failed: ${e.message}")
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
+                .height(50.dp)
+        ) {
+            Text(
+                text = "Back to Level Menu",
+                fontSize = 18.sp
+            )
+        }
+    }
+}
 
 @Composable
 fun ExamCard (enWord: String, painter: Painter)

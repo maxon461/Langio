@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.langio.R
 import com.example.langio.controllers.GameController
+import com.example.langio.useful.BackToLevelMenuButton
 import com.example.langio.useful.ExamCard
 import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
@@ -54,6 +56,8 @@ fun ExamChoice (modifier: Modifier = Modifier) {
         ) {
             ExamCard("ginger", painterResource(R.drawable.cow))
             Answers()
+            Spacer(modifier = Modifier.height(20.dp)) // Add some spacing
+            BackToLevelMenuButton() // Add the button here
             Hint()
         }
     }
