@@ -143,7 +143,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                 .padding(20.dp)
                 .clickable {
                     GameController.instance.resetWordsToBeUsed()
-                    GameController.instance.changeScreen(GameController.Screen.EXAM_CHOICE)
+                    GameController.instance.startExam()
                 }
                 .background(
                     Color(0xFF42033D),

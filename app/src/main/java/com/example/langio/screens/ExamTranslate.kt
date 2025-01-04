@@ -1,6 +1,5 @@
 package com.example.langio.screens
 
-import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,18 +23,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.langio.R
+import com.example.langio.controllers.GameController
 import com.example.langio.useful.BackToLevelMenuButton
 import com.example.langio.useful.ExamCard
 import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
+import java.util.Locale
 
 @Composable
 fun ExamTranslate (modifier: Modifier = Modifier) {
@@ -49,7 +49,8 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
                 .padding(paddingValues)
         ) {
 //            ExamCard("???", painterResource(R.drawable.cow))
-            ExamCard("ginger", painterResource(R.drawable.cow))
+            GameController.instance.currentScreenWordsToBeUsed?.get(0)
+                ?.let { ExamCard(it.englishWord, painterResource(R.drawable.cow)) }
             InputBox(modifier)
             Spacer(modifier = Modifier.height(20.dp)) // Add some spacing
             BackToLevelMenuButton() // Add the button here
@@ -78,12 +79,12 @@ fun InputBox(modifier: Modifier = Modifier) {
                 .height(55.dp)
                 .background(Color.White),
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done // Ustawienie akcji na "Done" (Enter)
+                imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    keyboardController?.hide() // Zamknięcie klawiatury
-                    println("Wpisane tłumaczenie: ${inputText.text}") // Działanie po wciśnięciu Enter
+                    keyboardController?.hide()
+                    println("Entered translation: ${inputText.text}")
                 }
             )
         )
@@ -91,16 +92,31 @@ fun InputBox(modifier: Modifier = Modifier) {
         Button(
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
             onClick = {
-                // Obsługa akcji po kliknięciu, np. weryfikacja odpowiedzi
-                println("Wpisane tłumaczenie: ${inputText.text}")
+                println("Entered translation: ${inputText.text}")
+                val correctWord = GameController.instance.currentScreenWordsToBeUsed?.get(0)?.spanishWord?.lowercase(Locale.ROOT)
+                if (inputText.text.lowercase(Locale.ROOT) == correctWord) {
+                    println("CORRECT!!!")
+                    correctTranslation()
+                }
+                else {
+                    println("INCORRECT!!! ${inputText.text} != ${correctWord}")
+                    incorrectTranslation()
+                }
             },
             modifier = Modifier.align(Alignment.End)
         ) {
             Text(
-
-                text = "Sprawdź",
+                text = "Check",
                 color = Color(0xFFF5F5F5),
             )
         }
     }
+}
+
+fun incorrectTranslation() {
+    GameController.instance.decreaseLivesNumber()
+}
+
+fun correctTranslation() {
+    GameController.instance.nextExamScreen(1)
 }

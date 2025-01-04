@@ -1,11 +1,9 @@
 package com.example.langio.controllers
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
@@ -15,6 +13,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
+import kotlin.random.Random
+
+const val BASIC_LIVES_NUMBER = 3
+const val NUMBER_OF_WORDS_PER_LEVEL = 10
+const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 4
+const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
+const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
+
+
+
 class GameController {
 
     private lateinit var navController: NavHostController
@@ -28,7 +36,7 @@ class GameController {
     fun collectReward(day: Int) {
         if (!_collectedRewards.contains(day)) {
             _collectedRewards.add(day)
-            increaseHintScore()
+            increaseHintNumber()
         }
     }
 
@@ -36,6 +44,13 @@ class GameController {
         private set
 
     var livesNumber by mutableIntStateOf(0)
+        private set
+
+    var examChoicesScreenLeft by mutableIntStateOf(0)
+        private set
+    var examTranslateScreenLeft by mutableIntStateOf(0)
+        private set
+    var examConnectScreenLeft by mutableIntStateOf(0)
         private set
 
     var currentLevelWords: List<WordInstance>? = null
@@ -82,9 +97,7 @@ class GameController {
             composable(Screen.EXAM_CHOICE.route) { ExamChoice() }
             composable(Screen.EXAM_TRANSLATE.route) { ExamTranslate() }
             composable(Screen.EXAM_CONNECT_WORDS.route) { ExamConnectWordsScreen() }
-            composable(Screen.LEVEL_MENU.route) {
-                LevelMenuScreen()
-            }
+            composable(Screen.LEVEL_MENU.route) { LevelMenuScreen() }
         }
     }
 
@@ -107,14 +120,80 @@ class GameController {
         currentScreenWordsToBeUsed = currentLevelWords?.toMutableList()
     }
 
+
     fun resetWordsToBeUsed()
     {
         currentScreenWordsToBeUsed = currentLevelWords?.toMutableList()
     }
 
-    fun increaseHintScore() {
+    fun increaseHintNumber() {
         hintNumber++
-        println("HintScore increased: $hintNumber")
+        println("HintNumber increased: $hintNumber")
+    }
+
+    fun decreaseLivesNumber() {
+        livesNumber--
+        println("LivesNumber decreased: $livesNumber")
+    }
+
+    fun resetVariablesForExam() {
+        livesNumber = BASIC_LIVES_NUMBER
+        examChoicesScreenLeft = NUMBER_OF_CHOICE_SCREENS_PER_EXAM
+        examTranslateScreenLeft = NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM
+        examConnectScreenLeft = NUMBER_OF_CONNECT_SCREENS_PER_EXAM
+    }
+
+
+    fun startExam() {
+        resetVariablesForExam()
+        currentScreenWordsToBeUsed?.shuffle()
+        nextExamScreen(0)
+    }
+
+    fun nextExamScreen(usedWordsNumber: Int) {
+        currentScreenWordsToBeUsed?.subList(0, usedWordsNumber)?.clear()
+        val nextScreen = chooseNextExamScreenAndDecreaseItsAvailability()
+
+        if (nextScreen == Screen.EXAM_CHOICE) {
+            examChoicesScreenLeft--
+        }
+
+        else if (nextScreen == Screen.EXAM_TRANSLATE)
+            examTranslateScreenLeft--
+        else if (nextScreen == Screen.EXAM_CONNECT_WORDS)
+            examConnectScreenLeft--
+        else if (nextScreen == null)
+            goToExamSummary()
+
+        if (nextScreen != null) {
+            changeScreen(nextScreen)
+        }
+
+
+    }
+
+    private fun goToExamSummary() {
+        TODO("Not yet implemented")
+    }
+
+    private fun chooseNextExamScreenAndDecreaseItsAvailability(): Screen? {
+        val availableScreen: MutableList<Screen> = mutableListOf()
+        if (examChoicesScreenLeft > 0)
+            availableScreen.add(Screen.EXAM_CHOICE)
+        if (examTranslateScreenLeft > 0)
+            availableScreen.add(Screen.EXAM_TRANSLATE)
+        if (examConnectScreenLeft > 0)
+            availableScreen.add(Screen.EXAM_CONNECT_WORDS)
+
+        try {
+            val nextScreen = availableScreen.random()
+            availableScreen.remove(nextScreen)
+            return nextScreen
+        }
+        catch (e: NoSuchElementException)
+        {
+            return null
+        }
     }
 
 

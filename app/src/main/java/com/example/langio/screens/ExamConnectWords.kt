@@ -24,7 +24,10 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.content.contentReceiver
 import androidx.compose.ui.Alignment
+import com.example.langio.controllers.GameController
+import com.example.langio.controllers.NUMBER_OF_CONNECT_SCREENS_PER_EXAM
 import com.example.langio.useful.HeaderBar
+import java.util.Locale
 
 data class WordPairConnect(
     val spanish: String,
@@ -37,19 +40,11 @@ data class WordPosition(
     val position: Offset
 )
 
-class ConnectWordsViewModel : ViewModel() {
-    val wordPairs = listOf(
-        WordPairConnect("hablar", "speak"),
-        WordPairConnect("descansar", "talk"),
-        WordPairConnect("moriartar", "move"),
-        WordPairConnect("micansar", "act"),
-        WordPairConnect("llamarsar", "sleep")
-    )
-}
+
 
 @Composable
 fun ExamConnectWordsScreen(
-    viewModel: ConnectWordsViewModel = viewModel(),
+//    viewModel: ConnectWordsViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
     var selectedSpanishWord by remember { mutableStateOf<String?>(null) }
@@ -57,6 +52,15 @@ fun ExamConnectWordsScreen(
     val spanishPositions = remember { mutableStateMapOf<String, Offset>() }
     val englishPositions = remember { mutableStateMapOf<String, Offset>() }
     val connections = remember { mutableStateListOf<Pair<String, String>>() }
+    val correctPairs = GameController.instance.currentScreenWordsToBeUsed
+        ?.subList(0, 4)
+        ?.shuffled()
+        ?.map { word -> word.englishWord to word.spanishWord }
+    val displayedPairs = correctPairs?.map { it.first to it.second }?.let { pairs ->
+        val shuffledSecondWords = pairs.map { it.second }.shuffled()
+        pairs.mapIndexed { index, pair -> pair.first to shuffledSecondWords[index] }
+    }
+
 
     Scaffold(
         topBar = { HeaderBar(modifier, showLevel = true, showExam = true, showLives = true) }
@@ -79,7 +83,7 @@ fun ExamConnectWordsScreen(
 //                    .padding(horizontal = 16.dp)
                     .fillMaxSize(),
                 ) {
-                    connections.forEach { (spanish, english) ->
+                    connections.forEach { (english, spanish) ->
                         val startPos = spanishPositions[spanish] ?: return@forEach
                         val endPos = englishPositions[english] ?: return@forEach
 
@@ -118,24 +122,25 @@ fun ExamConnectWordsScreen(
                 ) {
                     // Spanish words column
                     Column {
-                        viewModel.wordPairs.forEach { pair ->
+                        displayedPairs?.forEach { (enWord, esWord) ->
                             Text(
-                                text = pair.spanish,
-                                color = if (selectedSpanishWord == pair.spanish) Color.Yellow else Color.White,
+                                text = esWord,
+                                color = if (selectedSpanishWord == esWord) Color.Yellow else Color.White,
                                 fontSize = 24.sp,
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
                                     .clickable {
-                                        selectedSpanishWord = pair.spanish
+                                        selectedSpanishWord = esWord
                                         if (selectedEnglishWord != null) {
-                                            connections.add(pair.spanish to selectedEnglishWord!!)
+                                            connections.removeAll { it.first == selectedEnglishWord!! || it.second == esWord }
+                                            connections.add(selectedEnglishWord!! to esWord)
                                             selectedSpanishWord = null
                                             selectedEnglishWord = null
                                         }
                                     }
                                     .onGloballyPositioned { coordinates ->
                                         val position = coordinates.positionInWindow()
-                                        spanishPositions[pair.spanish] = Offset(
+                                        spanishPositions[esWord] = Offset(
                                             position.x + coordinates.size.width,
                                             position.y + (coordinates.size.height / 2)
                                         )
@@ -146,24 +151,25 @@ fun ExamConnectWordsScreen(
 
                     // English words column
                     Column {
-                        viewModel.wordPairs.forEach { pair ->
+                        displayedPairs?.forEach { (enWord, esWord) ->
                             Text(
-                                text = pair.english,
-                                color = if (selectedEnglishWord == pair.english) Color.Yellow else Color.White,
+                                text = enWord,
+                                color = if (selectedEnglishWord == enWord) Color.Yellow else Color.White,
                                 fontSize = 24.sp,
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
                                     .clickable {
-                                        selectedEnglishWord = pair.english
+                                        selectedEnglishWord = enWord
                                         if (selectedSpanishWord != null) {
-                                            connections.add(selectedSpanishWord!! to pair.english)
+                                            connections.removeAll { it.second == selectedSpanishWord!! || it.first == enWord}
+                                            connections.add(enWord to selectedSpanishWord!!)
                                             selectedSpanishWord = null
                                             selectedEnglishWord = null
                                         }
                                     }
                                     .onGloballyPositioned { coordinates ->
                                         val position = coordinates.positionInWindow()
-                                        englishPositions[pair.english] = Offset(
+                                        englishPositions[enWord] = Offset(
                                             position.x,
                                             position.y + (coordinates.size.height / 2)
                                         )
@@ -172,6 +178,27 @@ fun ExamConnectWordsScreen(
                         }
                     }
                 }
+            }
+
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
+                onClick = {
+                    if (connections.toSet() == correctPairs?.toSet()) {
+                        correctConnection()
+                    }
+                    else {
+                        incorrectConnection()
+                    }
+                    println(displayedPairs)
+                    println(correctPairs)
+                    println(connections)
+                },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text(
+                    text = "Check",
+                    color = Color(0xFFF5F5F5),
+                )
             }
 
             Button(
@@ -203,6 +230,16 @@ fun ExamConnectWordsScreen(
             }
         }
     }
+}
+
+fun incorrectConnection() {
+    GameController.instance.decreaseLivesNumber()
+    println("INCORRECT CONNECTION")
+}
+
+fun correctConnection() {
+    println("CORRECT")
+    GameController.instance.nextExamScreen(4)
 }
 
 //
