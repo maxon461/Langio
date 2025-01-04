@@ -36,7 +36,7 @@ class GameController {
         private set
 
     var currentLevelWords: List<WordInstance>? = null
-    var currentScreenWordsToBeUsed: List<WordInstance>? = null
+    var currentScreenWordsToBeUsed: MutableList<WordInstance>? = null
 
     enum class Screen(val route: String) {
         HOME("home"),

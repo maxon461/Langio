@@ -24,8 +24,8 @@ object DataController {
             val reader = InputStreamReader(inputStream)
 
             reader.buffered().forEachLine { line ->
-                val parts = line.split(",").map { it.trim() }
-                if (parts.size == 8) {
+                val parts = line.split("|").map { it.trim() }
+                if (parts.size == 10) {
                     val chapter = parts[0].toInt()
                     val level = parts[1].toInt()
                     val englishWord = parts[2]
@@ -34,8 +34,18 @@ object DataController {
                     val audioPath = parts[5]
                     val videoPath = parts[6]
                     val imagePath = parts[7]
+                    val sampleOfUseEnglish = parts[8]
+                    val sampleOfUseSpanish = parts[9]
 
-                    val wordInstance = WordInstance(englishWord, spanishWord, incorrectSpanishWords, audioPath, videoPath, imagePath)
+                    val wordInstance = WordInstance(
+                        englishWord,
+                        spanishWord,
+                        incorrectSpanishWords,
+                        audioPath,
+                        videoPath,
+                        imagePath,
+                        sampleOfUseEnglish,
+                        sampleOfUseSpanish)
 
                     val levelData = levelsMap.getOrPut(level) {
                         Level(level, chapter, mutableListOf())
