@@ -17,8 +17,8 @@ import kotlin.random.Random
 
 const val BASIC_LIVES_NUMBER = 3
 const val NUMBER_OF_WORDS_PER_LEVEL = 10
-const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 4
-const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
+const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 1
+const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 1
 const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
 
 
@@ -68,6 +68,7 @@ class GameController {
         EXAM_CHOICE("examChoice"),
         EXAM_TRANSLATE("examTranslate"),
         EXAM_CONNECT_WORDS("connectWords"),
+        EXAM_SUMMARY("examSummary"),
         LEVEL_MENU("levelMenu") // Static route since global variable is used
     }
 
@@ -97,6 +98,7 @@ class GameController {
             composable(Screen.EXAM_CHOICE.route) { ExamChoice() }
             composable(Screen.EXAM_TRANSLATE.route) { ExamTranslate() }
             composable(Screen.EXAM_CONNECT_WORDS.route) { ExamConnectWordsScreen() }
+            composable(Screen.EXAM_SUMMARY.route) { ExamSummaryScreen() }
             composable(Screen.LEVEL_MENU.route) { LevelMenuScreen() }
         }
     }
@@ -133,6 +135,9 @@ class GameController {
 
     fun decreaseLivesNumber() {
         livesNumber--
+        if (livesNumber < 0) {
+            goToExamSummary()
+        }
         println("LivesNumber decreased: $livesNumber")
     }
 
@@ -173,7 +178,7 @@ class GameController {
     }
 
     private fun goToExamSummary() {
-        TODO("Not yet implemented")
+        changeScreen(Screen.EXAM_SUMMARY)
     }
 
     private fun chooseNextExamScreenAndDecreaseItsAvailability(): Screen? {
