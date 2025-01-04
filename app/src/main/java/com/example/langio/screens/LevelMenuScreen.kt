@@ -57,7 +57,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(180.dp)
                 .padding(20.dp)
                 .clickable {
                     GameController.instance.resetWordsToBeUsed()
@@ -76,7 +76,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "List of all the words",
+                    text = "List of words",
                     color = Color(0xFFFFE342),
                     fontSize = 44.sp,
                     textAlign = TextAlign.Center,
@@ -98,7 +98,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(170.dp)
                 .padding(20.dp)
                 .clickable {
                     GameController.instance.resetWordsToBeUsed()
@@ -139,7 +139,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(170.dp)
                 .padding(20.dp)
                 .clickable {
                     GameController.instance.resetWordsToBeUsed()
@@ -181,7 +181,7 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(110.dp)
                 .padding(20.dp)
                 .clickable {
                     GameController.instance.changeScreen(GameController.Screen.MAP)

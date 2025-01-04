@@ -114,6 +114,11 @@ class GameController {
         println("HintScore increased: $hintScore")
     }
 
+
+    //TEST
+
+
+
     companion object {
         val instance: GameController by lazy { GameController() }
     }
