@@ -74,7 +74,6 @@ fun FlashcardScreen(modifier: Modifier = Modifier) {
             ) {
                 if (flashcards.isNotEmpty()) {
                     FlashCard(wordInstance = wordInstance)
-                    Log.e("FLASHCARD CHANGE", "IMHERE WITH ${wordInstance.value.englishWord}")
                 } else {
                     Text(
                         text = "No flashcards available.",
@@ -124,7 +123,11 @@ fun FlashcardScreen(modifier: Modifier = Modifier) {
 @Composable
 fun FlashCard(wordInstance: MutableState<WordInstance>) {
     val context = LocalContext.current
-    val mp: MediaPlayer = MediaPlayer.create(context, R.raw.loud)
+    val image_id = context.resources.getIdentifier("${wordInstance.value.englishWord}_img", "raw", "com.example.langio")
+    val audio_en_id = context.resources.getIdentifier("${wordInstance.value.englishWord}_en", "raw", "com.example.langio")
+    val audio_es_id = context.resources.getIdentifier("${wordInstance.value.englishWord}_es", "raw", "com.example.langio")
+    val mp_en: MediaPlayer = MediaPlayer.create(context, audio_en_id)
+    val mp_es: MediaPlayer = MediaPlayer.create(context, audio_es_id)
 
     val animateColor = Color.LightGray
 
@@ -143,7 +146,7 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                     Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.cow), // Replace with actual image logic
+                        painter = painterResource(image_id), // Replace with actual image logic
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -165,11 +168,11 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                         )
                         IconButton(
                             onClick = {
-                                if (mp.isPlaying) {
-                                    mp.pause()
-                                    mp.seekTo(0)
+                                if (mp_en.isPlaying) {
+                                    mp_en.pause()
+                                    mp_en.seekTo(0)
                                 }
-                                mp.start()
+                                mp_en.start()
                             }
                         ) {
                             Icon(
@@ -213,7 +216,7 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                     Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.cow), // Replace with actual image logic
+                        painter = painterResource(image_id), // Replace with actual image logic
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -235,11 +238,11 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                         )
                         IconButton(
                             onClick = {
-                                if (mp.isPlaying) {
-                                    mp.pause()
-                                    mp.seekTo(0)
+                                if (mp_es.isPlaying) {
+                                    mp_es.pause()
+                                    mp_es.seekTo(0)
                                 }
-                                mp.start()
+                                mp_es.start()
                             }
                         ) {
                             Icon(
