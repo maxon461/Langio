@@ -36,7 +36,7 @@ import androidx.compose.runtime.remember
 fun DailyRewardScreen(modifier: Modifier = Modifier) {
     Scaffold(
         bottomBar = { CustomBottomNavigationBar(selectedTab = "dailyReward") },
-        topBar = { HeaderBar(modifier, showPfp = true, showLevel = false, showExam = false) }
+        topBar = { HeaderBar(modifier, showPfp = true) }
     ) { paddingValues ->
         Column(
             modifier = modifier

@@ -3,6 +3,7 @@ package com.example.langio.controllers
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,7 +13,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.langio.models.Level
 import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
 class GameController {
@@ -27,12 +27,15 @@ class GameController {
 
     fun collectReward(day: Int) {
         if (!_collectedRewards.contains(day)) {
-            _collectedRewards.add(day) // Add the reward to the collected list
-            increaseHintScore() // Increment hint score
+            _collectedRewards.add(day)
+            increaseHintScore()
         }
     }
 
-    var hintScore by mutableStateOf(0)
+    var hintNumber by mutableIntStateOf(0)
+        private set
+
+    var livesNumber by mutableIntStateOf(0)
         private set
 
     var currentLevelWords: List<WordInstance>? = null
@@ -49,7 +52,7 @@ class GameController {
         FLASHCARD("flashcard"),
         EXAM_CHOICE("examChoice"),
         EXAM_TRANSLATE("examTranslate"),
-        CONNECT_WORDS("connectWords"),
+        EXAM_CONNECT_WORDS("connectWords"),
         LEVEL_MENU("levelMenu") // Static route since global variable is used
     }
 
@@ -78,7 +81,7 @@ class GameController {
             composable(Screen.FLASHCARD.route) { FlashcardScreen() }
             composable(Screen.EXAM_CHOICE.route) { ExamChoice() }
             composable(Screen.EXAM_TRANSLATE.route) { ExamTranslate() }
-            composable(Screen.CONNECT_WORDS.route) { ConnectWordsScreen() }
+            composable(Screen.EXAM_CONNECT_WORDS.route) { ExamConnectWordsScreen() }
             composable(Screen.LEVEL_MENU.route) {
                 LevelMenuScreen()
             }
@@ -110,8 +113,8 @@ class GameController {
     }
 
     fun increaseHintScore() {
-        hintScore++
-        println("HintScore increased: $hintScore")
+        hintNumber++
+        println("HintScore increased: $hintNumber")
     }
 
 

@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
@@ -39,11 +38,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.langio.R
 import com.example.langio.controllers.GameController
 
@@ -58,13 +55,12 @@ fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier
         horizontalArrangement = Arrangement.SpaceEvenly, // Używamy SpaceEvenly, żeby rozłożyć przyciski równomiernie
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Daily Rewards Tab
         CustomNavItem(
             label = "Daily rewards",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "dailyReward",
             onClick = { GameController.instance.changeScreen(GameController.Screen.REWARDS)},
-            modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
+            modifier = Modifier.weight(1f)
         )
 
         HorizontalDivider(
@@ -268,23 +264,39 @@ class OneSidedHorizontalRoundedRectangle(isLeftRounded: Boolean) : Shape {
 
 
 @Composable
-fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolean, showExam: Boolean) {
+fun HeaderBar(
+    modifier: Modifier = Modifier,
+    showPfp: Boolean = false,
+    showLevel: Boolean = false,
+    showExam: Boolean = false,
+    showLives: Boolean = false
+) {
+    val hintNumber = GameController.instance.hintNumber
+    val livesNumber = GameController.instance.livesNumber
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+//            .padding(horizontal = 16.dp)
             .height(80.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (showPfp) {
-            Image(
-                painter = painterResource(id = R.drawable.cow),
-                contentDescription = "Avatar",
-                modifier = modifier.size(80.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .size(80.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.cow),
+                    contentDescription = "Avatar",
+                    modifier = modifier.size(62.dp)
+                )
+            }
         }
         if (showLevel) {
             Text(
+                modifier = modifier.padding(horizontal = 16.dp),
                 text = "lvl " + GameController.instance.currentLevelId,
                 fontSize = 40.sp,
                 color = Color(0xFFFFE342),
@@ -293,8 +305,8 @@ fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolea
         }
         if(showExam) {
             Text(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                text = "EXAM",
+//                modifier = Modifier.padding(horizontal = 20.dp),
+                text = "E",
                 fontSize = 40.sp,
                 color = Color(0xFFDE3232),
                 fontWeight = FontWeight.ExtraBold
@@ -303,16 +315,47 @@ fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolea
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+        if(showLives) {
+            Box(
+                modifier = Modifier
+                    .size(80.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.heart),
+                    contentDescription = "Example Icon",
+                    modifier = Modifier.size(46.dp)
+                )
+
+                Text(
+                    text = livesNumber.toString(),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
+
+
+
+        Box(
+            modifier = Modifier
+                .size(80.dp),
+            contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób ikony
-                contentDescription = "Star Icon",
-                tint = Color.LightGray,
-                modifier = modifier.size(60.dp)
+                imageVector = Icons.Default.Star,
+                contentDescription = "HintIcon",
+                tint = Color(0xFFFFD700),
+                modifier = Modifier.size(62.dp)
             )
-            Text(text = GameController.instance.hintScore.toString(), fontSize = 40.sp, color = Color.LightGray)
+
+            Text(
+                text = hintNumber.toString(),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
         }
     }
 }
@@ -356,7 +399,7 @@ fun ExamHeader(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = GameController.instance.hintScore.toString(),
+                text = GameController.instance.hintNumber.toString(),
                 fontSize = 40.sp,
                 color = Color.LightGray
             )

@@ -46,7 +46,7 @@ import com.example.langio.useful.OneSidedHorizontalRoundedRectangle
 @Composable
 fun ExamChoice (modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = true) }
+        topBar = { HeaderBar(modifier, showLevel = true, showExam = true, showLives = true) }
     ) { paddingValues ->
         Column(
             modifier = modifier

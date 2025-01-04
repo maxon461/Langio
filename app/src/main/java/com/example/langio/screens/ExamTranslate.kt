@@ -40,7 +40,7 @@ import com.example.langio.useful.Hint
 @Composable
 fun ExamTranslate (modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = true) }
+        topBar = { HeaderBar(modifier, showLevel = true, showExam = true) }
     ) { paddingValues ->
         Column(
             modifier = modifier

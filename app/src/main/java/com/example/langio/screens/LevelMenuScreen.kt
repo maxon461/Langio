@@ -31,7 +31,7 @@ import com.example.langio.controllers.GameController
 @Composable
 fun LevelMenuScreen(modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = { HeaderBar(modifier, showPfp = false, showLevel = true, showExam = false) }
+        topBar = { HeaderBar(modifier, showLevel = true) }
     ) { paddingValues ->
         Column(
             modifier = modifier

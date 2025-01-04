@@ -22,6 +22,7 @@ appcompat = "1.7.0"
 playServicesAuth = "21.3.0"
 roomCommon = "2.6.1"
 roomKtx = "2.6.1"
+foundationDesktop = "1.7.0"
 
 [libraries]
 androidx-activity-compose-v160 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -52,6 +53,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+androidx-foundation-desktop = { group = "androidx.compose.foundation", name = "foundation-desktop", version.ref = "foundationDesktop" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

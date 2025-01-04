@@ -58,18 +58,19 @@ fun WordListScreen(modifier: Modifier = Modifier, gameController: GameController
 }
 
 @Composable
-fun WordList(wordList: List<WordInstance>)
-{
+fun WordList(wordList: List<WordInstance>) {
     Surface(
         modifier = Modifier
-//            .weight(1f)
             .fillMaxWidth()
+            .fillMaxHeight(.9f)
             .padding(16.dp),
         color = Color(0xFFF8F8FF),
         shape = RoundedCornerShape(8.dp)
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+//                .height(300.dp) // Ograniczenie wysokości listy do 300dp
         ) {
             items(wordList) { wordInstance ->
                 WordPairItem(WordPair(wordInstance.englishWord, wordInstance.spanishWord))
@@ -146,4 +147,5 @@ data class WordPair(
 ) {
     val firstLetter: String get() = spanish.first().uppercase()
 }
+
 
