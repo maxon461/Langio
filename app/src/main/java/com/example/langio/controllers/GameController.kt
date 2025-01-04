@@ -2,6 +2,10 @@ package com.example.langio.controllers
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,12 +17,23 @@ import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
 class GameController {
 
-    // NavController for managing navigation
     private lateinit var navController: NavHostController
 
-    // Global variable for the current level ID
     var currentLevelId: Int? = null
-        private set // Read-only from outside
+        private set
+
+    private val _collectedRewards = mutableStateListOf<Int>()
+    val collectedRewards: List<Int> get() = _collectedRewards
+
+    fun collectReward(day: Int) {
+        if (!_collectedRewards.contains(day)) {
+            _collectedRewards.add(day) // Add the reward to the collected list
+            increaseHintScore() // Increment hint score
+        }
+    }
+
+    var hintScore by mutableStateOf(0)
+        private set
 
     var currentLevelWords: List<WordInstance>? = null
     var currentScreenWordsToBeUsed: List<WordInstance>? = null
@@ -40,7 +55,6 @@ class GameController {
 
     @Composable
     fun SetupNavigation(modifier: Modifier = Modifier, innerPadding: Modifier = Modifier) {
-        // Initialize NavController
         this.navController = rememberNavController()
 
         NavHost(
@@ -95,6 +109,10 @@ class GameController {
         currentScreenWordsToBeUsed = currentLevelWords?.toMutableList()
     }
 
+    fun increaseHintScore() {
+        hintScore++
+        println("HintScore increased: $hintScore")
+    }
 
     companion object {
         val instance: GameController by lazy { GameController() }

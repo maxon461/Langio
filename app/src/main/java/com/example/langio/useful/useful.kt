@@ -285,7 +285,7 @@ fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolea
         }
         if (showLevel) {
             Text(
-                text = "lvl 1",
+                text = "lvl " + GameController.instance.currentLevelId,
                 fontSize = 40.sp,
                 color = Color(0xFFFFE342),
                 fontWeight = FontWeight.Bold
@@ -312,7 +312,7 @@ fun HeaderBar(modifier: Modifier = Modifier, showPfp: Boolean, showLevel: Boolea
                 tint = Color.LightGray,
                 modifier = modifier.size(60.dp)
             )
-            Text(text = "21", fontSize = 40.sp, color = Color.LightGray)
+            Text(text = GameController.instance.hintScore.toString(), fontSize = 40.sp, color = Color.LightGray)
         }
     }
 }
@@ -356,7 +356,7 @@ fun ExamHeader(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "21",
+                text = GameController.instance.hintScore.toString(),
                 fontSize = 40.sp,
                 color = Color.LightGray
             )
