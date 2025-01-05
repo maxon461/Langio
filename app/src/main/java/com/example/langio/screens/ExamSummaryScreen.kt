@@ -27,30 +27,6 @@ import com.example.langio.controllers.GameController
 import com.example.langio.useful.HeaderBar
 
 
-//@Composable
-//fun ExamSummaryScreen (modifier: Modifier = Modifier) {
-//    Scaffold(
-//        topBar = { HeaderBar(modifier, showLevel = true, showExam = true) }
-//    ) { paddingValues ->
-//        Column(
-//            modifier = modifier
-//                .fillMaxSize()
-//                .background(Color(0xFF403E3E))
-//                .padding(paddingValues)
-//        ) {
-//            if (GameController.instance.livesNumber >= 0) {
-//                //WYGRANA
-//
-//            }
-//            else {
-//                //PRZEGRANA
-//            }
-//        }
-//
-//    }
-//}
-//
-
 
 @Composable
 fun ExamSummaryScreen(modifier: Modifier = Modifier) {
@@ -69,7 +45,6 @@ fun ExamSummaryScreen(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Obraz w zależności od wyniku
             Image(
                 painter = painterResource(
                     if (isExamPassed) R.drawable.thumb_up_img else R.drawable.thumb_down_img
@@ -80,18 +55,15 @@ fun ExamSummaryScreen(modifier: Modifier = Modifier) {
                     .padding(bottom = 16.dp)
             )
 
-            // Tekst z wynikiem egzaminu
             Text(
                 text = if (isExamPassed) "Congratulations! You passed the exam!" else "Sorry, you failed the exam.",
                 color = Color.White,
-//                style = MaterialTheme.typography,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Przycisk, który pozwala wrócić lub spróbować ponownie
             Button(
                 onClick = {
                     GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)

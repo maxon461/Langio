@@ -54,7 +54,7 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
             InputBox(modifier)
             Spacer(modifier = Modifier.height(20.dp)) // Add some spacing
             BackToLevelMenuButton() // Add the button here
-            Hint()
+//            Hint()
         }
     }
 }

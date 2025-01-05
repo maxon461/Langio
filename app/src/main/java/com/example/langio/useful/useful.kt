@@ -409,34 +409,29 @@ fun ExamHeader(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun Hint()
+fun Hint(onClick: () -> Unit)
 {
-    Box(
-        modifier = Modifier.padding(20.dp).fillMaxWidth().fillMaxHeight(),
-        contentAlignment = Alignment.CenterEnd
-
-    )
-    {
-        Button(
-            modifier = Modifier.fillMaxHeight().padding(horizontal = 10.dp),
-            shape = RoundedCornerShape(5.dp),
-            onClick = {
-//                TODO
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
-
+                Button(
+                onClick = onClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF673AB7)
+                ),
+                shape = RoundedCornerShape(8.dp)
             ) {
-            Icon(
-                painter = painterResource(R.drawable.lightbulb),
-                contentDescription = "Hint",
-                tint = Color.Black
-            )
-            Text(
-                text = "Hint",
-                color = Color(0xFFF5F5F5),
-                fontSize = 25.sp
-
-            )
-        }
-    }
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "Hint",
+                    tint = Color(0xFFFFD700),
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Hint",
+                    color = Color.White,
+                    fontSize = 18.sp
+                )
+            }
 }

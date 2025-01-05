@@ -15,6 +15,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,11 +34,18 @@ import com.example.langio.useful.OneSidedHorizontalRoundedRectangle
 
 
 val IDLE_ANSWER_COLOR = Color(0xFFE8DEF8)
-val CORRECT_ANSWER_COLOR = Color.Green
-val INCORRECT_ANSWER_COLOR = Color.Red
+val HINTED_ANSWER_COLOR = Color(0xFFBA8DC2)
+val CORRECT_ANSWER_COLOR = Color(0xFF87C762)
+val INCORRECT_ANSWER_COLOR = Color(0xFFCB7E7E)
 
 @Composable
 fun ExamChoice (modifier: Modifier = Modifier) {
+
+    val hintKnownIncorrect = remember { mutableStateListOf<String>() }
+    val knownIncorrect = remember { mutableStateListOf<String>() }
+    val answers = remember { mutableStateListOf<Pair<String, Boolean>>() }
+
+
     Scaffold(
         topBar = { HeaderBar(modifier, showLevel = true, showExam = true, showLives = true) }
     ) { paddingValues ->
@@ -50,12 +58,16 @@ fun ExamChoice (modifier: Modifier = Modifier) {
             GameController.instance.currentScreenWordsToBeUsed?.get(0)
                 ?.let { ExamCard(it.englishWord, painterResource(R.drawable.cow)) }
 
-            GameController.instance.currentScreenWordsToBeUsed?.let { Answers(getShuffledAnswersTab(it[0].spanishWord, it[0].incorrectSpanishWords)) }
-//            GameController.instance.currentScreenWordsToBeUsed?.let { Answers(it[0].incorrectSpanishWords.shuffled()) }
+            GameController.instance.currentScreenWordsToBeUsed?.let {
+                answers.clear()
+                answers.addAll(getShuffledAnswersTab(it[0].spanishWord, it[0].incorrectSpanishWords))
+                Answers(answers, hintKnownIncorrect, knownIncorrect)
+            }
 
-            Spacer(modifier = Modifier.height(20.dp)) // Add some spacing
-            BackToLevelMenuButton() // Add the button here
-            Hint()
+            Spacer(modifier = Modifier.height(20.dp))
+            Hint(onClick = {
+                takeAChoiceHint(hintKnownIncorrect, knownIncorrect, answers)
+            })
         }
     }
 }
@@ -72,8 +84,13 @@ fun getShuffledAnswersTab(correctWord: String, incorrectWords: List<String>): Li
 }
 
 @Composable
-fun Answers(answers: List<Pair<String, Boolean>>)
+fun Answers(
+    answers: List<Pair<String, Boolean>>,
+    hintKnownIncorrect: MutableList<String>,
+    knownIncorrect: MutableList<String>
+)
 {
+
     val buttonAColor = remember { mutableStateOf(IDLE_ANSWER_COLOR) }
     val buttonBColor = remember { mutableStateOf(IDLE_ANSWER_COLOR) }
     val buttonCColor = remember { mutableStateOf(IDLE_ANSWER_COLOR) }
@@ -97,17 +114,38 @@ fun Answers(answers: List<Pair<String, Boolean>>)
                         .height(80.dp),
                     shape = OneSidedHorizontalRoundedRectangle(true),
                     onClick = {
+//                        if (answers[0].second) {
+//                            correctAnswer(0)
+//                            buttonAColor.value = CORRECT_ANSWER_COLOR
+//                        }
+//                        else {
+//                            incorrectAnswer(0, answers)
+//                            buttonAColor.value = INCORRECT_ANSWER_COLOR
+//                        }
                         if (answers[0].second) {
-                            correctAnswer(0)
                             buttonAColor.value = CORRECT_ANSWER_COLOR
+                            correctAnswer(0)
                         }
-                        else {
+                        else if (!hintKnownIncorrect.contains(answers[0].first) && !knownIncorrect.contains(answers[0].first)) {
                             incorrectAnswer(0, answers)
-                            buttonAColor.value = INCORRECT_ANSWER_COLOR
+                            knownIncorrect.add(answers[0].first)
                         }
 
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = buttonAColor.value),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor =
+                        when {
+                            knownIncorrect.contains(answers[0].first) -> INCORRECT_ANSWER_COLOR
+                            hintKnownIncorrect.contains(answers[0].first) -> HINTED_ANSWER_COLOR
+                            else -> buttonAColor.value
+                        }),
+//                            if (buttonAColor.value != CORRECT_ANSWER_COLOR && buttonAColor.value == IDLE_ANSWER_COLOR)
+//                                buttonAColor.value
+//                            else
+//                                    (if (knownIncorrect.contains(answers[0].first))
+//                                        INCORRECT_ANSWER_COLOR
+//                                    else
+//                                        HINTED_ANSWER_COLOR)),
                 ) {
                     Text(
                         text = answers[0].first,
@@ -123,17 +161,31 @@ fun Answers(answers: List<Pair<String, Boolean>>)
                         .height(80.dp),
                     shape = OneSidedHorizontalRoundedRectangle(false),
                     onClick = {
+//                        if (answers[1].second) {
+//                            correctAnswer(1)
+//                            buttonBColor.value = CORRECT_ANSWER_COLOR
+//
+//                        }
+//                        else {
+//                            incorrectAnswer(1, answers)
+//                            buttonBColor.value = INCORRECT_ANSWER_COLOR
+//                        }
                         if (answers[1].second) {
-                            correctAnswer(1)
                             buttonBColor.value = CORRECT_ANSWER_COLOR
-
+                            correctAnswer(1)
                         }
-                        else {
+                        else if (!hintKnownIncorrect.contains(answers[1].first) && !knownIncorrect.contains(answers[1].first)) {
                             incorrectAnswer(1, answers)
-                            buttonBColor.value = INCORRECT_ANSWER_COLOR
+                            knownIncorrect.add(answers[1].first)
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = buttonBColor.value),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor =
+                        when {
+                            knownIncorrect.contains(answers[1].first) -> INCORRECT_ANSWER_COLOR
+                            hintKnownIncorrect.contains(answers[1].first) -> HINTED_ANSWER_COLOR
+                            else -> buttonBColor.value
+                        }),
                     ) {
                     Text(
                         text = answers[1].first,
@@ -151,16 +203,31 @@ fun Answers(answers: List<Pair<String, Boolean>>)
                         .height(80.dp),
                     shape = OneSidedHorizontalRoundedRectangle(true),
                     onClick = {
+//                        if (answers[2].second) {
+//                            correctAnswer(2)
+//                            buttonCColor.value = CORRECT_ANSWER_COLOR
+//                        }
+//                        else {
+//                            incorrectAnswer(2, answers)
+//                            buttonCColor.value = INCORRECT_ANSWER_COLOR
+//                        }
+
                         if (answers[2].second) {
-                            correctAnswer(2)
                             buttonCColor.value = CORRECT_ANSWER_COLOR
+                            correctAnswer(2)
                         }
-                        else {
+                        else if (!hintKnownIncorrect.contains(answers[2].first) && !knownIncorrect.contains(answers[2].first)) {
                             incorrectAnswer(2, answers)
-                            buttonCColor.value = INCORRECT_ANSWER_COLOR
+                            knownIncorrect.add(answers[2].first)
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = buttonCColor.value),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor =
+                        when {
+                            knownIncorrect.contains(answers[2].first) -> INCORRECT_ANSWER_COLOR
+                            hintKnownIncorrect.contains(answers[2].first) -> HINTED_ANSWER_COLOR
+                            else -> buttonCColor.value
+                        }),
 
                     ) {
                     Text(
@@ -177,17 +244,30 @@ fun Answers(answers: List<Pair<String, Boolean>>)
                         .height(80.dp),
                     shape = OneSidedHorizontalRoundedRectangle(false),
                     onClick = {
+//                        if (answers[3].second) {
+//                            correctAnswer(3)
+//                            buttonDColor.value = CORRECT_ANSWER_COLOR
+//                        }
+//                        else {
+//                            incorrectAnswer(3, answers)
+//                            buttonDColor.value = INCORRECT_ANSWER_COLOR
+//                        }
                         if (answers[3].second) {
-                            correctAnswer(3)
                             buttonDColor.value = CORRECT_ANSWER_COLOR
+                            correctAnswer(3)
                         }
-                        else {
+                        else if (!hintKnownIncorrect.contains(answers[3].first) && !knownIncorrect.contains(answers[3].first)) {
                             incorrectAnswer(3, answers)
-                            buttonDColor.value = INCORRECT_ANSWER_COLOR
+                            knownIncorrect.add(answers[3].first)
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = buttonDColor.value),
-
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor =
+                        when {
+                            knownIncorrect.contains(answers[3].first) -> INCORRECT_ANSWER_COLOR
+                            hintKnownIncorrect.contains(answers[3].first) -> HINTED_ANSWER_COLOR
+                            else -> buttonDColor.value
+                        }),
                     ) {
                     Text(
                         text = answers[3].first,
@@ -201,8 +281,26 @@ fun Answers(answers: List<Pair<String, Boolean>>)
 
 }
 
+fun takeAChoiceHint(
+    hintKnownIncorrect: MutableList<String>,
+    knownIncorrect: MutableList<String>,
+    answers: MutableList<Pair<String, Boolean>>
+) {
+    if (GameController.instance.hintNumber > 0 && hintKnownIncorrect.size + knownIncorrect.size < 3) {
+        GameController.instance.decreaseHintNumber()
+        val hint = answers.shuffled().firstOrNull { pair ->
+            !pair.second && !knownIncorrect.contains(pair.first) && !hintKnownIncorrect.contains(pair.first)
+        }
+        hint?.let {
+            hintKnownIncorrect.add(it.first)
+        }
+    }
+
+}
+
 fun incorrectAnswer(i: Int, answers: List<Pair<String, Boolean>>) {
     println("INCORRECT")
+
     GameController.instance.decreaseLivesNumber()
 }
 

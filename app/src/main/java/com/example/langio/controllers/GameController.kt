@@ -17,9 +17,9 @@ import kotlin.random.Random
 
 const val BASIC_LIVES_NUMBER = 3
 const val NUMBER_OF_WORDS_PER_LEVEL = 10
-const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 1
-const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 1
-const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
+const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 1//4
+const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 0//2
+const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 0//1
 
 
 
@@ -131,6 +131,11 @@ class GameController {
     fun increaseHintNumber() {
         hintNumber++
         println("HintNumber increased: $hintNumber")
+    }
+
+    fun decreaseHintNumber() {
+        hintNumber--
+        println("HintNumber decreased: $hintNumber")
     }
 
     fun decreaseLivesNumber() {
