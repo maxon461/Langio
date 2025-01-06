@@ -110,6 +110,7 @@ fun LevelProgressionMap(
     modifier: Modifier = Modifier
 ) {
     val levelPositions = remember { mutableStateListOf<Offset>() }
+    val unlockedLevelId = GameController.instance.unlockedLevelId // Get the highest unlocked level ID
 
     Box(modifier = modifier) {
         if (levelPositions.size >= 2) {
@@ -138,7 +139,7 @@ fun LevelProgressionMap(
 
                     drawPath(
                         path = path,
-                        color = if (levels[index + 1].isUnlocked) Color(0xFF9333EA) else Color.Gray,
+                        color = if (levels[index + 1].id <= unlockedLevelId) Color(0xFF9333EA) else Color.Gray,
                         style = Stroke(width = 4f)
                     )
                 }
@@ -172,8 +173,8 @@ fun LevelProgressionMap(
                     }
             ) {
                 LevelNode(
-                    level = level,
-                    onClick = { onLevelClick(level) } // Correctly pass the lambda
+                    level = level.copy(isUnlocked = level.id <= unlockedLevelId), // Check if level is unlocked
+                    onClick = { onLevelClick(level) }
                 )
             }
         }
@@ -182,10 +183,11 @@ fun LevelProgressionMap(
 
 
 
+
 @Composable
 fun LevelNode(
     level: LevelInfo,
-    onClick: () -> Unit, // Updated parameter name to onClick
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -194,11 +196,13 @@ fun LevelNode(
     ) {
         IconButton(
             onClick = {
-                println("Level clicked: ${level.id}, navigating to LevelMenu")
-                try {
-                    onClick() // Use onClick here
-                } catch (e: Exception) {
-                    println("Error during navigation: ${e.message}")
+                if (level.isUnlocked) {
+                    println("Level clicked: ${level.id}, navigating to LevelMenu")
+                    try {
+                        onClick()
+                    } catch (e: Exception) {
+                        println("Error during navigation: ${e.message}")
+                    }
                 }
             },
             enabled = level.isUnlocked,
@@ -227,11 +231,12 @@ fun LevelNode(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = level.name,
-            color = Color.White,
+            color = if (level.isUnlocked) Color.White else Color.Gray,
             fontSize = 16.sp
         )
     }
 }
+
 
 
 
