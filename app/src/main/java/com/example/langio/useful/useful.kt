@@ -75,10 +75,7 @@ fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier
             label = "Map",
             imageResId = R.drawable.cow,
             isSelected = selectedTab == "map",
-            onClick = {
-                GameController.instance.unlockLevel()
-                GameController.instance.changeScreen(GameController.Screen.MAP)
-                      },
+            onClick = { GameController.instance.changeScreen(GameController.Screen.MAP) },
             modifier = Modifier.weight(1f)
         )
 
