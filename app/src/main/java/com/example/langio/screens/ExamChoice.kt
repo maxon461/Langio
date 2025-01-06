@@ -31,6 +31,10 @@ import com.example.langio.useful.ExamCard
 import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
 import com.example.langio.useful.OneSidedHorizontalRoundedRectangle
+import androidx.compose.ui.platform.LocalContext
+
+
+import kotlin.random.Random
 
 
 val IDLE_ANSWER_COLOR = Color(0xFFE8DEF8)
@@ -40,10 +44,12 @@ val INCORRECT_ANSWER_COLOR = Color(0xFFCB7E7E)
 
 @Composable
 fun ExamChoice (modifier: Modifier = Modifier) {
-
+    val context = LocalContext.current
     val hintKnownIncorrect = remember { mutableStateListOf<String>() }
     val knownIncorrect = remember { mutableStateListOf<String>() }
     val answers = remember { mutableStateListOf<Pair<String, Boolean>>() }
+
+
 
 
     Scaffold(
@@ -56,7 +62,9 @@ fun ExamChoice (modifier: Modifier = Modifier) {
                 .padding(paddingValues)
         ) {
             GameController.instance.currentScreenWordsToBeUsed?.get(0)
-                ?.let { ExamCard(it.englishWord, painterResource(R.drawable.cow)) }
+                ?.let {
+                    println(it.englishWord)
+                    ExamCard(it.englishWord, painterResource(context.resources.getIdentifier("${it.englishWord}_img", "raw", "com.example.langio"))) }
 
             GameController.instance.currentScreenWordsToBeUsed?.let {
                 answers.clear()

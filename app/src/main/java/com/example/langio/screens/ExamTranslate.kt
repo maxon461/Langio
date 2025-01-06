@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,7 +49,7 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
 
     val hints = remember { mutableStateListOf<Pair<Char, Boolean>>() }
 
-
+    val context = LocalContext.current
     val isFirstHintActive = remember { mutableStateOf<Boolean>(false) }
 
     Scaffold(
@@ -62,7 +63,9 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
         ) {
 //            ExamCard("???", painterResource(R.drawable.cow))
             GameController.instance.currentScreenWordsToBeUsed?.get(0)
-                ?.let { ExamCard(it.englishWord, painterResource(R.drawable.cow)) }
+                ?.let {
+                    println(it.englishWord)
+                    ExamCard(it.englishWord, painterResource(context.resources.getIdentifier("${it.englishWord}_img", "raw", "com.example.langio"))) }
 
             val esWord = GameController.instance.currentScreenWordsToBeUsed?.get(0)?.spanishWord
             LaunchedEffect(esWord) {
