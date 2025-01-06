@@ -99,7 +99,7 @@ fun StatisticsGrid(modifier: Modifier = Modifier) {
     ) {
         StatItem(modifier = modifier, "Learned words", GameController.instance.learnedWords)
         Spacer(modifier = modifier.height(8.dp))
-        StatItem(modifier = modifier, "Actual level", GameController.instance.unlockedLevel)
+        StatItem(modifier = modifier, "Actual level", GameController.instance.unlockedLevelId)
         Spacer(modifier = modifier.height(8.dp))
         StatItem(modifier = modifier, "Minutes spent in app", (GameController.instance.userData?.minutesSpent
             ?: 0) + GameController.instance.getMinutesOfThisSession())

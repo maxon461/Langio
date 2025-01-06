@@ -203,7 +203,13 @@ fun activateRandomHint(hints: SnapshotStateList<Pair<Char, Boolean>>): Boolean {
 }
 
 fun createHintsFromWord(word: String): List<Pair<Char, Boolean>> {
-    return word.map { it to false }
+    return word.map { char ->
+        if (char == ' ') {
+            char to true // Spacja, przypisuje true
+        } else {
+            char to false // Inny znak, przypisuje false
+        }
+    }
 }
 
 fun incorrectTranslation() {

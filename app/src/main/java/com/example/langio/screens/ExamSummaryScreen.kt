@@ -71,7 +71,6 @@ fun ExamSummaryScreen(modifier: Modifier = Modifier) {
                     } else {
                         GameController.instance.onExamFailed()
                     }
-                    GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isExamPassed) Color(0xFF2E7D32) else Color(0xFFD32F2F)

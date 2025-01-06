@@ -22,11 +22,11 @@ import kotlin.random.Random
 
 const val BASIC_LIVES_NUMBER = 3
 const val NUMBER_OF_WORDS_PER_LEVEL = 10
-const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 0//4
+const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 4
 const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
-const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 0//1
+const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
 
-const val USER_DATA_FILE = "user_data.json"
+const val USER_DATA_FILE = "./usero_data.json"
 
 
 
@@ -38,8 +38,8 @@ class GameController {
     var username: String = "TEMP"
     var learnedWords by Delegates.notNull<Int>()
         private set
-    var unlockedLevel by Delegates.notNull<Int>()
-        private set
+//    var unlockedLevel by Delegates.notNull<Int>()
+//        private set
     var dailyRewardStreak by Delegates.notNull<Int>()
         private set
     var isDailyRewardTaken: Boolean = false
@@ -99,7 +99,8 @@ class GameController {
         hintNumber = userData?.hintsRemaining ?: -1
         username = userData?.username ?: "MICHAŁ"
         learnedWords = userData?.learnedWords ?: -1
-        unlockedLevel = userData?.unlockedLevel ?: -1
+//        unlockedLevel = userData?.unlockedLevel ?: -1
+        unlockedLevelId = userData?.unlockedLevel ?: -1
         dailyRewardStreak = userData?.dailyRewardStreak ?: -1
         isDailyRewardTaken = userData?.isDailyRewardTaken ?: false
 
@@ -250,7 +251,7 @@ class GameController {
                 username = username,
                 joinDate = it.joinDate,
                 learnedWords = learnedWords,
-                unlockedLevel = unlockedLevel,
+                unlockedLevel = unlockedLevelId,
                 minutesSpent = it.minutesSpent + getMinutesOfThisSession(),
                 hintsRemaining = hintNumber,
                 dailyRewardStreak = dailyRewardStreak,
@@ -265,21 +266,20 @@ class GameController {
         return 15
     }
 
-    fun unlockLevel() {
-        unlockedLevel++
-    }
       
     fun onExamPassed() {
         currentLevelId?.let {
             if (it == unlockedLevelId) {
-                unlockedLevelId++ // Unlock the next level
+                unlockedLevelId++
                 println("Next level unlocked: $unlockedLevelId")
+                changeScreen(Screen.MAP)
             }
         }
     }
 
     fun onExamFailed() {
         println("Exam failed. No level unlocked.")
+        changeScreen(Screen.LEVEL_MENU)
     }
 
 
