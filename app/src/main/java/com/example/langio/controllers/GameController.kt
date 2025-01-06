@@ -267,6 +267,7 @@ class GameController {
 
     fun unlockLevel() {
         unlockedLevel++
+    }
       
     fun onExamPassed() {
         currentLevelId?.let {
