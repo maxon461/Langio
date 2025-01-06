@@ -1,0 +1,2 @@
+1| 2| phone| el teléfono| [taza; tarde; túnel; tapón; tarjeta; transporte]| She answered the phone quickly.| Ella respondió el teléfono rápidamente.
+1| 1| tree| el árbol| [alambre; alma; amor; arroz; arma; arco]| A bird is sitting on the tree.| Un pájaro está sentado en el árbol.

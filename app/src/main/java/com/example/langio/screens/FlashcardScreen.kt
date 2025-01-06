@@ -41,6 +41,8 @@ import com.example.langio.R
 import com.example.langio.useful.rememberFlipController
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
 import com.example.langio.controllers.GameController
 import com.example.langio.models.WordInstance
 import com.example.langio.useful.BackToLevelMenuButton
@@ -130,6 +132,7 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
     val mp_es: MediaPlayer = MediaPlayer.create(context, audio_es_id)
 
     val animateColor = Color.LightGray
+    var isVideoDialogVisible by remember { mutableStateOf(false) }
 
 
     Flippable(
@@ -146,7 +149,7 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                     Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(image_id), // Replace with actual image logic
+                        painter = painterResource(image_id),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -182,18 +185,18 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                                 modifier = Modifier.size(32.dp)
                             )
                         }
-                        IconButton(
-                            onClick = {
-                                // Add your video play logic here
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.play_video),
-                                contentDescription = "Video",
-                                tint = Color.Black,
-                                modifier = Modifier.size(32.dp)
-                            )
-                        }
+//                        IconButton(
+//                            onClick = {
+//                                // Add your video play logic here
+//                            }
+//                        ) {
+//                            Icon(
+//                                painter = painterResource(R.drawable.play_video),
+//                                contentDescription = "Video",
+//                                tint = Color.Black,
+//                                modifier = Modifier.size(32.dp)
+//                            )
+//                        }
                     }
                     Text(
                         modifier = Modifier
@@ -238,6 +241,18 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                         )
                         IconButton(
                             onClick = {
+                                isVideoDialogVisible = true
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.play_video),
+                                contentDescription = "Video",
+                                tint = Color.Black,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                        IconButton(
+                            onClick = {
                                 if (mp_es.isPlaying) {
                                     mp_es.pause()
                                     mp_es.seekTo(0)
@@ -248,18 +263,6 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                             Icon(
                                 painter = painterResource(R.drawable.play_speaker),
                                 contentDescription = "Audio",
-                                tint = Color.Black,
-                                modifier = Modifier.size(32.dp)
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-                                // Add your video play logic here
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.play_video),
-                                contentDescription = "Video",
                                 tint = Color.Black,
                                 modifier = Modifier.size(32.dp)
                             )
@@ -278,10 +281,51 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
         },
         flipController = rememberFlipController()
     )
+
+    if (isVideoDialogVisible) {
+        Dialog(
+            onDismissRequest = { isVideoDialogVisible = false }
+        ) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .background(Color.Black)
+            ) {
+                VideoPlayerComponent(
+                    videoResourceId = context.resources.getIdentifier(
+                        "${wordInstance.value.englishWord}_video",
+                        "raw",
+                        context.packageName
+                    )
+                )
+            }
+        }
+    }
 }
 
 
+@Composable
+fun VideoPlayerComponent(videoResourceId: Int) {
+    val context = LocalContext.current
+    val videoUri = "android.resource://${context.packageName}/$videoResourceId"
 
+    AndroidView(
+        factory = { ctx ->
+            android.widget.VideoView(ctx).apply {
+                setVideoPath(videoUri)
+                setOnPreparedListener { mediaPlayer ->
+                    mediaPlayer.isLooping = true // Opcjonalne, aby zapętlić wideo
+                    start()
+                }
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .background(Color.Black)
+    )
+}
 
 
 
@@ -313,3 +357,7 @@ fun NextButton() {
         }
     }
 }
+
+
+
+

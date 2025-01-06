@@ -25,25 +25,19 @@ object DataController {
 
             reader.buffered().forEachLine { line ->
                 val parts = line.split("|").map { it.trim() }
-                if (parts.size == 10) {
+                if (parts.size == 7) {
                     val chapter = parts[0].toInt()
                     val level = parts[1].toInt()
                     val englishWord = parts[2]
                     val spanishWord = parts[3]
                     val incorrectSpanishWords = parts[4].trim('[', ']').split(";").map { it.trim() }
-                    val audioPath = parts[5]
-                    val videoPath = parts[6]
-                    val imagePath = parts[7]
-                    val sampleOfUseEnglish = parts[8]
-                    val sampleOfUseSpanish = parts[9]
+                    val sampleOfUseEnglish = parts[5]
+                    val sampleOfUseSpanish = parts[6]
 
                     val wordInstance = WordInstance(
                         englishWord,
                         spanishWord,
                         incorrectSpanishWords,
-                        audioPath,
-                        videoPath,
-                        imagePath,
                         sampleOfUseEnglish,
                         sampleOfUseSpanish)
 

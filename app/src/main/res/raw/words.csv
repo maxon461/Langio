@@ -1,20 +1,20 @@
-1| 1| apple| manzana| [manana; mazana; mandolino; makabre; marlboro; mama]| path/to/apple/audio| path/to/apple/video| path/to/apple/image| I like eating a red apple.| Me gusta comer una manzana roja.
-1| 1| dog| perro| [perra; padrino; persona; payaso; pronto; pavo]| path/to/dog/audio| path/to/dog/video| path/to/dog/image| The dog is barking loudly.| El perro está ladrando fuerte.
-1| 1| house| casa| [cosa; claro; carne; cucaracha; collar; caballo]| path/to/house/audio| path/to/house/video| path/to/house/image| They live in a big house.| Ellos viven en una casa grande.
-1| 1| book| libro| [lirio; lento; lanza; lapiz; luz; luna]| path/to/book/audio| path/to/book/video| path/to/book/image| She is reading a book.| Ella está leyendo un libro.
-1| 1| car| coche| [campo; cosa; cara; comida; cabeza; casa]| path/to/car/audio| path/to/car/video| path/to/car/image| The car is parked outside.| El coche está estacionado afuera.
-1| 1| tree| árbol| [alambre; alma; amor; arroz; arma; arco]| path/to/tree/audio| path/to/tree/video| path/to/tree/image| A bird is sitting on the tree.| Un pájaro está sentado en el árbol.
-1| 1| cat| gato| [guerra; garra; gorra; gusano; guapo; grande]| path/to/cat/audio| path/to/cat/video| path/to/cat/image| The cat is drinking milk.| El gato está bebiendo leche.
-1| 1| water| agua| [aguila; amigo; alemania; anteojo; ansia; ayuda]| path/to/water/audio| path/to/water/video| path/to/water/image| I need a glass of water.| Necesito un vaso de agua.
-1| 1| phone| teléfono| [tierra; tiempo; texto; talento; talla; tela]| path/to/phone/audio| path/to/phone/video| path/to/phone/image| My phone is ringing.| Mi teléfono está sonando.
-1| 1| table| mesa| [monto; madre; maleta; manta; madre; marzo]| path/to/table/audio| path/to/table/video| path/to/table/image| Put the book on the table.| Pon el libro sobre la mesa.
-1| 2| airplane| avión| [año; amigo; ajo; arte; abogado; acera]| path/to/airplane/audio| path/to/airplane/video| path/to/airplane/image| The airplane is flying high.| El avión está volando alto.
-1| 2| mountain| montaña| [manzana; mañana; murciélago; mapa; maleta; mesa]| path/to/mountain/audio| path/to/mountain/video| path/to/mountain/image| They are climbing the mountain.| Ellos están escalando la montaña.
-1| 2| river| río| [rojo; rana; rueda; roca; rayo; rey]| path/to/river/audio| path/to/river/video| path/to/river/image| The river flows through the valley.| El río fluye por el valle.
-1| 2| sun| sol| [silla; sopa; sonrisa; secar; suelo; silbido]| path/to/sun/audio| path/to/sun/video| path/to/sun/image| The sun is shining brightly.| El sol brilla intensamente.
-1| 2| computer| computadora| [camino; casa; corazón; cantidad; cartel; cuaderno]| path/to/computer/audio| path/to/computer/video| path/to/computer/image| I work on a computer every day.| Trabajo en una computadora todos los días.
-1| 2| school| escuela| [estrella; escalera; esmeralda; escritura; espada; estrella]| path/to/school/audio| path/to/school/video| path/to/school/image| The children are at school.| Los niños están en la escuela.
-1| 2| doctor| doctor| [donde; dolor; dama; dinero; dibujo; diente]| path/to/doctor/audio| path/to/doctor/video| path/to/doctor/image| The doctor is treating a patient.| El doctor está tratando a un paciente.
-1| 2| car| coche| [cerca; cielo; casa; ciudad; calle; comedia]| path/to/car/audio| path/to/car/video| path/to/car/image| He bought a new car.| Él compró un coche nuevo.
-1| 2| book| libro| [luna; leche; lugar; letra; lucha; luz]| path/to/book/audio| path/to/book/video| path/to/book/image| This is an interesting book.| Este es un libro interesante.
-1| 2| phone| teléfono| [taza; tarde; túnel; tapón; tarjeta; transporte]| path/to/phone/audio| path/to/phone/video| path/to/phone/image| She answered the phone quickly.| Ella respondió el teléfono rápidamente.
+1| 1| apple| la manzana| [el manana; la mazana; el mandolino; la makabre; el marlboro; la mama]| I like eating a red apple.| Me gusta comer una manzana roja.
+1| 1| dog| el perro| [la perra; el padrino; la persona; el payaso; la pronto; el pavo]| The dog is barking loudly.| El perro está ladrando fuerte.
+1| 1| house| la casa| [el cosa; la claro; el carne; la cucaracha; el collar; la caballo]| They live in a big house.| Ellos viven en una casa grande.
+1| 1| book| el libro| [la lirio; el lento; la lanza; el lapiz; la luz; el luna]| She is reading a book.| Ella está leyendo un libro.
+1| 1| car| el coche| [la campo; el cosa; la cara; el comida; la cabeza; el casa]| The car is parked outside.| El coche está estacionado afuera.
+1| 1| tree| el árbol| [la alambre; el alma; la amor; el arroz; la arma; el arco]| A bird is sitting on the tree.| Un pájaro está sentado en el árbol.
+1| 1| cat| el gato| [la guerra; el garra; la gorra; el gusano; la guapo; el grande]| The cat is drinking milk.| El gato está bebiendo leche.
+1| 1| water| el agua| [la aguila; el amigo; la alemania; el anteojo; la ansia; el ayuda]| I need a glass of water.| Necesito un vaso de agua.
+1| 1| phone| el teléfono| [la tierra; el tiempo; la texto; el talento; la talla; el tela]| My phone is ringing.| Mi teléfono está sonando.
+1| 1| table| la mesa| [el monto; la madre; el maleta; la manta; el marzo; la madre]| Put the book on the table.| Pon el libro sobre la mesa.
+1| 2| airplane| el avión| [la año; el amigo; la ajo; el arte; la abogado; el acera]| The airplane is flying high.| El avión está volando alto.
+1| 2| mountain| la montaña| [el manzana; la mañana; el murciélago; la mapa; el maleta; la mesa]| They are climbing the mountain.| Ellos están escalando la montaña.
+1| 2| river| el río| [la rojo; el rana; la rueda; el roca; la rayo; el rey]| The river flows through the valley.| El río fluye por el valle.
+1| 2| sun| el sol| [la silla; el sopa; la sonrisa; el secar; la suelo; el silbido]| The sun is shining brightly.| El sol brilla intensamente.
+1| 2| computer| la computadora| [el camino; la casa; el corazón; la cantidad; el cartel; la cuaderno]| I work on a computer every day.| Trabajo en una computadora todos los días.
+1| 2| school| la escuela| [el estrella; la escalera; el esmeralda; la escritura; el espada; la estrella]| The children are at school.| Los niños están en la escuela.
+1| 2| doctor| el doctor| [la donde; el dolor; la dama; el dinero; la dibujo; el diente]| The doctor is treating a patient.| El doctor está tratando a un paciente.
+1| 2| car| el coche| [la cerca; el cielo; la casa; el ciudad; la calle; el comedia]| He bought a new car.| Él compró un coche nuevo.
+1| 2| book| el libro| [la luna; el leche; la lugar; el letra; la lucha; el luz]| This is an interesting book.| Este es un libro interesante.
+1| 2| phone| el teléfono| [la taza; el tarde; la túnel; el tapón; la tarjeta; el transporte]| She answered the phone quickly.| Ella respondió el teléfono rápidamente.

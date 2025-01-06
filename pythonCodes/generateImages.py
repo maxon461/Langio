@@ -68,7 +68,7 @@ def read_words_from_csv(csv_path):
         reader = csv.reader(file, delimiter="|")
         for row in reader:
             if len(row) >= 3:  # Angielskie słowo jest w trzeciej kolumnie
-                words.append(row[2].strip())
+                words.append(row[2].strip().split(' ')[-1].strip())
     return words
 
 # Główna część programu
