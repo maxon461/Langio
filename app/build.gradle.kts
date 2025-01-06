@@ -75,7 +75,7 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.foundation.layout.android)
+
 //    implementation(libs.androidx.foundation.desktop)
     implementation(libs.gson)
 

@@ -45,6 +45,8 @@ class GameController {
     var isDailyRewardTaken: Boolean = false
 
 
+    var unlockedLevelId by mutableIntStateOf(1)
+
     var currentLevelId: Int? = null
         private set
 
@@ -265,9 +267,19 @@ class GameController {
 
     fun unlockLevel() {
         unlockedLevel++
+      
+    fun onExamPassed() {
+        currentLevelId?.let {
+            if (it == unlockedLevelId) {
+                unlockedLevelId++ // Unlock the next level
+                println("Next level unlocked: $unlockedLevelId")
+            }
+        }
     }
 
-    //TEST
+    fun onExamFailed() {
+        println("Exam failed. No level unlocked.")
+    }
 
 
 

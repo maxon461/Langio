@@ -66,6 +66,11 @@ fun ExamSummaryScreen(modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
+                    if (isExamPassed) {
+                        GameController.instance.onExamPassed()
+                    } else {
+                        GameController.instance.onExamFailed()
+                    }
                     GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -78,6 +83,7 @@ fun ExamSummaryScreen(modifier: Modifier = Modifier) {
                     color = Color.White
                 )
             }
+
         }
     }
 }
