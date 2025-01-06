@@ -26,7 +26,7 @@ const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 4
 const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
 const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
 
-const val USER_DATA_FILE = "./usero_data.json"
+const val USER_DATA_FILE = "./useriu_data.json"
 
 
 
