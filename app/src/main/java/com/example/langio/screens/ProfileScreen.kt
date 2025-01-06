@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import com.example.langio.useful.CustomBottomNavigationBar
 import com.example.langio.useful.HeaderBar
 import com.example.langio.R
+import com.example.langio.controllers.GameController
 
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
@@ -63,7 +64,7 @@ fun ProfileBanner(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób obrazu
+                    painter = painterResource(id = R.drawable.cow),
                     contentDescription = "Avatar",
                     modifier = modifier.size(80.dp),
                 )
@@ -73,14 +74,14 @@ fun ProfileBanner(modifier: Modifier = Modifier) {
                 {
                     Row()
                     {
-                        Text(text = "YOUR USERNAME", fontSize = 20.sp, color = Color(0xffFFE342))
+                        Text(text = GameController.instance.username, fontSize = 20.sp, color = Color(0xffFFE342))
                         Image(
-                            painter = painterResource(id = R.drawable.cow), // Zamień na rzeczywisty zasób obrazu
+                            painter = painterResource(id = R.drawable.exam),
                             contentDescription = "Avatar",
                             modifier = modifier.size(15.dp)
                         )
                     }
-                    Text(text = "JOINED: Aug 2022", fontSize = 15.sp, color = Color(0xffFFE342))
+                    Text(text = "JOINED: ${GameController.instance.userData?.joinDate}", fontSize = 15.sp, color = Color(0xffFFE342))
 
                 }
             }
@@ -96,11 +97,12 @@ fun StatisticsGrid(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        StatItem(modifier = modifier, "Learned words", 222)
+        StatItem(modifier = modifier, "Learned words", GameController.instance.learnedWords)
         Spacer(modifier = modifier.height(8.dp))
-        StatItem(modifier = modifier, "Actual level", 33)
+        StatItem(modifier = modifier, "Actual level", GameController.instance.unlockedLevel)
         Spacer(modifier = modifier.height(8.dp))
-        StatItem(modifier = modifier, "Minutes spent in app", 476)
+        StatItem(modifier = modifier, "Minutes spent in app", (GameController.instance.userData?.minutesSpent
+            ?: 0) + GameController.instance.getMinutesOfThisSession())
 
     }
 }
