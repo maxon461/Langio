@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.langio.controllers.DataController
 import com.example.langio.controllers.GameController
+import com.example.langio.models.UserData
 import com.example.langio.ui.theme.LANGIOTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,6 +27,16 @@ class MainActivity : ComponentActivity() {
                 MainScreen()
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val userData = GameController.instance.getActualUserData()
+
+        if (userData != null) {
+            GameController.instance.saveUserData(this, userData)
+        }
+
     }
 }
 
@@ -42,3 +53,5 @@ fun MainScreen() {
         )
     }
 }
+
+

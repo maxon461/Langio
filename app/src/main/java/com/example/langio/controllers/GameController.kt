@@ -1,18 +1,23 @@
 package com.example.langio.controllers
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.langio.models.UserData
 import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
+import kotlin.properties.Delegates
 import kotlin.random.Random
 
 const val BASIC_LIVES_NUMBER = 3
@@ -21,11 +26,24 @@ const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 0//4
 const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
 const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 0//1
 
+const val USER_DATA_FILE = "user_data.json"
+
 
 
 class GameController {
 
     private lateinit var navController: NavHostController
+    var userData by mutableStateOf<UserData?>(null)
+        private set
+    var username: String = "TEMP"
+    var learnedWords by Delegates.notNull<Int>()
+        private set
+    var unlockedLevel by Delegates.notNull<Int>()
+        private set
+    var dailyRewardStreak by Delegates.notNull<Int>()
+        private set
+    var isDailyRewardTaken: Boolean = false
+
 
     var unlockedLevelId by mutableIntStateOf(1)
 
@@ -42,12 +60,10 @@ class GameController {
         }
     }
 
-    var hintNumber by mutableIntStateOf(0)
-        private set
-
     var livesNumber by mutableIntStateOf(0)
         private set
-
+    var hintNumber by mutableIntStateOf(0)
+        private set
     var examChoicesScreenLeft by mutableIntStateOf(0)
         private set
     var examTranslateScreenLeft by mutableIntStateOf(0)
@@ -57,6 +73,7 @@ class GameController {
 
     var currentLevelWords: List<WordInstance>? = null
     var currentScreenWordsToBeUsed: MutableList<WordInstance>? = null
+
 
     enum class Screen(val route: String) {
         HOME("home"),
@@ -77,12 +94,22 @@ class GameController {
     @Composable
     fun SetupNavigation(modifier: Modifier = Modifier, innerPadding: Modifier = Modifier) {
         this.navController = rememberNavController()
+        val context = LocalContext.current
+        userData = loadUserData(context)
+        hintNumber = userData?.hintsRemaining ?: -1
+        username = userData?.username ?: "MICHAŁ"
+        learnedWords = userData?.learnedWords ?: -1
+        unlockedLevel = userData?.unlockedLevel ?: -1
+        dailyRewardStreak = userData?.dailyRewardStreak ?: -1
+        isDailyRewardTaken = userData?.isDailyRewardTaken ?: false
+
 
         NavHost(
             navController = navController,
             startDestination = Screen.HOME.route,
             modifier = modifier.then(innerPadding)
         ) {
+
             addRoutes(this)
         }
     }
@@ -112,6 +139,15 @@ class GameController {
         } catch (e: Exception) {
             println("Navigation failed: ${e.message}")
         }
+    }
+
+    fun loadUserData(context: Context): UserData? {
+        return UserData.loadFromJson(context, USER_DATA_FILE)
+    }
+
+    fun saveUserData(context: Context, userData: UserData) {
+//        UserData.
+        UserData.saveToJson(context, USER_DATA_FILE, userData)
     }
 
     fun setCurrentLevel(levelId: Int) {
@@ -208,6 +244,30 @@ class GameController {
         }
     }
 
+    fun getActualUserData(): UserData? {
+        val newUserData = userData?.let {
+            UserData(
+                username = username,
+                joinDate = it.joinDate,
+                learnedWords = learnedWords,
+                unlockedLevel = unlockedLevel,
+                minutesSpent = it.minutesSpent + getMinutesOfThisSession(),
+                hintsRemaining = hintNumber,
+                dailyRewardStreak = dailyRewardStreak,
+                isDailyRewardTaken = isDailyRewardTaken
+            )
+        }
+        return newUserData
+    }
+
+    fun getMinutesOfThisSession(): Int {
+//        TODO()
+        return 15
+    }
+
+    fun unlockLevel() {
+        unlockedLevel++
+      
     fun onExamPassed() {
         currentLevelId?.let {
             if (it == unlockedLevelId) {
