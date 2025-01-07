@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.langio.MainActivity
+import com.example.langio.MainActivity2
 import com.example.langio.MainScreen
 import com.example.langio.useful.CustomBottomNavigationBar
 import com.example.langio.useful.HeaderBar

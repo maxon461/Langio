@@ -1,6 +1,7 @@
 package com.example.langio.useful
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -36,12 +37,13 @@ class FlippableController {
             flipToBack()
         else flipToFront()
     }
+    fun getCurrentSide(): FlippableState {
+        return _currentSide
+    }
 }
 
 
 @Composable
 fun rememberFlipController(): FlippableController {
-    return remember {
-        FlippableController()
-    }
+    return remember { FlippableController() }
 }

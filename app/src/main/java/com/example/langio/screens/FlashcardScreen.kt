@@ -1,7 +1,6 @@
 package com.example.langio.screens
 
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +45,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.langio.controllers.GameController
 import com.example.langio.models.WordInstance
 import com.example.langio.useful.BackToLevelMenuButton
+import com.example.langio.useful.FlippableController
 import com.example.langio.useful.FlippableState
 import kotlin.random.Random
 
@@ -55,6 +55,7 @@ fun FlashcardScreen(modifier: Modifier = Modifier) {
     val flashcards = remember { GameController.instance.currentScreenWordsToBeUsed ?: mutableListOf() }
     val currentFlashcardIndex = remember { mutableStateOf(Random.nextInt(flashcards.size)) }
     val wordInstance = remember { mutableStateOf(flashcards.removeAt(currentFlashcardIndex.value))}
+    val flippableController = rememberFlipController()
 
 
 
@@ -75,7 +76,7 @@ fun FlashcardScreen(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 if (flashcards.isNotEmpty()) {
-                    FlashCard(wordInstance = wordInstance)
+                    FlashCard(wordInstance = wordInstance, flippableController)
                 } else {
                     Text(
                         text = "No flashcards available.",
@@ -97,7 +98,8 @@ fun FlashcardScreen(modifier: Modifier = Modifier) {
                     onClick = {
                         if (flashcards.isNotEmpty()) {
 
-//                            TODO FLIP CARD
+                            if (flippableController.getCurrentSide() == FlippableState.BACK)
+                                flippableController.flip()
 
                             currentFlashcardIndex.value = Random.nextInt(flashcards.size)
                             wordInstance.value =  flashcards.removeAt(currentFlashcardIndex.value)
@@ -123,7 +125,7 @@ fun FlashcardScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun FlashCard(wordInstance: MutableState<WordInstance>) {
+fun FlashCard(wordInstance: MutableState<WordInstance>, flippableController: FlippableController) {
     val context = LocalContext.current
     val image_id = context.resources.getIdentifier("${wordInstance.value.englishWord}_img", "raw", "com.example.langio")
     val audio_en_id = context.resources.getIdentifier("${wordInstance.value.englishWord}_en", "raw", "com.example.langio")
@@ -133,6 +135,8 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
 
     val animateColor = Color.LightGray
     var isVideoDialogVisible by remember { mutableStateOf(false) }
+//    flipController
+
 
 
     Flippable(
@@ -279,7 +283,7 @@ fun FlashCard(wordInstance: MutableState<WordInstance>) {
                 }
             }
         },
-        flipController = rememberFlipController()
+        flipController = flippableController
     )
 
     if (isVideoDialogVisible) {

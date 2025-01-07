@@ -10,6 +10,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +43,8 @@ fun Flippable(
     flipDurationMs: Int = 400,
     cameraDistance: Float = 30.0F,
 
-    onFlippedListener: (currentSide: FlippableState) -> Unit = { _, -> }
+    onFlippedListener: (currentSide: FlippableState) -> Unit = { _, -> },
+
 ) {
     var prevViewState by remember { mutableStateOf(FlippableState.INITIALIZED) }
     var flippableState by remember { mutableStateOf(FlippableState.INITIALIZED) }
@@ -50,6 +52,8 @@ fun Flippable(
         targetState = flippableState,
         label = "Flip Transition",
     )
+
+
 
     LaunchedEffect(key1 = flipController, block = {
         flipController.flipRequests
