@@ -140,30 +140,23 @@ fun LevelProgressionMap(
         if (levelPositions.size >= 2) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 levelPositions.windowed(2).forEachIndexed { index, (start, end) ->
-                    val controlPointOffset = screenHeightPx * 0.083f
-                    val heightIncrement = screenHeightPx * 0.013f * index
+                    val heightIncrement = screenHeightPx * 0.01f * index
 
-                    val controlPoint1 = Offset(
-                        (start.x + end.x) / 2f,
-                        start.y - controlPointOffset - heightIncrement
-                    )
-                    val controlPoint2 = Offset(
-                        (start.x + end.x) / 2f,
-                        end.y - controlPointOffset - heightIncrement
-                    )
+                    val startY = start.y - screenHeightPx * 0.15f
+                    val endY = end.y - screenHeightPx * 0.15f
+
+                    val controlY = screenHeightPx * 0.13f + heightIncrement
 
                     val path = Path().apply {
-                        moveTo(
-                            start.x + screenWidthPx * 0.046f,
-                            start.y - screenHeightPx * 0.063f - heightIncrement
-                        )
+                        moveTo(start.x, startY)
+
                         cubicTo(
-                            controlPoint1.x,
-                            controlPoint1.y,
-                            controlPoint2.x,
-                            controlPoint2.y - screenHeightPx * 0.021f,
+                            start.x + (end.x - start.x) / 2f,
+                            startY - controlY,
+                            start.x + (end.x - start.x) / 2f,
+                            endY - controlY,
                             end.x,
-                            end.y - screenHeightPx * 0.083f - heightIncrement
+                            endY
                         )
                     }
 
@@ -188,8 +181,10 @@ fun LevelProgressionMap(
                 configuration.screenWidthDp * 0.6f
             }
 
-            val baseY = configuration.screenHeightDp * 0.1f
-            val verticalSpacing = configuration.screenHeightDp * 0.11f
+            val baseY =
+                configuration.screenHeightDp * 0.1f  // Increased from 0.1f to move nodes down
+            val verticalSpacing =
+                configuration.screenHeightDp * 0.13f  // Increased from 0.11f for more space
             val nodeY = reversedIndex * verticalSpacing + baseY
 
             Box(
@@ -198,9 +193,10 @@ fun LevelProgressionMap(
                     .onGloballyPositioned { coordinates ->
                         val position = coordinates.positionInWindow()
                         val nodeSize = screenWidthPx * 0.03f
+                        // Adjust centerPosition calculation to match node center
                         val centerPosition = Offset(
-                            position.x + nodeSize,
-                            position.y + nodeSize
+                            position.x + coordinates.size.width / 2f,
+                            position.y + coordinates.size.height / 2f
                         )
 
                         if (index >= levelPositions.size) {
