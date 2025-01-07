@@ -2,6 +2,7 @@ package com.example.langio.controllers
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +21,7 @@ import com.example.langio.models.UserData
 import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import kotlin.properties.Delegates
 
 const val BASIC_LIVES_NUMBER = 3
@@ -27,8 +29,9 @@ const val NUMBER_OF_WORDS_PER_LEVEL = 10
 const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 4
 const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
 const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
+val TEST_DATE_NOW = LocalDate.now()//LocalDate.of(2025, 1, 13)
 
-const val USER_DATA_FILE = "./useriu_dataa.json"
+const val USER_DATA_FILE = ".\\user_datahgfsa11.json"
 
 
 
@@ -42,11 +45,12 @@ class GameController {
     var username: String = "TEMP"
     var learnedWords by Delegates.notNull<Int>()
         private set
-//    var unlockedLevel by Delegates.notNull<Int>()
+    //    var unlockedLevel by Delegates.notNull<Int>()
 //        private set
     var dailyRewardStreak by Delegates.notNull<Int>()
         private set
     var isDailyRewardTaken: Boolean = false
+    var lastCollectedDate: LocalDate = LocalDate.of(2000, 12, 11)
 
 
     var unlockedLevelId by mutableIntStateOf(1)
@@ -102,7 +106,32 @@ class GameController {
         unlockedLevelId = userData?.unlockedLevel ?: -1
         dailyRewardStreak = userData?.dailyRewardStreak ?: -1
         isDailyRewardTaken = userData?.isDailyRewardTaken ?: false
+        lastCollectedDate = if (userData?.lastCollectedDate != null) {
+            LocalDate.parse(userData!!.lastCollectedDate)
+        } else {
+            LocalDate.of(1000, 12, 22)
+        }
 
+        Log.e("DAYS DIFF", ChronoUnit.DAYS.between(lastCollectedDate, TEST_DATE_NOW/*LocalDate.now()*/).toInt().toString())
+
+        if (ChronoUnit.DAYS.between(lastCollectedDate, TEST_DATE_NOW/*LocalDate.now()*/).toInt() == 1 && isDailyRewardTaken) {
+            dailyRewardStreak++
+            isDailyRewardTaken = false
+            Log.e("TEST", "WELCOME BACK HERE'S ANOTHER REWARD")
+        }
+        else if (ChronoUnit.DAYS.between(lastCollectedDate, TEST_DATE_NOW/*LocalDate.now()*/).toInt() == 2) {
+            dailyRewardStreak = 1
+            isDailyRewardTaken = false
+            Log.e("TEST", "YOU SHOULD VISIT US MORE OFTEN")
+        }
+
+        if (dailyRewardStreak > 16) {
+            dailyRewardStreak = 1
+        }
+
+        println("AFTER CHANGES")
+        println(isDailyRewardTaken)
+        println(dailyRewardStreak)
 
         NavHost(
             navController = navController,
@@ -164,8 +193,8 @@ class GameController {
         currentScreenWordsToBeUsed = currentLevelWords?.toMutableList()
     }
 
-    fun increaseHintNumber() {
-        hintNumber++
+    fun increaseHintNumber(hintNumberToAdd: Int = 1) {
+        hintNumber = hintNumber + hintNumberToAdd
         println("HintNumber increased: $hintNumber")
     }
 
@@ -252,7 +281,8 @@ class GameController {
                 minutesSpent = it.minutesSpent + minutesPassed,
                 hintsRemaining = hintNumber,
                 dailyRewardStreak = dailyRewardStreak,
-                isDailyRewardTaken = isDailyRewardTaken
+                isDailyRewardTaken = isDailyRewardTaken,
+                lastCollectedDate = lastCollectedDate.toString()
             )
         }
         return newUserData
@@ -263,7 +293,7 @@ class GameController {
         return 15
     }
 
-      
+
     fun onExamPassed() {
         currentLevelId?.let {
             if (it == unlockedLevelId) {
@@ -280,37 +310,20 @@ class GameController {
     }
 
     fun collectReward(context: Context, day: Int) {
-        val today = LocalDate.now()
-
-//        if (day > (userData?.dailyRewardStreak ?: 0)) {
-//            userData?.apply {
-//                dailyRewardStreak = day
-//                lastCollectedDate = today.toString()
-//                increaseHintNumber()
-//                isDailyRewardTaken = true
-//            }
-////            saveUserData(context, userData!!)
-//            updateStreak(context)
-//            println("Reward for day $day collected!")
-//        } else {
-//            println("Reward for day $day is not available or already collected.")
-//        }
+        lastCollectedDate = TEST_DATE_NOW//LocalDate.now()
+        increaseHintNumber(((day-1)/4).toInt() + 1)
         isDailyRewardTaken = true
-        increaseHintNumber()
         println("REWARDTAKEN")
     }
 
 
     fun getUnlockedDays(context: Context): Int {
-        val today = LocalDate.now()
-        val lastCollectedDate = userData?.lastCollectedDate?.let { LocalDate.parse(it) }
+//        // Reset streak if not consecutive
+//        if (lastCollectedDate == null || lastCollectedDate.plusDays(1) != today) {
+//            resetStreak(context)
+//        }
 
-        // Reset streak if not consecutive
-        if (lastCollectedDate == null || lastCollectedDate.plusDays(1) != today) {
-            resetStreak(context)
-        }
-
-        return userData?.dailyRewardStreak ?: 1
+        return dailyRewardStreak
     }
 
     private fun resetStreak(context: Context) {
@@ -322,19 +335,19 @@ class GameController {
         println("Streak reset to 1.")
     }
 
-    fun updateStreak(context: Context) {
-        val today = LocalDate.now()
-        val lastCollectedDate = userData?.lastCollectedDate?.let { LocalDate.parse(it) }
-
-        // Update the streak if today is consecutive with the last collected date
-        if (lastCollectedDate == null || lastCollectedDate.plusDays(1) == today) {
-            userData?.dailyRewardStreak = (userData?.dailyRewardStreak ?: 1) + 1
-        } else {
-            resetStreak(context)
-        }
-        userData?.lastCollectedDate = today.toString()
-        saveUserData(context, userData!!)
-    }
+//    fun updateStreak(context: Context) {
+//        val today = LocalDate.now()
+//        val lastCollectedDate = userData?.lastCollectedDate?.let { LocalDate.parse(it) }
+//
+//        // Update the streak if today is consecutive with the last collected date
+//        if (lastCollectedDate == null || lastCollectedDate.plusDays(1) == today) {
+//            userData?.dailyRewardStreak = (userData?.dailyRewardStreak ?: 1) + 1
+//        } else {
+//            resetStreak(context)
+//        }
+//        userData?.lastCollectedDate = today.toString()
+//        saveUserData(context, userData!!)
+//    }
 
 
 

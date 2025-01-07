@@ -78,7 +78,6 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
     val showDialog = remember { mutableStateOf(false) }
     val unlockedDays = GameController.instance.getUnlockedDays(context)
     val userData = GameController.instance.userData
-    val isDailyRewardTaken = userData?.isDailyRewardTaken ?: true
 
     Column(
         modifier = modifier
@@ -99,7 +98,12 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
                         currentStreak = unlockedDays,
                         isDailyRewardTaken = GameController.instance.isDailyRewardTaken, // Today's reward is unavailable if taken
                         onClick = {
-                            if (day == unlockedDays && !isDailyRewardTaken) {
+                            println("KLIKNIETO ALE JESZCZE PRZED IFEM")
+                            println("day = $day")
+                            println("unlockedDays = $unlockedDays")
+                            println("isDailyRewardTaken = ${GameController.instance.isDailyRewardTaken}")
+                            if (day == unlockedDays && !GameController.instance.isDailyRewardTaken) {
+                                println("KLIKNIETO ALE JUŻ W IFEM")
                                 GameController.instance.collectReward(context, day)
                                 showDialog.value = true
                             }
@@ -135,7 +139,13 @@ fun RewardItem(day: Int, currentStreak: Int, isDailyRewardTaken: Boolean, onClic
         Column(
             modifier = modifier
                 .background(
-                    if (isAvailable) Color(0xFF8559A5) else Color.Gray, // Gray out unavailable rewards
+                    if (isAvailable)
+                        Color(0xFFD2BE13)
+                    else
+                        if (currentStreak >= day)
+                            Color(0xFF8559A5)
+                        else
+                            Color.Gray, // Gray out unavailable rewards
                     RoundedCornerShape(8.dp)
                 )
                 .padding(8.dp)

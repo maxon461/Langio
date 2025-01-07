@@ -16,13 +16,15 @@ data class UserData(
     @SerializedName("hints_remaining") var hintsRemaining: Int,
     @SerializedName("daily_reward_streak") var dailyRewardStreak: Int,
     @SerializedName("is_daily_reward_taken") var isDailyRewardTaken: Boolean,
-    @SerializedName("last_collected_date") var lastCollectedDate: String? = null
+    @SerializedName("last_collected_date") var lastCollectedDate: String
 ) {
     companion object {
         fun loadFromJson(context: Context, fileName: String): UserData? {
             return try {
                 val file = File(context.filesDir, fileName)
                 if (file.exists()) {
+                    println()
+                    displayJsonContent(context, fileName)
                     val reader = FileReader(file)
                     Gson().fromJson(reader, UserData::class.java).also { reader.close() }
                 } else {
@@ -34,9 +36,8 @@ data class UserData(
                         minutesSpent = 0,
                         hintsRemaining = 5,
                         dailyRewardStreak = 1,
-                        isDailyRewardTaken = false
-
-
+                        isDailyRewardTaken = false,
+                        lastCollectedDate = LocalDate.now().toString()
                     )
                     saveToJson(context, fileName, defaultUserData)
                     defaultUserData
@@ -47,7 +48,6 @@ data class UserData(
             }
         }
 
-
         fun saveToJson(context: Context, fileName: String, userData: UserData) {
             try {
                 val file = File(context.filesDir, fileName)
@@ -57,5 +57,21 @@ data class UserData(
             }
         }
 
+        fun displayJsonContent(context: Context, fileName: String): String? {
+            return try {
+                val file = File(context.filesDir, fileName)
+                if (file.exists()) {
+                    val jsonContent = file.readText() // Wczytanie zawartości pliku jako tekst
+                    println("Zawartość JSON-a: $jsonContent") // Wypisanie w konsoli
+                    jsonContent
+                } else {
+                    println("Plik nie istnieje.")
+                    null
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
 }
