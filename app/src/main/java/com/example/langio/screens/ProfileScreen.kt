@@ -24,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.langio.MainActivity
+import com.example.langio.MainScreen
 import com.example.langio.useful.CustomBottomNavigationBar
 import com.example.langio.useful.HeaderBar
 import com.example.langio.R
@@ -97,12 +99,11 @@ fun StatisticsGrid(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        StatItem(modifier = modifier, "Learned words", GameController.instance.learnedWords)
+        StatItem(modifier = modifier, "Learned words", (GameController.instance.unlockedLevelId-1) * 10)
         Spacer(modifier = modifier.height(8.dp))
         StatItem(modifier = modifier, "Actual level", GameController.instance.unlockedLevelId)
         Spacer(modifier = modifier.height(8.dp))
-        StatItem(modifier = modifier, "Minutes spent in app", (GameController.instance.userData?.minutesSpent
-            ?: 0) + GameController.instance.getMinutesOfThisSession())
+        StatItem(modifier = modifier, "Minutes spent in app", ((GameController.instance.userData?.minutesSpent ?: 0) + MainActivity.getMinutesPassed()).toInt())
 
     }
 }

@@ -1,7 +1,6 @@
 package com.example.langio.controllers
 
 import android.content.Context
-import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -19,7 +18,6 @@ import com.example.langio.models.UserData
 import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
 import kotlin.properties.Delegates
-import kotlin.random.Random
 
 const val BASIC_LIVES_NUMBER = 3
 const val NUMBER_OF_WORDS_PER_LEVEL = 10
@@ -249,14 +247,14 @@ class GameController {
         }
     }
 
-    fun getActualUserData(): UserData? {
+    fun getActualUserData(minutesPassed: Long): UserData? {
         val newUserData = userData?.let {
             UserData(
                 username = username,
                 joinDate = it.joinDate,
                 learnedWords = learnedWords,
                 unlockedLevel = unlockedLevelId,
-                minutesSpent = it.minutesSpent + getMinutesOfThisSession(),
+                minutesSpent = it.minutesSpent + minutesPassed,
                 hintsRemaining = hintNumber,
                 dailyRewardStreak = dailyRewardStreak,
                 isDailyRewardTaken = isDailyRewardTaken

@@ -12,7 +12,7 @@ data class UserData(
     @SerializedName("join_date") var joinDate: String,
     @SerializedName("learned_words") var learnedWords: Int,
     @SerializedName("unlocked_level") var unlockedLevel: Int,
-    @SerializedName("minutes_spent_in_app") var minutesSpent: Int,
+    @SerializedName("minutes_spent_in_app") var minutesSpent: Long,
     @SerializedName("hints_remaining") var hintsRemaining: Int,
     @SerializedName("daily_reward_streak") var dailyRewardStreak: Int,
     @SerializedName("is_daily_reward_taken") var isDailyRewardTaken: Boolean
