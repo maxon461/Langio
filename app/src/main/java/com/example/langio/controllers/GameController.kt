@@ -1,6 +1,8 @@
 package com.example.langio.controllers
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -17,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.langio.models.UserData
 import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
+import java.time.LocalDate
 import kotlin.properties.Delegates
 
 const val BASIC_LIVES_NUMBER = 3
@@ -30,6 +33,7 @@ const val USER_DATA_FILE = "./useriu_dataa.json"
 
 
 class GameController {
+
 
 
     private lateinit var navController: NavHostController
@@ -50,15 +54,6 @@ class GameController {
     var currentLevelId: Int? = null
         private set
 
-    private val _collectedRewards = mutableStateListOf<Int>()
-    val collectedRewards: List<Int> get() = _collectedRewards
-
-    fun collectReward(day: Int) {
-        if (!_collectedRewards.contains(day)) {
-            _collectedRewards.add(day)
-            increaseHintNumber()
-        }
-    }
 
     var livesNumber by mutableIntStateOf(0)
         private set
@@ -282,6 +277,60 @@ class GameController {
     fun onExamFailed() {
         println("Exam failed. No level unlocked.")
         changeScreen(Screen.LEVEL_MENU)
+    }
+
+    fun collectReward(context: Context, day: Int) {
+        val today = LocalDate.now()
+
+        if (  day  > (userData?.dailyRewardStreak ?: 0)) {
+            userData?.apply {
+                dailyRewardStreak = day
+                lastCollectedDate = today.toString()
+                increaseHintNumber()
+                isDailyRewardTaken = true
+            }
+            saveUserData(context, userData!!)
+            updateStreak(context)
+            println("Reward for day $day collected!")
+        } else {
+            println("Reward for day $day is not available or already collected.")
+        }
+    }
+
+
+    fun getUnlockedDays(context: Context): Int {
+        val today = LocalDate.now()
+        val lastCollectedDate = userData?.lastCollectedDate?.let { LocalDate.parse(it) }
+
+        // Reset streak if not consecutive
+        if (lastCollectedDate == null || lastCollectedDate.plusDays(1) != today) {
+            resetStreak(context)
+        }
+
+        return userData?.dailyRewardStreak ?: 1
+    }
+
+    private fun resetStreak(context: Context) {
+        userData?.apply {
+            dailyRewardStreak = 1
+            isDailyRewardTaken = false
+        }
+        saveUserData(context, userData!!)
+        println("Streak reset to 1.")
+    }
+
+    fun updateStreak(context: Context) {
+        val today = LocalDate.now()
+        val lastCollectedDate = userData?.lastCollectedDate?.let { LocalDate.parse(it) }
+
+        // Update the streak if today is consecutive with the last collected date
+        if (lastCollectedDate == null || lastCollectedDate.plusDays(1) == today) {
+            userData?.dailyRewardStreak = (userData?.dailyRewardStreak ?: 1) + 1
+        } else {
+            resetStreak(context)
+        }
+        userData?.lastCollectedDate = today.toString()
+        saveUserData(context, userData!!)
     }
 
 

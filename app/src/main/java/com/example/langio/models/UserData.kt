@@ -15,7 +15,8 @@ data class UserData(
     @SerializedName("minutes_spent_in_app") var minutesSpent: Long,
     @SerializedName("hints_remaining") var hintsRemaining: Int,
     @SerializedName("daily_reward_streak") var dailyRewardStreak: Int,
-    @SerializedName("is_daily_reward_taken") var isDailyRewardTaken: Boolean
+    @SerializedName("is_daily_reward_taken") var isDailyRewardTaken: Boolean,
+    @SerializedName("last_collected_date") var lastCollectedDate: String? = null
 ) {
     companion object {
         fun loadFromJson(context: Context, fileName: String): UserData? {
@@ -34,6 +35,8 @@ data class UserData(
                         hintsRemaining = 5,
                         dailyRewardStreak = 1,
                         isDailyRewardTaken = false
+
+
                     )
                     saveToJson(context, fileName, defaultUserData)
                     defaultUserData
