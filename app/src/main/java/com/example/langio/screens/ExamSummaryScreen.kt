@@ -1,6 +1,7 @@
 package com.example.langio.screens
 
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -84,6 +85,11 @@ fun ExamSummaryScreen(modifier: Modifier = Modifier) {
             }
 
         }
+    }
+
+    BackHandler {
+        println("BACK PRESSED")
+//      DO NOTHING
     }
 }
 

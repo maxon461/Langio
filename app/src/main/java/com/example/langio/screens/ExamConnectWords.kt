@@ -1,5 +1,6 @@
 package com.example.langio.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -62,6 +63,9 @@ fun ExamConnectWordsScreen(
         pairs.mapIndexed { index, pair -> pair.first to shuffledSecondWords[index] }
     }
 
+    val answerState = remember { mutableStateOf<GameController.AnswerState>(GameController.AnswerState.IDLE) }
+
+
 
     Scaffold(
         topBar = { HeaderBar(modifier, showLevel = true, showExam = true, showLives = true) }
@@ -107,10 +111,18 @@ fun ExamConnectWordsScreen(
 
                         drawPath(
                             path = path,
-                            color = if (hints.any { it.first == english && it.second == spanish }) {
+                            color =
+                            if (hints.any { it.first == english && it.second == spanish }) {
                                 Color.Green
-                            } else {
-                                Color.White
+                            }
+                            else
+                            {
+                                when (answerState.value) {
+                                    GameController.AnswerState.IDLE -> Color.Gray
+                                    GameController.AnswerState.CORRECT -> Color.Green
+                                    GameController.AnswerState.INCORRECT -> Color.Red
+                                }
+
                             },
                             style = Stroke(
                                 width = 8f,
@@ -135,6 +147,7 @@ fun ExamConnectWordsScreen(
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
                                     .clickable {
+                                        answerState.value = GameController.AnswerState.IDLE
                                         selectedSpanishWord = esWord
                                         if (selectedEnglishWord != null) {
                                             connections.removeAll { it.first == selectedEnglishWord!! || it.second == esWord }
@@ -164,6 +177,7 @@ fun ExamConnectWordsScreen(
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
                                     .clickable {
+                                        answerState.value = GameController.AnswerState.IDLE
                                         selectedEnglishWord = enWord
                                         if (selectedSpanishWord != null) {
                                             connections.removeAll { it.second == selectedSpanishWord!! || it.first == enWord}
@@ -188,15 +202,20 @@ fun ExamConnectWordsScreen(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
                 onClick = {
-                    if (connections.toSet() == correctPairs?.toSet()) {
-                        correctConnection()
+                    if (connections.size == 4)
+                    {
+                        if (connections.toSet() == correctPairs?.toSet()) {
+                            answerState.value = GameController.AnswerState.CORRECT
+                            correctConnection()
+                        }
+                        else {
+                            answerState.value = GameController.AnswerState.INCORRECT
+                            incorrectConnection()
+                        }
+                        println(displayedPairs)
+                        println(correctPairs)
+                        println(connections)
                     }
-                    else {
-                        incorrectConnection()
-                    }
-                    println(displayedPairs)
-                    println(correctPairs)
-                    println(connections)
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
@@ -216,6 +235,11 @@ fun ExamConnectWordsScreen(
 
 
         }
+    }
+
+    BackHandler {
+        println("BACK PRESSED")
+//      DO NOTHING
     }
 }
 

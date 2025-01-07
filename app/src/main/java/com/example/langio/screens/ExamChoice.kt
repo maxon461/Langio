@@ -1,5 +1,6 @@
 package com.example.langio.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,8 +51,6 @@ fun ExamChoice (modifier: Modifier = Modifier) {
     val answers = remember { mutableStateListOf<Pair<String, Boolean>>() }
 
 
-
-
     Scaffold(
         topBar = { HeaderBar(modifier, showLevel = true, showExam = true, showLives = true) }
     ) { paddingValues ->
@@ -77,6 +76,10 @@ fun ExamChoice (modifier: Modifier = Modifier) {
                 takeAChoiceHint(hintKnownIncorrect, knownIncorrect, answers)
             })
         }
+    }
+    BackHandler {
+        println("BACK PRESSED")
+//      DO NOTHING
     }
 }
 

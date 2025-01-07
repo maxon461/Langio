@@ -1,5 +1,6 @@
 package com.example.langio.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.Nullable
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -100,6 +101,11 @@ fun MapScreen(
                 )
             }
         }
+    }
+
+    BackHandler {
+        println("BACK PRESSED")
+//      DO NOTHING
     }
 }
 
