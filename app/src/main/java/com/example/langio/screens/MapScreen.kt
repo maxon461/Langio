@@ -2,6 +2,16 @@ package com.example.langio.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.Nullable
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,8 +28,10 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -116,37 +128,52 @@ fun LevelProgressionMap(
     modifier: Modifier = Modifier
 ) {
     val levelPositions = remember { mutableStateListOf<Offset>() }
-    val unlockedLevelId = GameController.instance.unlockedLevelId // Get the highest unlocked level ID
+    val unlockedLevelId = GameController.instance.unlockedLevelId
 
-    Box(modifier = modifier) {
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+
+    val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
+    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+
+    Box(modifier = modifier.fillMaxSize()) {
         if (levelPositions.size >= 2) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 levelPositions.windowed(2).forEachIndexed { index, (start, end) ->
-                    val controlPointOffset = 150f
-                    val heightIncrement = 30f * index
+                    val controlPointOffset = screenHeightPx * 0.083f
+                    val heightIncrement = screenHeightPx * 0.013f * index
 
                     val controlPoint1 = Offset(
-                        (start.x + end.x) / 2,
+                        (start.x + end.x) / 2f,
                         start.y - controlPointOffset - heightIncrement
                     )
                     val controlPoint2 = Offset(
-                        (start.x + end.x) / 2,
+                        (start.x + end.x) / 2f,
                         end.y - controlPointOffset - heightIncrement
                     )
 
                     val path = Path().apply {
-                        moveTo(start.x + 50, start.y - 150 - heightIncrement)
+                        moveTo(
+                            start.x + screenWidthPx * 0.046f,
+                            start.y - screenHeightPx * 0.063f - heightIncrement
+                        )
                         cubicTo(
-                            controlPoint1.x, controlPoint1.y,
-                            controlPoint2.x, controlPoint2.y - 50,
-                            end.x, end.y - 200 - heightIncrement
+                            controlPoint1.x,
+                            controlPoint1.y,
+                            controlPoint2.x,
+                            controlPoint2.y - screenHeightPx * 0.021f,
+                            end.x,
+                            end.y - screenHeightPx * 0.083f - heightIncrement
                         )
                     }
 
                     drawPath(
                         path = path,
                         color = if (levels[index + 1].id <= unlockedLevelId) Color(0xFF9333EA) else Color.Gray,
-                        style = Stroke(width = 4f)
+                        style = Stroke(
+                            width = screenWidthPx * 0.004f,
+                            cap = StrokeCap.Round
+                        )
                     )
                 }
             }
@@ -154,18 +181,23 @@ fun LevelProgressionMap(
 
         levels.forEachIndexed { index, level ->
             val reversedIndex = levels.size - 1 - index
-            val baseY = 50
-            val spacing = 110
 
-            val nodeX = if (reversedIndex % 2 == 0) 120 else 240
-            val nodeY = reversedIndex * spacing + baseY
+            val nodeX = if (reversedIndex % 2 == 0) {
+                configuration.screenWidthDp * 0.2f
+            } else {
+                configuration.screenWidthDp * 0.6f
+            }
+
+            val baseY = configuration.screenHeightDp * 0.1f
+            val verticalSpacing = configuration.screenHeightDp * 0.11f
+            val nodeY = reversedIndex * verticalSpacing + baseY
 
             Box(
                 modifier = Modifier
                     .offset(x = nodeX.dp, y = nodeY.dp)
                     .onGloballyPositioned { coordinates ->
                         val position = coordinates.positionInWindow()
-                        val nodeSize = 32f
+                        val nodeSize = screenWidthPx * 0.03f
                         val centerPosition = Offset(
                             position.x + nodeSize,
                             position.y + nodeSize
@@ -179,13 +211,14 @@ fun LevelProgressionMap(
                     }
             ) {
                 LevelNode(
-                    level = level.copy(isUnlocked = level.id <= unlockedLevelId), // Check if level is unlocked
+                    level = level.copy(isUnlocked = level.id <= unlockedLevelId),
                     onClick = { onLevelClick(level) }
                 )
             }
         }
     }
 }
+
 
 
 
