@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import com.example.langio.controllers.GameController
 import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
@@ -52,6 +54,18 @@ fun ExamConnectWordsScreen(
     val connections = remember { mutableStateListOf<Pair<String, String>>() }
 
     val hints = remember{ mutableStateListOf<Pair<String, String>>() }
+
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+
+    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+    val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
+
+    val verticalOffset = remember(screenHeightPx) { screenHeightPx * 0.125f }
+    val horizontalOffset = remember(screenWidthPx) { screenWidthPx * 0.034f }
+    val controlOffsetX = remember(screenWidthPx) { screenWidthPx * 0.046f }
+    val controlOffsetY = remember(screenHeightPx) { screenHeightPx * 0.021f }
+    val strokeWidth = remember(screenWidthPx) { screenWidthPx * 0.007f }
 
     val correctPairs = GameController.instance.currentScreenWordsToBeUsed
         ?.subList(0, 4)
@@ -84,23 +98,20 @@ fun ExamConnectWordsScreen(
 
             ) {
                 // Lines Canvas
-                Canvas(modifier = Modifier
-//                    .padding(horizontal = 16.dp)
-                    .fillMaxSize(),
-                ) {
+                Canvas(modifier = Modifier.fillMaxSize()) {
                     connections.forEach { (english, spanish) ->
                         val startPos = spanishPositions[spanish] ?: return@forEach
                         val endPos = englishPositions[english] ?: return@forEach
 
-                        val adjustedStartPos = Offset(startPos.x, startPos.y - 300f)
-                        val adjustedEndPos = Offset(endPos.x - 80, endPos.y - 300f)
+                        val adjustedStartPos = Offset(startPos.x, startPos.y - verticalOffset)
+                        val adjustedEndPos = Offset(endPos.x - horizontalOffset, endPos.y - verticalOffset)
 
                         val path = Path().apply {
                             moveTo(adjustedStartPos.x, adjustedStartPos.y)
 
-                            val controlPoint1X = adjustedStartPos.x - 50f
-                            val controlPoint2X = adjustedEndPos.x - 50f
-                            val controlPointY = (adjustedStartPos.y + adjustedEndPos.y) / 2 - 50f
+                            val controlPoint1X = adjustedStartPos.x - controlOffsetX
+                            val controlPoint2X = adjustedEndPos.x - controlOffsetX
+                            val controlPointY = (adjustedStartPos.y + adjustedEndPos.y) / 2 - controlOffsetY
 
                             cubicTo(
                                 controlPoint1X, controlPointY,
@@ -111,21 +122,17 @@ fun ExamConnectWordsScreen(
 
                         drawPath(
                             path = path,
-                            color =
-                            if (hints.any { it.first == english && it.second == spanish }) {
+                            color = if (hints.any { it.first == english && it.second == spanish }) {
                                 Color.Green
-                            }
-                            else
-                            {
+                            } else {
                                 when (answerState.value) {
                                     GameController.AnswerState.IDLE -> Color.Gray
                                     GameController.AnswerState.CORRECT -> Color.Green
                                     GameController.AnswerState.INCORRECT -> Color.Red
                                 }
-
                             },
                             style = Stroke(
-                                width = 8f,
+                                width = strokeWidth,
                                 cap = StrokeCap.Round
                             )
                         )
@@ -217,7 +224,11 @@ fun ExamConnectWordsScreen(
                         println(connections)
                     }
                 },
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(bottom = 16.dp),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
                     text = "Check",

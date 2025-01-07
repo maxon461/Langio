@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -177,7 +178,7 @@ fun InputBox(
                 color = Color.Yellow,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(8.dp)
+                modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
@@ -194,10 +195,16 @@ fun InputBox(
                         GameController.instance.decreaseLivesNumber()
                     }
                 },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
                     text = "Check",
                     color = Color(0xFFF5F5F5),
+                    fontSize = 18.sp
                 )
             }
         }
