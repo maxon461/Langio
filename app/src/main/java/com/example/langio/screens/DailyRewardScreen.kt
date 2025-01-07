@@ -77,7 +77,8 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
     val context = LocalContext.current // Get the current context
     val showDialog = remember { mutableStateOf(false) }
     val unlockedDays = GameController.instance.getUnlockedDays(context) // Fetch unlocked days based on streak
-    val isDailyRewardTaken = GameController.instance.isDailyRewardTaken // Check if today's reward is taken
+    val userData = GameController.instance.userData
+    val isDailyRewardTaken = userData?.isDailyRewardTaken ?: true
 
     Column(
         modifier = modifier
@@ -96,7 +97,7 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
                     RewardItem(
                         day = day,
                         currentStreak = unlockedDays,
-                        isDailyRewardTaken = day == unlockedDays && isDailyRewardTaken, // Today's reward is unavailable if taken
+                        isDailyRewardTaken = isDailyRewardTaken, // Today's reward is unavailable if taken
                         onClick = {
                             if (day == unlockedDays && !isDailyRewardTaken) {
                                 GameController.instance.collectReward(context, day)
@@ -128,7 +129,7 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
 
 @Composable
 fun RewardItem(day: Int, currentStreak: Int, isDailyRewardTaken: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val isAvailable = day <= currentStreak && !(day == currentStreak && isDailyRewardTaken)
+    val isAvailable = (day == currentStreak && !isDailyRewardTaken)
 
     Box(modifier = modifier.padding(8.dp)) {
         Column(

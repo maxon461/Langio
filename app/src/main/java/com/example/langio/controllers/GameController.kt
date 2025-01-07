@@ -54,12 +54,6 @@ class GameController {
     var currentLevelId: Int? = null
         private set
 
-    private val _collectedRewards = mutableListOf<Int>()
-    private var lastCollectedDate: LocalDate? = null
-    private var currentStreak = 1
-
-    val collectedRewards: List<Int> get() = _collectedRewards
-
 
     var livesNumber by mutableIntStateOf(0)
         private set
@@ -288,7 +282,7 @@ class GameController {
     fun collectReward(context: Context, day: Int) {
         val today = LocalDate.now()
 
-        if (day <= currentStreak && day > (userData?.dailyRewardStreak ?: 0)) {
+        if (  day  > (userData?.dailyRewardStreak ?: 0)) {
             userData?.apply {
                 dailyRewardStreak = day
                 lastCollectedDate = today.toString()
@@ -296,6 +290,7 @@ class GameController {
                 isDailyRewardTaken = true
             }
             saveUserData(context, userData!!)
+            updateStreak(context)
             println("Reward for day $day collected!")
         } else {
             println("Reward for day $day is not available or already collected.")
