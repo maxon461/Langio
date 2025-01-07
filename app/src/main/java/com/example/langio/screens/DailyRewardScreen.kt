@@ -76,7 +76,7 @@ fun BannerText(modifier: Modifier = Modifier) {
 fun RewardsGrid(modifier: Modifier = Modifier) {
     val context = LocalContext.current // Get the current context
     val showDialog = remember { mutableStateOf(false) }
-    val unlockedDays = GameController.instance.getUnlockedDays(context) // Fetch unlocked days based on streak
+    val unlockedDays = GameController.instance.getUnlockedDays(context)
     val userData = GameController.instance.userData
     val isDailyRewardTaken = userData?.isDailyRewardTaken ?: true
 
@@ -97,7 +97,7 @@ fun RewardsGrid(modifier: Modifier = Modifier) {
                     RewardItem(
                         day = day,
                         currentStreak = unlockedDays,
-                        isDailyRewardTaken = isDailyRewardTaken, // Today's reward is unavailable if taken
+                        isDailyRewardTaken = GameController.instance.isDailyRewardTaken, // Today's reward is unavailable if taken
                         onClick = {
                             if (day == unlockedDays && !isDailyRewardTaken) {
                                 GameController.instance.collectReward(context, day)

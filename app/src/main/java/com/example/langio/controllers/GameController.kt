@@ -282,19 +282,22 @@ class GameController {
     fun collectReward(context: Context, day: Int) {
         val today = LocalDate.now()
 
-        if (  day  > (userData?.dailyRewardStreak ?: 0)) {
-            userData?.apply {
-                dailyRewardStreak = day
-                lastCollectedDate = today.toString()
-                increaseHintNumber()
-                isDailyRewardTaken = true
-            }
-            saveUserData(context, userData!!)
-            updateStreak(context)
-            println("Reward for day $day collected!")
-        } else {
-            println("Reward for day $day is not available or already collected.")
-        }
+//        if (day > (userData?.dailyRewardStreak ?: 0)) {
+//            userData?.apply {
+//                dailyRewardStreak = day
+//                lastCollectedDate = today.toString()
+//                increaseHintNumber()
+//                isDailyRewardTaken = true
+//            }
+////            saveUserData(context, userData!!)
+//            updateStreak(context)
+//            println("Reward for day $day collected!")
+//        } else {
+//            println("Reward for day $day is not available or already collected.")
+//        }
+        isDailyRewardTaken = true
+        increaseHintNumber()
+        println("REWARDTAKEN")
     }
 
 
