@@ -29,7 +29,7 @@ const val NUMBER_OF_WORDS_PER_LEVEL = 10
 const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 4
 const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
 const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
-val TEST_DATE_NOW = LocalDate.of(2025, 1, 13)
+val TEST_DATE_NOW = LocalDate.now()//LocalDate.of(2025, 1, 13)
 
 const val USER_DATA_FILE = ".\\user_datahgfsa11.json"
 
