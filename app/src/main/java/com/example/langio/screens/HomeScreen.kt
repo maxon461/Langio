@@ -51,21 +51,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         )
 
         Button(
-            onClick = { GameController.instance.changeScreen(GameController.Screen.LOGIN) },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
-            shape = RoundedCornerShape(20.dp),
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-                .width(200.dp)
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "I have an account", color = Color(0xFFFFE342))
-                Text(text = "tengo una cuenta", color = Color(0xFFFFE342), fontSize = 12.sp)
-            }
-        }
-
-        Button(
-            onClick = { GameController.instance.changeScreen(GameController.Screen.REGISTER) },
+            onClick = { GameController.instance.changeScreen(GameController.Screen.MAP) },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE858AE)),
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier

@@ -77,8 +77,6 @@ class GameController {
 
     enum class Screen(val route: String) {
         HOME("home"),
-        LOGIN("login"),
-        REGISTER("register"),
         REWARDS("dailyReward"),
         MAP("map"),
         PROFILE("profile"),
@@ -88,7 +86,13 @@ class GameController {
         EXAM_TRANSLATE("examTranslate"),
         EXAM_CONNECT_WORDS("connectWords"),
         EXAM_SUMMARY("examSummary"),
-        LEVEL_MENU("levelMenu") // Static route since global variable is used
+        LEVEL_MENU("levelMenu")
+    }
+
+    enum class AnswerState {
+        IDLE,
+        CORRECT,
+        INCORRECT
     }
 
     @Composable
@@ -118,8 +122,6 @@ class GameController {
     private fun addRoutes(navGraphBuilder: NavGraphBuilder) {
         navGraphBuilder.apply {
             composable(Screen.HOME.route) { HomeScreen() }
-            composable(Screen.LOGIN.route) { LoginScreen() }
-            composable(Screen.REGISTER.route) { RegisterScreen() }
             composable(Screen.REWARDS.route) { DailyRewardScreen() }
             composable(Screen.MAP.route) { MapScreen() }
             composable(Screen.PROFILE.route) { ProfileScreen() }
@@ -272,8 +274,8 @@ class GameController {
             if (it == unlockedLevelId) {
                 unlockedLevelId++
                 println("Next level unlocked: $unlockedLevelId")
-                changeScreen(Screen.MAP)
             }
+            changeScreen(Screen.MAP)
         }
     }
 

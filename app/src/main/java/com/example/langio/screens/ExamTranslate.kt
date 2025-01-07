@@ -1,5 +1,6 @@
 package com.example.langio.screens
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -36,13 +39,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.langio.R
 import com.example.langio.controllers.GameController
-import com.example.langio.useful.BackToLevelMenuButton
 import com.example.langio.useful.ExamCard
 import com.example.langio.useful.HeaderBar
 import com.example.langio.useful.Hint
+import java.text.Normalizer
 import java.util.Locale
+
+
+const val MAX_CHAR_COUNT = 30
 
 @Composable
 fun ExamTranslate (modifier: Modifier = Modifier) {
@@ -51,6 +56,8 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
     val isFirstHintActive = remember { mutableStateOf<Boolean>(false) }
+
+    val answerState = remember { mutableStateOf<GameController.AnswerState>(GameController.AnswerState.IDLE) }
 
     Scaffold(
         topBar = { HeaderBar(modifier, showLevel = true, showExam = true, showLives = true) }
@@ -74,7 +81,7 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
                     hints.addAll(createHintsFromWord(it))
                 }
             }
-            InputBox(modifier, isFirstHintActive, hints)
+            InputBox(modifier, isFirstHintActive, hints, answerState)
 //            Spacer(modifier = Modifier.height(20.dp))
 //            BackToLevelMenuButton()
             Hint(
@@ -95,11 +102,20 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
 fun InputBox(
     modifier: Modifier = Modifier,
     isFirstHintActive: MutableState<Boolean>,
-    hints: SnapshotStateList<Pair<Char, Boolean>>
+    hints: SnapshotStateList<Pair<Char, Boolean>>,
+    answerState: MutableState<GameController.AnswerState>
 ) {
     var inputText by remember { mutableStateOf(TextFieldValue("")) }
     val keyboardController = LocalSoftwareKeyboardController.current
     var hintText by remember { mutableStateOf("") }
+
+    val labelColor by animateColorAsState(
+        targetValue = when (answerState.value) {
+            GameController.AnswerState.IDLE -> Color.White
+            GameController.AnswerState.CORRECT -> Color.Green
+            GameController.AnswerState.INCORRECT -> Color.Red
+        }
+    )
 
     hintText = if (isFirstHintActive.value) {
         if (hints.any { it.second }) {
@@ -117,13 +133,27 @@ fun InputBox(
     Column(modifier = modifier.padding(horizontal = 16.dp).fillMaxHeight(.7f)) {
         TextField(
             value = inputText,
-            onValueChange = { newText -> inputText = newText },
-            label = { Text("Enter translation") },
+            onValueChange = { newText ->
+                if (newText.text.length <= MAX_CHAR_COUNT) {
+                    inputText = newText
+                    answerState.value = GameController.AnswerState.IDLE
+                }
+                            },
+            label = {
+                Text(
+                text = "Enter translation",
+                color = when (answerState.value) {
+                        GameController.AnswerState.IDLE -> Color.Gray
+                        GameController.AnswerState.CORRECT -> Color.Green
+                        GameController.AnswerState.INCORRECT -> Color.Red
+                    }
+                )
+            },
             placeholder = { Text("Enter here...") },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(55.dp)
-                .background(Color.White),
+                .height(55.dp),
+            singleLine = true,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             ),
@@ -132,7 +162,9 @@ fun InputBox(
                     keyboardController?.hide()
                     println("Entered translation: ${inputText.text}")
                 }
-            )
+            ),
+
+
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row (
@@ -151,13 +183,14 @@ fun InputBox(
                 onClick = {
                     println("Entered translation: ${inputText.text}")
                     val correctWord = GameController.instance.currentScreenWordsToBeUsed?.get(0)?.spanishWord?.lowercase(Locale.ROOT)
-                    if (inputText.text.lowercase(Locale.ROOT) == correctWord) {
+                    println(normalizeString(correctWord ?: "").lowercase(Locale.ROOT))
+                    if (normalizeString(inputText.text.lowercase(Locale.ROOT)) == normalizeString(correctWord ?: "").lowercase(Locale.ROOT)) {
                         println("CORRECT!!!")
-                        correctTranslation()
-                    }
-                    else {
+                        correctTranslation(answerState)
+                    } else {
                         println("INCORRECT!!! ${inputText.text} != ${correctWord}")
-                        incorrectTranslation()
+                        answerState.value = GameController.AnswerState.INCORRECT
+                        GameController.instance.decreaseLivesNumber()
                     }
                 },
             ) {
@@ -205,17 +238,25 @@ fun activateRandomHint(hints: SnapshotStateList<Pair<Char, Boolean>>): Boolean {
 fun createHintsFromWord(word: String): List<Pair<Char, Boolean>> {
     return word.map { char ->
         if (char == ' ') {
-            char to true // Spacja, przypisuje true
+            char to true
         } else {
-            char to false // Inny znak, przypisuje false
+            char to false
         }
     }
 }
 
-fun incorrectTranslation() {
+fun incorrectTranslation(answerState: MutableState<GameController.AnswerState>) {
+    answerState.value = GameController.AnswerState.INCORRECT
     GameController.instance.decreaseLivesNumber()
 }
 
-fun correctTranslation() {
+fun correctTranslation(answerState: MutableState<GameController.AnswerState>) {
+    answerState.value = GameController.AnswerState.CORRECT
     GameController.instance.nextExamScreen(1)
+}
+
+
+fun normalizeString(input: String): String {
+    return Normalizer.normalize(input, Normalizer.Form.NFD)
+        .replace(Regex("[^\\p{ASCII}]"), "") // Usuwamy znaki spoza ASCII, takie jak akcenty
 }

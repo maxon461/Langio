@@ -315,7 +315,7 @@ fun VideoPlayerComponent(videoResourceId: Int) {
             android.widget.VideoView(ctx).apply {
                 setVideoPath(videoUri)
                 setOnPreparedListener { mediaPlayer ->
-                    mediaPlayer.isLooping = true // Opcjonalne, aby zapętlić wideo
+                    mediaPlayer.isLooping = true
                     start()
                 }
             }
