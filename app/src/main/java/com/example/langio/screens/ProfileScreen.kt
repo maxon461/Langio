@@ -78,11 +78,7 @@ fun ProfileBanner(modifier: Modifier = Modifier) {
                     Row()
                     {
                         Text(text = GameController.instance.username, fontSize = 20.sp, color = Color(0xffFFE342))
-                        Image(
-                            painter = painterResource(id = R.drawable.exam),
-                            contentDescription = "Avatar",
-                            modifier = modifier.size(15.dp)
-                        )
+
                     }
                     Text(text = "JOINED: ${GameController.instance.userData?.joinDate}", fontSize = 15.sp, color = Color(0xffFFE342))
 
