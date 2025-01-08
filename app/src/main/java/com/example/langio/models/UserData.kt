@@ -29,7 +29,7 @@ data class UserData(
                     Gson().fromJson(reader, UserData::class.java).also { reader.close() }
                 } else {
                     val defaultUserData = UserData(
-                        username = "username",
+                        username = "Jędrzej",
                         joinDate = LocalDate.now().toString(),
                         learnedWords = 0,
                         unlockedLevel = 1,

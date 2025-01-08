@@ -174,6 +174,7 @@ class GameController {
 
     fun saveUserData(context: Context, userData: UserData) {
 //        UserData.
+
         UserData.saveToJson(context, USER_DATA_FILE, userData)
     }
 
@@ -318,6 +319,7 @@ class GameController {
         increaseHintNumber(((day-1)/4).toInt() + 1)
         isDailyRewardTaken = true
         println("REWARDTAKEN")
+        saveUserData(context, userData!!)
     }
 
 
@@ -334,6 +336,7 @@ class GameController {
         userData?.apply {
             dailyRewardStreak = 1
             isDailyRewardTaken = false
+
         }
         saveUserData(context, userData!!)
         println("Streak reset to 1.")
