@@ -86,13 +86,7 @@ fun ExamTranslate (modifier: Modifier = Modifier) {
             InputBox(modifier, isFirstHintActive, hints, answerState)
 //            Spacer(modifier = Modifier.height(20.dp))
 //            BackToLevelMenuButton()
-            Hint(
-                onClick = {
-                    println(hints)
-                    println()
-                    takeATranslateHint(isFirstHintActive, hints)
-                }
-            )
+
         }
     }
 }
@@ -132,54 +126,72 @@ fun InputBox(
         ""
     }
 
-    Column(modifier = modifier.padding(horizontal = 16.dp).fillMaxHeight(.7f)) {
-        TextField(
-            value = inputText,
-            onValueChange = { newText ->
-                if (newText.text.length <= MAX_CHAR_COUNT) {
-                    inputText = newText
-                    answerState.value = GameController.AnswerState.IDLE
-                }
-                            },
-            label = {
-                Text(
-                text = "Enter translation",
-                color = when (answerState.value) {
-                        GameController.AnswerState.IDLE -> Color.Gray
-                        GameController.AnswerState.CORRECT -> Color.Green
-                        GameController.AnswerState.INCORRECT -> Color.Red
-                    }
-                )
-            },
-            placeholder = { Text("Enter here...") },
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = 16.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        // Input and Hint Section
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(55.dp),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    keyboardController?.hide()
-                    println("Entered translation: ${inputText.text}")
-                }
-            ),
+                .weight(1f),
+            verticalArrangement = Arrangement.Center
+        ) {
+            TextField(
+                value = inputText,
+                onValueChange = { newText ->
+                    if (newText.text.length <= MAX_CHAR_COUNT) {
+                        inputText = newText
+                        answerState.value = GameController.AnswerState.IDLE
+                    }
+                },
+                label = {
+                    Text(
+                        text = "Enter translation",
+                        color = when (answerState.value) {
+                            GameController.AnswerState.IDLE -> Color.Gray
+                            GameController.AnswerState.CORRECT -> Color.Green
+                            GameController.AnswerState.INCORRECT -> Color.Red
+                        }
+                    )
+                },
+                placeholder = { Text("Enter here...") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(55.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                        println("Entered translation: ${inputText.text}")
+                    }
+                ),
+            )
 
+            Spacer(modifier = Modifier.height(8.dp))
 
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
+            // Hint Text Row
             Text(
                 text = hintText,
                 color = Color.Yellow,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth()
             )
+        }
+
+        // Buttons Section at the Bottom
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Bottom
+        ) {
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8559A5)),
                 onClick = {
@@ -198,7 +210,7 @@ fun InputBox(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(vertical = 8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
@@ -207,13 +219,20 @@ fun InputBox(
                     fontSize = 18.sp
                 )
             }
-        }
 
+            Hint(
+                onClick = {
+                    println(hints)
+                    takeATranslateHint(isFirstHintActive, hints)
+                },
+
+            )
+        }
     }
 
     BackHandler {
         println("BACK PRESSED")
-//      DO NOTHING
+        // Handle back press here if needed
     }
 }
 
