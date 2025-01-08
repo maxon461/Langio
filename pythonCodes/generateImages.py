@@ -72,7 +72,7 @@ def read_words_from_csv(csv_path):
     return words
 
 # Główna część programu
-csv_file = 'D:/ProgrammingProjects/Kotlin/LANGIO_repo/Langio/app/src/main/res/raw/words.csv'  
+csv_file = './finalOutput.csv'  
 output_directory = './images'  
 
 os.makedirs(output_directory, exist_ok=True)  # Utwórz folder wyjściowy, jeśli nie istnieje

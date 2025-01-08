@@ -29,7 +29,9 @@ def generate_audio_for_word(csv_file):
 
 
 # Wskazanie ścieżki do pliku CSV
-csv_file_path = 'D:/ProgrammingProjects/Kotlin/LANGIO_repo/Langio/app/src/main/res/raw/words.csv'  # Zmień na odpowiednią ścieżkę do pliku CSV
+csv_file_path = './finalOutput.csv'  
+
+# csv_file_path = 'D:/ProgrammingProjects/Kotlin/LANGIO_repo/Langio/app/src/main/res/raw/words.csv'  # Zmień na odpowiednią ścieżkę do pliku CSV
 
 # Uruchomienie funkcji
 generate_audio_for_word(csv_file_path)

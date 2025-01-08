@@ -29,9 +29,9 @@ const val NUMBER_OF_WORDS_PER_LEVEL = 10
 const val NUMBER_OF_CHOICE_SCREENS_PER_EXAM = 4
 const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
 const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
-val TEST_DATE_NOW = LocalDate.of(2025, 1, 13)//LocalDate.now()//LocalDate.of(2025, 1, 13)
+val TEST_DATE_NOW = LocalDate.now()//LocalDate.of(2025, 1, 19)//LocalDate.of(2025, 1, 13)
 
-const val USER_DATA_FILE = ".\\user_datdahgfsa11.json"
+const val USER_DATA_FILE = ".\\user_data120000.json"
 
 
 
@@ -119,7 +119,7 @@ class GameController {
             isDailyRewardTaken = false
             Log.e("TEST", "WELCOME BACK HERE'S ANOTHER REWARD")
         }
-        else if (ChronoUnit.DAYS.between(lastCollectedDate, TEST_DATE_NOW/*LocalDate.now()*/).toInt() == 2) {
+        else if (ChronoUnit.DAYS.between(lastCollectedDate, TEST_DATE_NOW/*LocalDate.now()*/).toInt() >= 2) {
             dailyRewardStreak = 1
             isDailyRewardTaken = false
             Log.e("TEST", "YOU SHOULD VISIT US MORE OFTEN")

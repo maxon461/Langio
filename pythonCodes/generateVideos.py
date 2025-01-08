@@ -36,7 +36,7 @@ def download_video(video_url, output_dir, filename):
         print(f"Nie udało się pobrać: {video_url} (Status: {response.status_code})")
 
 if __name__ == "__main__":
-    input_file = 'D:/ProgrammingProjects/Kotlin/LANGIO_repo/Langio/app/src/main/res/raw/words.csv'  # Nazwa pliku wejściowego
+    input_file = './finalOutput.csv'   # Nazwa pliku wejściowego
     output_dir = "videos" 
 
     if not os.path.exists(output_dir):
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     with open(input_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
-    for line in lines:
+    for line in lines[91:]:
         fields = line.split('|')
         article_word = fields[3].strip()
         article, word = article_word.split(' ', 1)
