@@ -57,7 +57,7 @@ fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier
     ) {
         CustomNavItem(
             label = "Daily rewards",
-            imageResId = R.drawable.cow,
+            imageResId = R.drawable.gift,
             isSelected = selectedTab == "dailyReward",
             onClick = { GameController.instance.changeScreen(GameController.Screen.REWARDS)},
             modifier = Modifier.weight(1f)
@@ -70,10 +70,9 @@ fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier
                 .background(Color.Gray)
         )
 
-        // Map Tab
         CustomNavItem(
             label = "Map",
-            imageResId = R.drawable.cow,
+            imageResId = R.drawable.map,
             isSelected = selectedTab == "map",
             onClick = { GameController.instance.changeScreen(GameController.Screen.MAP) },
             modifier = Modifier.weight(1f)
@@ -89,7 +88,7 @@ fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier
         // Profile Tab
         CustomNavItem(
             label = "Profile",
-            imageResId = R.drawable.cow,
+            imageResId = R.drawable.user,
             isSelected = selectedTab == "profile",
             onClick = { GameController.instance.changeScreen(GameController.Screen.PROFILE) },
             modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń

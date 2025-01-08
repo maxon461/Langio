@@ -161,7 +161,7 @@ fun Answers(
                     Text(
                         text = answers[0].first,
                         color = Color(0xFF79747E),
-                        fontSize = 25.sp,
+                        fontSize = 20.sp,
                     )
                 }
 
@@ -201,7 +201,7 @@ fun Answers(
                     Text(
                         text = answers[1].first,
                         color = Color(0xFF79747E),
-                        fontSize = 25.sp
+                        fontSize = 20.sp
                         )
                 }
             }
@@ -244,7 +244,7 @@ fun Answers(
                     Text(
                         text = answers[2].first,
                         color = Color(0xFF79747E),
-                        fontSize = 25.sp
+                        fontSize = 20.sp
                     )
                 }
 
@@ -283,7 +283,7 @@ fun Answers(
                     Text(
                         text = answers[3].first,
                         color = Color(0xFF79747E),
-                        fontSize = 25.sp
+                        fontSize = 20.sp
                     )
                 }
             }
