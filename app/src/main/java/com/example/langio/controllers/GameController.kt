@@ -31,7 +31,7 @@ const val NUMBER_OF_TRANSLATE_SCREENS_PER_EXAM = 2
 const val NUMBER_OF_CONNECT_SCREENS_PER_EXAM = 1
 val TEST_DATE_NOW = LocalDate.now()//LocalDate.of(2025, 1, 19)//LocalDate.of(2025, 1, 13)
 
-const val USER_DATA_FILE = ".\\user_data120000.json"
+const val USER_DATA_FILE = ".\\user_data01.json"
 
 
 

@@ -385,10 +385,7 @@ class GameMapViewModel : ViewModel() {
     }
 
     fun onLevelSelected(level: LevelInfo) {
-//        if (level.id % 5 == 0) {
-//            println("Level ${level.id} is disabled. TODO: Add specific handling for reward levels.")
-//            return
-//        }
+
 
         try {
             GameController.instance.setCurrentLevel(level.id)

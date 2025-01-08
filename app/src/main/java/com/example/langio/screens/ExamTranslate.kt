@@ -195,7 +195,7 @@ fun InputBox(
                     println("Entered translation: ${inputText.text}")
                     val correctWord = GameController.instance.currentScreenWordsToBeUsed?.get(0)?.spanishWord?.lowercase(Locale.ROOT)
                     println(normalizeString(correctWord ?: "").lowercase(Locale.ROOT))
-                    if (normalizeString(inputText.text.lowercase(Locale.ROOT)) == normalizeString(correctWord ?: "").lowercase(Locale.ROOT)) {
+                    if (normalizeString(inputText.text.lowercase(Locale.ROOT).trim()) == normalizeString(correctWord ?: "").lowercase(Locale.ROOT)) {
                         println("CORRECT!!!")
                         correctTranslation(answerState)
                     } else {
