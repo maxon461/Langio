@@ -64,7 +64,7 @@ fun ExamConnectWordsScreen(
     val verticalOffset = remember(screenHeightPx) { screenHeightPx * 0.125f }
     val horizontalOffset = remember(screenWidthPx) { screenWidthPx * 0.034f }
     val controlOffsetX = remember(screenWidthPx) { screenWidthPx * 0.046f }
-    val controlOffsetY = remember(screenHeightPx) { screenHeightPx * 0.021f }
+    val controlOffsetY = remember(screenHeightPx) { screenHeightPx * 0.071f }
     val strokeWidth = remember(screenWidthPx) { screenWidthPx * 0.007f }
 
     val correctPairs = GameController.instance.currentScreenWordsToBeUsed
@@ -103,25 +103,18 @@ fun ExamConnectWordsScreen(
                         val startPos = spanishPositions[spanish] ?: return@forEach
                         val endPos = englishPositions[english] ?: return@forEach
 
-                        val adjustedStartPos = Offset(startPos.x, startPos.y - verticalOffset)
-                        val adjustedEndPos = Offset(endPos.x - horizontalOffset, endPos.y - verticalOffset)
+                        // Adjust offsets for higher Y positions
+                        val startOffsetX = -10f
+                        val startOffsetY = 380f // Positive value to raise the line's start
+                        val endOffsetX = -50f
+                        val endOffsetY = 380f // Positive value to raise the line's end
 
-                        val path = Path().apply {
-                            moveTo(adjustedStartPos.x, adjustedStartPos.y)
+                        // Adjust start and end positions manually
+                        val adjustedStartPos = Offset(startPos.x + startOffsetX, startPos.y - startOffsetY)
+                        val adjustedEndPos = Offset(endPos.x + endOffsetX, endPos.y - endOffsetY)
 
-                            val controlPoint1X = adjustedStartPos.x - controlOffsetX
-                            val controlPoint2X = adjustedEndPos.x - controlOffsetX
-                            val controlPointY = (adjustedStartPos.y + adjustedEndPos.y) / 2 - controlOffsetY
-
-                            cubicTo(
-                                controlPoint1X, controlPointY,
-                                controlPoint2X, controlPointY,
-                                adjustedEndPos.x, adjustedEndPos.y
-                            )
-                        }
-
-                        drawPath(
-                            path = path,
+                        // Draw a straight line from adjustedStartPos to adjustedEndPos
+                        drawLine(
                             color = if (hints.any { it.first == english && it.second == spanish }) {
                                 Color.Green
                             } else {
@@ -131,17 +124,22 @@ fun ExamConnectWordsScreen(
                                     GameController.AnswerState.INCORRECT -> Color.Red
                                 }
                             },
-                            style = Stroke(
-                                width = strokeWidth,
-                                cap = StrokeCap.Round
-                            )
+                            start = adjustedStartPos,
+                            end = adjustedEndPos,
+                            strokeWidth = strokeWidth,
+                            cap = StrokeCap.Round
                         )
                     }
                 }
 
+
+
+
                 // Words
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     // Spanish words column
@@ -204,6 +202,8 @@ fun ExamConnectWordsScreen(
                         }
                     }
                 }
+
+
             }
 
             Button(
