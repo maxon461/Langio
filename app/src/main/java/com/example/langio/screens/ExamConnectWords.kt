@@ -97,23 +97,19 @@ fun ExamConnectWordsScreen(
                 contentAlignment = Alignment.Center
 
             ) {
-                // Lines Canvas
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     connections.forEach { (english, spanish) ->
                         val startPos = spanishPositions[spanish] ?: return@forEach
                         val endPos = englishPositions[english] ?: return@forEach
 
-                        // Adjust offsets for higher Y positions
                         val startOffsetX = -10f
-                        val startOffsetY = 380f // Positive value to raise the line's start
+                        val startOffsetY = 380f
                         val endOffsetX = -50f
-                        val endOffsetY = 380f // Positive value to raise the line's end
+                        val endOffsetY = 380f
 
-                        // Adjust start and end positions manually
                         val adjustedStartPos = Offset(startPos.x + startOffsetX, startPos.y - startOffsetY)
                         val adjustedEndPos = Offset(endPos.x + endOffsetX, endPos.y - endOffsetY)
 
-                        // Draw a straight line from adjustedStartPos to adjustedEndPos
                         drawLine(
                             color = if (hints.any { it.first == english && it.second == spanish }) {
                                 Color.Green
@@ -135,14 +131,12 @@ fun ExamConnectWordsScreen(
 
 
 
-                // Words
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Spanish words column
                     Column {
                         displayedPairs?.forEach { (enWord, esWord) ->
                             Text(
@@ -172,7 +166,6 @@ fun ExamConnectWordsScreen(
                         }
                     }
 
-                    // English words column
                     Column {
                         displayedPairs?.forEach { (enWord, esWord) ->
                             Text(

@@ -132,7 +132,6 @@ fun InputBox(
             .padding(bottom = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        // Input and Hint Section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -175,7 +174,6 @@ fun InputBox(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Hint Text Row
             Text(
                 text = hintText,
                 color = Color.Yellow,
@@ -187,7 +185,6 @@ fun InputBox(
             )
         }
 
-        // Buttons Section at the Bottom
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom

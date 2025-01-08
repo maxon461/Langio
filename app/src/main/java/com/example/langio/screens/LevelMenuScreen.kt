@@ -53,7 +53,6 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
     ) {
         Spacer(modifier = Modifier.height(20.dp))
 
-        // First Menu Item
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -94,7 +93,6 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Second Menu Item
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -135,7 +133,6 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Third Menu Item
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -174,10 +171,8 @@ fun LevelMenuGrid(modifier: Modifier = Modifier) {
             }
         }
 
-        // Spacer to push the Back to Map Menu to the bottom
         Spacer(modifier = Modifier.weight(1f))
 
-        // Back to Map Menu Item
         Box(
             modifier = Modifier
                 .fillMaxWidth()

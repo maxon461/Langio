@@ -52,7 +52,7 @@ fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier
             .fillMaxWidth()
             .background(Color(0xFFEDE7F6))
             .height(56.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly, // Używamy SpaceEvenly, żeby rozłożyć przyciski równomiernie
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
         CustomNavItem(
@@ -85,13 +85,12 @@ fun CustomBottomNavigationBar(selectedTab: String, modifier: Modifier = Modifier
                 .background(Color.Gray)
         )
 
-        // Profile Tab
         CustomNavItem(
             label = "Profile",
             imageResId = R.drawable.user,
             isSelected = selectedTab == "profile",
             onClick = { GameController.instance.changeScreen(GameController.Screen.PROFILE) },
-            modifier = Modifier.weight(1f) // Ustawiamy wagę, aby przycisk wypełniał całą przestrzeń
+            modifier = Modifier.weight(1f)
         )
     }
 }
@@ -106,11 +105,11 @@ fun CustomNavItem(
 ) {
     Column(
         modifier = modifier
-            .fillMaxHeight() // Upewniamy się, że przycisk wypełnia całą dostępną wysokość
+            .fillMaxHeight()
             .background(if (isSelected) Color(0xFFD8BFBF) else Color(0xFFEDE7F6))
             .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center // Wyrównujemy zawartość w pionie
+        verticalArrangement = Arrangement.Center
     ) {
         Image(
             painter = painterResource(id = imageResId),
@@ -137,7 +136,6 @@ fun BackToLevelMenuButton() {
         Button(
             onClick = {
                 try {
-                    // Navigate to the level menu using GameController
                     GameController.instance.changeScreen(GameController.Screen.LEVEL_MENU)
                 } catch (e: Exception) {
                     println("Navigation to Level Menu failed: ${e.message}")
@@ -201,7 +199,7 @@ fun ExamCard (enWord: String, painter: Painter)
                     {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
-                            fontSize = 40.sp,
+                            fontSize = 35.sp,
                             color = Color.Black,
                             text = enWord)
                     }

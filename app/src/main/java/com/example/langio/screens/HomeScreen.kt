@@ -42,7 +42,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         )
 
         Image(
-            painter = painterResource(id = R.drawable.cow), // Dodaj obrazek krowy do drawable
+            painter = painterResource(id = R.drawable.cow),
             contentDescription = "Cow Icon",
             modifier = Modifier
                 .padding(vertical = 38.dp)

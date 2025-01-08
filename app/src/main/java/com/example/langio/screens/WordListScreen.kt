@@ -1,6 +1,7 @@
 package com.example.langio.screens
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -55,6 +56,11 @@ fun WordListScreen(modifier: Modifier = Modifier, gameController: GameController
             FinishButton()
         }
     }
+
+    BackHandler {
+        println("BACK PRESSED")
+//      DO NOTHING
+    }
 }
 
 @Composable
@@ -70,7 +76,7 @@ fun WordList(wordList: List<WordInstance>) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-//                .height(300.dp) // Ograniczenie wysokości listy do 300dp
+//                .height(300.dp)
         ) {
             items(wordList) { wordInstance ->
                 WordPairItem(WordPair(wordInstance.englishWord, wordInstance.spanishWord))

@@ -1,6 +1,7 @@
 package com.example.langio.screens
 
 import android.media.MediaPlayer
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -170,7 +171,7 @@ fun FlashCard(wordInstance: MutableState<WordInstance>, flippableController: Fli
                     ) {
                         Text(
                             text = wordInstance.value.englishWord,
-                            fontSize = 40.sp,
+                            fontSize = 35.sp,
                             modifier = Modifier.weight(1f)
                         )
                         IconButton(
@@ -240,7 +241,7 @@ fun FlashCard(wordInstance: MutableState<WordInstance>, flippableController: Fli
                     ) {
                         Text(
                             text = wordInstance.value.spanishWord,
-                            fontSize = 40.sp,
+                            fontSize = 35.sp,
                             modifier = Modifier.weight(1f)
                         )
                         IconButton(
@@ -306,6 +307,12 @@ fun FlashCard(wordInstance: MutableState<WordInstance>, flippableController: Fli
             }
         }
     }
+
+    BackHandler {
+        println("BACK PRESSED")
+//      DO NOTHING
+    }
+
 }
 
 

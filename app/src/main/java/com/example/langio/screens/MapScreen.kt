@@ -193,7 +193,6 @@ fun LevelProgressionMap(
                     .onGloballyPositioned { coordinates ->
                         val position = coordinates.positionInWindow()
                         val nodeSize = screenWidthPx * 0.03f
-                        // Adjust centerPosition calculation to match node center
                         val centerPosition = Offset(
                             position.x + coordinates.size.width / 2f,
                             position.y + coordinates.size.height / 2f
@@ -337,9 +336,8 @@ fun ChapterNavigation(
 }
 
 class GameMapViewModel : ViewModel() {
-    //  ADDED IN ORDER TO NAVIGATE
-    lateinit var navController: NavController
-//  --------
+//    lateinit var navController: NavController
+////  --------
 
 
     private val chapters = listOf(
