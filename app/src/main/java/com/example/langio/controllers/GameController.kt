@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.langio.models.UserData
 import com.example.langio.models.WordInstance
 import com.example.langio.screens.*
+import org.junit.Test.None
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.properties.Delegates
@@ -41,14 +42,12 @@ class GameController {
 
     private lateinit var navController: NavHostController
     var userData by mutableStateOf<UserData?>(null)
-        private set
     var username: String = "TEMP"
     var learnedWords by Delegates.notNull<Int>()
-        private set
+
     //    var unlockedLevel by Delegates.notNull<Int>()
 //        private set
     var dailyRewardStreak by Delegates.notNull<Int>()
-        private set
     var isDailyRewardTaken: Boolean = false
     var lastCollectedDate: LocalDate = LocalDate.of(2000, 12, 11)
 
@@ -56,13 +55,10 @@ class GameController {
     var unlockedLevelId by mutableIntStateOf(1)
 
     var currentLevelId: Int? = null
-        private set
 
 
     var livesNumber by mutableIntStateOf(0)
-        private set
     var hintNumber by mutableIntStateOf(0)
-        private set
     var examChoicesScreenLeft by mutableIntStateOf(0)
         private set
     var examTranslateScreenLeft by mutableIntStateOf(0)
@@ -95,16 +91,19 @@ class GameController {
     }
 
     @Composable
-    fun SetupNavigation(modifier: Modifier = Modifier, innerPadding: Modifier = Modifier) {
+    fun SetupNavigation(modifier: Modifier = Modifier, innerPadding: Modifier = Modifier, userData: UserData? = null) {
         this.navController = rememberNavController()
         val context = LocalContext.current
-        userData = loadUserData(context)
-        hintNumber = userData?.hintsRemaining ?: -1
+        if (userData == null)
+            this@GameController.userData = loadUserData(context)
+        else
+            this@GameController.userData = userData
+        hintNumber = userData?.hintsRemaining ?: 5
         username = userData?.username ?: "MICHAŁ"
-        learnedWords = userData?.learnedWords ?: -1
+        learnedWords = userData?.learnedWords ?: 1
 //        unlockedLevel = userData?.unlockedLevel ?: -1
-        unlockedLevelId = userData?.unlockedLevel ?: -1
-        dailyRewardStreak = userData?.dailyRewardStreak ?: -1
+        unlockedLevelId = userData?.unlockedLevel ?: 1
+        dailyRewardStreak = userData?.dailyRewardStreak ?: 3
         isDailyRewardTaken = userData?.isDailyRewardTaken ?: false
         lastCollectedDate = if (userData?.lastCollectedDate != null) {
             LocalDate.parse(userData!!.lastCollectedDate)
@@ -208,6 +207,7 @@ class GameController {
         livesNumber--
         if (livesNumber < 0) {
             goToExamSummary()
+            livesNumber = 0
         }
         println("LivesNumber decreased: $livesNumber")
     }
@@ -320,6 +320,13 @@ class GameController {
         isDailyRewardTaken = true
         println("REWARDTAKEN")
         saveUserData(context, userData!!)
+    }
+
+    fun collectRewards(day: Int) {
+        lastCollectedDate = LocalDate.now()
+        hintNumber += ((day - 1) / 4) + 1
+        isDailyRewardTaken = true
+        println("Reward collected, hints: $hintNumber")
     }
 
 
